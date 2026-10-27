@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 import time
-from typing import List, Optional
+from typing import Callable, List, Optional
 
 from core.blackboard import LogEntry, blackboard
 from core.schemas import Action, AgentPlan, VerificationCheck
@@ -14,7 +14,17 @@ from engines.gemini_engine import gemini_engine
 from engines.ollama_engine import ollama_engine
 from executors.vision_som import capture_window_som_jpeg
 from executors.win32_uia import get_active_target_hwnd, uia_executor
+from memory.memory_manager import save_session_summary
 from tools.registry import registry
+
+_NON_CACHEABLE_TOOLS = {
+    "undo_action",
+    "confirm_pending",
+    "remember_fact",
+    "recall_memory",
+    "forget_fact",
+    "delete_to_trash",
+}
 
 
 @dataclass
@@ -22,6 +32,7 @@ class RouteResult:
     success: bool
     active_tier: int
     elapsed_ms: float
+    instruction: str = ""
     plan: Optional[AgentPlan] = None
     outputs: List[str] = field(default_factory=list)
     verification_logs: List[str] = field(default_factory=list)
@@ -31,7 +42,7 @@ class RouteResult:
 class AetherRouter:
     """
     4-Tier Waterfall Router:
-      Tier 0: Deterministic SQLite Cache (<10 ms)
+      Tier 0: Deterministic SQLite Cache & Parameterized Template Cache (<10 ms)
       Tier 1: Local Fast-Path Executor via Ollama qwen2.5-coder:7b (<1.5 s, NO screenshots)
       Tier 2: Structural Windows UIA / Accessibility (0.1s - 0.5s, no terminal OCR clicks)
       Tier 3: Selective Cloud Vision Fallback via Gemini 3.8 Flash SoM (3s - 8s)
@@ -39,6 +50,40 @@ class AetherRouter:
 
     def __init__(self) -> None:
         registry.discover()
+        self._listeners: List[Callable[[RouteResult], None]] = []
+        self._history: List[RouteResult] = []
+
+    def add_listener(self, callback: Callable[[RouteResult], None]) -> None:
+        """Register a listener notified after every completed route (used by GUI/WebSocket)."""
+        self._listeners.append(callback)
+
+    def get_history(self, limit: int = 30) -> List[RouteResult]:
+        return list(reversed(self._history[-limit:]))
+
+    def _should_cache(self, plan: AgentPlan) -> bool:
+        for act in plan.actions:
+            if act.tool in _NON_CACHEABLE_TOOLS:
+                return False
+        return True
+
+    def _finalize(self, result: RouteResult) -> RouteResult:
+        self._history.append(result)
+        if len(self._history) > 100:
+            self._history = self._history[-100:]
+        try:
+            summary_out = "; ".join(result.outputs)[:200] if result.outputs else "no output"
+            save_session_summary(
+                f"[T{result.active_tier} | {result.elapsed_ms:.1f}ms | {'OK' if result.success else 'FAIL'}] "
+                f"{result.instruction} -> {summary_out}"
+            )
+        except Exception:
+            pass
+        for cb in list(self._listeners):
+            try:
+                cb(result)
+            except Exception:
+                pass
+        return result
 
     def _execute_actions(self, plan: AgentPlan, tier: int) -> tuple[bool, List[str]]:
         outputs: List[str] = []
@@ -96,7 +141,6 @@ class AetherRouter:
         controls = uia_executor.inspect_window_controls(hwnd=hwnd, max_elements=30)
         blackboard.log(2, f"Found {len(controls)} interactive UIA controls on HWND {hwnd}")
 
-        # Check if the instruction or failed plan intended a UIA click or text entry
         if failed_plan and failed_plan.actions:
             for act in failed_plan.actions:
                 if act.tool in ("uia_click", "uia_type"):
@@ -121,7 +165,7 @@ class AetherRouter:
         t_start = time.perf_counter()
 
         # ─────────────────────────────────────────────────────────────────────
-        # TIER 0: Deterministic SQLite Hash Cache (<10 ms)
+        # TIER 0: Deterministic SQLite Hash + Parameterized Template Cache (<10 ms)
         # ─────────────────────────────────────────────────────────────────────
         t0_start = time.perf_counter()
         cached_plan = cache_store.get(instruction)
@@ -134,14 +178,17 @@ class AetherRouter:
                 blackboard.log(0, vlog)
             if exec_ok and ver_ok:
                 total_ms = (time.perf_counter() - t_start) * 1000.0
-                return RouteResult(
-                    success=True,
-                    active_tier=0,
-                    elapsed_ms=total_ms,
-                    plan=cached_plan,
-                    outputs=outputs,
-                    verification_logs=ver_logs,
-                    logs=blackboard.get_logs(),
+                return self._finalize(
+                    RouteResult(
+                        success=True,
+                        active_tier=0,
+                        elapsed_ms=total_ms,
+                        instruction=instruction,
+                        plan=cached_plan,
+                        outputs=outputs,
+                        verification_logs=ver_logs,
+                        logs=blackboard.get_logs(),
+                    )
                 )
             blackboard.log(0, "Cached plan replay verification failed; escalating to Tier 1", "WARN")
         else:
@@ -160,17 +207,21 @@ class AetherRouter:
                 blackboard.log(1, vlog)
 
             if exec_ok and ver_ok:
-                cache_store.put(instruction, plan_t1, origin_tier=1)
-                blackboard.log(1, "Tier 1 execution verified and stored in Tier 0 cache (`cache/aether.db`).")
+                if self._should_cache(plan_t1):
+                    cache_store.put(instruction, plan_t1, origin_tier=1)
+                    blackboard.log(1, "Tier 1 execution verified and stored in Tier 0 cache (`cache/aether.db`).")
                 total_ms = (time.perf_counter() - t_start) * 1000.0
-                return RouteResult(
-                    success=True,
-                    active_tier=1,
-                    elapsed_ms=total_ms,
-                    plan=plan_t1,
-                    outputs=outputs,
-                    verification_logs=ver_logs,
-                    logs=blackboard.get_logs(),
+                return self._finalize(
+                    RouteResult(
+                        success=True,
+                        active_tier=1,
+                        elapsed_ms=total_ms,
+                        instruction=instruction,
+                        plan=plan_t1,
+                        outputs=outputs,
+                        verification_logs=ver_logs,
+                        logs=blackboard.get_logs(),
+                    )
                 )
             blackboard.log(1, "Tier 1 verification did not pass; escalating to Tier 2 (Windows UIA)", "WARN")
         else:
@@ -186,16 +237,20 @@ class AetherRouter:
             for vlog in ver_logs:
                 blackboard.log(2, vlog)
             if exec_ok and ver_ok:
-                cache_store.put(instruction, plan_t2, origin_tier=2)
+                if self._should_cache(plan_t2):
+                    cache_store.put(instruction, plan_t2, origin_tier=2)
                 total_ms = (time.perf_counter() - t_start) * 1000.0
-                return RouteResult(
-                    success=True,
-                    active_tier=2,
-                    elapsed_ms=total_ms,
-                    plan=plan_t2,
-                    outputs=outputs,
-                    verification_logs=ver_logs,
-                    logs=blackboard.get_logs(),
+                return self._finalize(
+                    RouteResult(
+                        success=True,
+                        active_tier=2,
+                        elapsed_ms=total_ms,
+                        instruction=instruction,
+                        plan=plan_t2,
+                        outputs=outputs,
+                        verification_logs=ver_logs,
+                        logs=blackboard.get_logs(),
+                    )
                 )
 
         # ─────────────────────────────────────────────────────────────────────
@@ -211,27 +266,34 @@ class AetherRouter:
                 for vlog in ver_logs:
                     blackboard.log(3, vlog)
                 if exec_ok and ver_ok:
-                    cache_store.put(instruction, plan_t3, origin_tier=3)
+                    if self._should_cache(plan_t3):
+                        cache_store.put(instruction, plan_t3, origin_tier=3)
                     total_ms = (time.perf_counter() - t_start) * 1000.0
-                    return RouteResult(
-                        success=True,
-                        active_tier=3,
-                        elapsed_ms=total_ms,
-                        plan=plan_t3,
-                        outputs=outputs,
-                        verification_logs=ver_logs,
-                        logs=blackboard.get_logs(),
+                    return self._finalize(
+                        RouteResult(
+                            success=True,
+                            active_tier=3,
+                            elapsed_ms=total_ms,
+                            instruction=instruction,
+                            plan=plan_t3,
+                            outputs=outputs,
+                            verification_logs=ver_logs,
+                            logs=blackboard.get_logs(),
+                        )
                     )
         except Exception as exc:
             blackboard.log(3, f"Tier 3 Vision fallback error: {exc}", "ERROR")
 
         total_ms = (time.perf_counter() - t_start) * 1000.0
-        return RouteResult(
-            success=False,
-            active_tier=3,
-            elapsed_ms=total_ms,
-            plan=plan_t1,
-            outputs=[],
-            verification_logs=["All tiers exhausted without verified completion."],
-            logs=blackboard.get_logs(),
+        return self._finalize(
+            RouteResult(
+                success=False,
+                active_tier=3,
+                elapsed_ms=total_ms,
+                instruction=instruction,
+                plan=plan_t1,
+                outputs=[],
+                verification_logs=["All tiers exhausted without verified completion."],
+                logs=blackboard.get_logs(),
+            )
         )

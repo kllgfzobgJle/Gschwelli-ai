@@ -11,6 +11,7 @@ ENV/
 # AETHER runtime cache & generated notes
 cache/
 workspace/
+memory/long_term.json
 
 # Reference inspiration repositories (read-only local sources)
 Inspirations/

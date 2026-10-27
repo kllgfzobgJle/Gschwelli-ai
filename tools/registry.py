@@ -80,6 +80,11 @@ class ToolRegistry:
                         spec.loader.exec_module(module)
                 except Exception:
                     traceback.print_exc()
+        # Also import memory_manager so @action memory tools are registered
+        try:
+            import memory.memory_manager  # noqa: F401
+        except Exception:
+            pass
         self._discovered = True
 
     def has(self, name: str) -> bool:
@@ -100,6 +105,10 @@ class ToolRegistry:
             }
             for rec in _REGISTERED_TOOLS.values()
         ]
+
+    def list_tools(self) -> List[ToolRecord]:
+        self.discover()
+        return list(_REGISTERED_TOOLS.values())
 
     def execute(self, name: str, args: Optional[Dict[str, Any]] = None) -> str:
         self.discover()

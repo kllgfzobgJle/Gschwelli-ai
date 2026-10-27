@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AETHER // 4-Tier Hybrid Automation Control Center</title>
+  <style>
+    :root {
+      --bg-void: #060a10;
+      --bg-panel: #0b121c;
+      --bg-card: #101a28;
+      --border: #1b2a3e;
+      --border-hi: #00d4ff55;
+      --cyan: #00d4ff;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --magenta: #d946ef;
+      --red: #ef4444;
+      --text: #e2e8f0;
+      --muted: #7a8fa6;
+      --font-mono: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(circle at 15% 10%, #0d1d31 0%, var(--bg-void) 60%);
+      color: var(--text);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      background: rgba(11, 18, 28, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .reactor-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+    }
+
+    .brand h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #fff;
+    }
+
+    .brand span {
+      font-size: 12px;
+      color: var(--cyan);
+      font-family: var(--font-mono);
+      border: 1px solid var(--border-hi);
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(0, 212, 255, 0.08);
+    }
+
+    .telemetry-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .pill {
+      padding: 5px 11px;
+      border-radius: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn {
+      background: rgba(0, 212, 255, 0.12);
+      color: var(--cyan);
+      border: 1px solid var(--border-hi);
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn:hover { background: rgba(0, 212, 255, 0.24); }
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.12);
+      color: var(--red);
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+    .btn-success {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--green);
+      border-color: rgba(16, 185, 129, 0.45);
+    }
+
+    #confirm-banner {
+      display: none;
+      background: rgba(245, 158, 11, 0.14);
+      border-bottom: 1px solid var(--amber);
+      padding: 12px 24px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 18px;
+      padding: 20px 24px;
+      flex: 1;
+    }
+
+    .panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--cyan);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .command-box {
+      display: flex;
+      gap: 10px;
+    }
+
+    .command-box input {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-hi);
+      color: #fff;
+      padding: 11px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: var(--font-sans);
+      outline: none;
+    }
+
+    .command-box input:focus {
+      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.25);
+    }
+
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .tier-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      transition: all 0.2s ease;
+    }
+
+    .tier-card.active-t0 { border-color: var(--cyan); box-shadow: 0 0 14px rgba(0, 212, 255, 0.22); }
+    .tier-card.active-t1 { border-color: var(--green); box-shadow: 0 0 14px rgba(16, 185, 129, 0.22); }
+    .tier-card.active-t2 { border-color: var(--amber); box-shadow: 0 0 14px rgba(245, 158, 11, 0.22); }
+    .tier-card.active-t3 { border-color: var(--magenta); box-shadow: 0 0 14px rgba(217, 70, 239, 0.22); }
+
+    .tier-card h4 { font-size: 12px; font-family: var(--font-mono); margin-bottom: 4px; }
+    .tier-card p { font-size: 11px; color: var(--muted); }
+
+    .log-table-wrap {
+      max-height: 290px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #070c14;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    th, td {
+      padding: 7px 10px;
+      text-align: left;
+      border-bottom: 1px solid #111c2b;
+    }
+
+    th {
+      background: #0d1624;
+      color: var(--muted);
+      position: sticky;
+      top: 0;
+    }
+
+    .badge-t0 { color: var(--cyan); font-weight: 700; }
+    .badge-t1 { color: var(--green); font-weight: 700; }
+    .badge-t2 { color: var(--amber); font-weight: 700; }
+    .badge-t3 { color: var(--magenta); font-weight: 700; }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid transparent;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: var(--font-mono);
+    }
+
+    .tab-btn.active {
+      color: var(--cyan);
+      border-color: var(--border-hi);
+      background: rgba(0, 212, 255, 0.1);
+    }
+
+    .list-scroll {
+      max-height: 360px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .item-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .item-card code {
+      color: var(--cyan);
+      font-family: var(--font-mono);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="reactor-dot"></div>
+      <h1>AETHER</h1>
+      <span>4-TIER HYBRID ROUTER</span>
+    </div>
+    <div class="telemetry-bar">
+      <div class="pill" id="sys-cpu">CPU: --%</div>
+      <div class="pill" id="sys-ram">RAM: --%</div>
+      <div class="pill" id="sys-hotkey">PTT: Ctrl+Space (global)</div>
+      <button class="btn" id="btn-tts" onclick="toggleTTS()">TTS: OFF</button>
+      <button class="btn" id="btn-undo" onclick="triggerUndo()">UNDO LAST</button>
+    </div>
+  </header>
+
+  <div id="confirm-banner">
+    <div>
+      <strong style="color: var(--amber);">CONFIRMATION GATE:</strong>
+      <span id="confirm-text">High-impact operation waiting for approval.</span>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button class="btn btn-success" onclick="resolveConfirm(true)">APPROVE</button>
+      <button class="btn btn-danger" onclick="resolveConfirm(false)">CANCEL</button>
+    </div>
+  </div>
+
+  <main>
+    <!-- Left Column: Live Router Console & Execution Waterfall -->
+    <div style="display:flex; flex-direction:column; gap:18px;">
+      <section class="panel">
+        <div class="panel-title">
+          <span>4-Tier Waterfall Command Console</span>
+          <span id="last-latency" style="font-family:var(--font-mono); color:var(--green);">Ready</span>
+        </div>
+
+        <div class="command-box">
+          <input id="cmd-input" type="text" placeholder="Enter instruction (e.g. Starte Notepad und schreibe 'Hallo AETHER' in ein neues Dokument)..." onkeydown="if(event.key==='Enter') sendCommand()" />
+          <button class="btn" onclick="sendCommand()">EXECUTE</button>
+        </div>
+
+        <div class="tiers-grid">
+          <div class="tier-card" id="card-t0">
+            <h4 class="badge-t0">TIER 0 // CACHE</h4>
+            <p>SQLite Exact + Slot Templates (&lt;10 ms)</p>
+          </div>
+          <div class="tier-card" id="card-t1">
+            <h4 class="badge-t1">TIER 1 // OLLAMA</h4>
+            <p>qwen2.5-coder:7b Fast-Path (&lt;1.5 s)</p>
+          </div>
+          <div class="tier-card" id="card-t2">
+            <h4 class="badge-t2">TIER 2 // WIN32 UIA</h4>
+            <p>Structural Accessibility (0.1 - 0.5 s)</p>
+          </div>
+          <div class="tier-card" id="card-t3">
+            <h4 class="badge-t3">TIER 3 // VISION</h4>
+            <p>Gemini 3.8 Flash SoM (3 - 8 s)</p>
+          </div>
+        </div>
+
+        <div class="log-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:80px;">Time (ms)</th>
+                <th style="width:60px;">Tier</th>
+                <th style="width:70px;">Level</th>
+                <th>Execution Trace</th>
+              </tr>
+            </thead>
+            <tbody id="trace-body">
+              <tr><td colspan="4" style="color:var(--muted);">Waiting for instruction...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title">
+          <span>Recent Route History</span>
+          <span id="history-count" style="font-family:var(--font-mono); font-size:11px; color:var(--muted);">0 runs</span>
+        </div>
+        <div class="list-scroll" id="history-list" style="max-height:210px;"></div>
+      </section>
+    </div>
+
+    <!-- Right Column: Cache Inspector, Tool Explorer, Memory & Undo Stack -->
+    <div class="panel">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('cache', this)">TIER 0 CACHE</button>
+        <button class="tab-btn" onclick="switchTab('tools', this)">TOOLS (<span id="tools-count">0</span>)</button>
+        <button class="tab-btn" onclick="switchTab('memory', this)">MEMORY</button>
+        <button class="tab-btn" onclick="switchTab('undo', this)">UNDO STACK</button>
+      </div>
+
+      <!-- Tab: Cache -->
+      <div id="tab-cache" class="list-scroll"></div>
+
+      <!-- Tab: Tools -->
+      <div id="tab-tools" class="list-scroll" style="display:none;"></div>
+
+      <!-- Tab: Memory -->
+      <div id="tab-memory" style="display:none; flex-direction:column; gap:10px;">
+        <div class="command-box">
+          <input id="mem-key" placeholder="Key (e.g. project_dir)" style="flex:0.8;" />
+          <input id="mem-val" placeholder="Value..." />
+          <button class="btn" onclick="saveMemory()">SAVE</button>
+        </div>
+        <div id="memory-list" class="list-scroll"></div>
+      </div>
+
+      <!-- Tab: Undo Stack -->
+      <div id="tab-undo" class="list-scroll" style="display:none;"></div>
+    </div>
+  </main>
+
+  <script>
+    let currentState = {};
+
+    function switchTab(tab, btn) {
+      ['cache', 'tools', 'memory', 'undo'].forEach(id => {
+        document.getElementById('tab-' + id).style.display = (id === tab) ? (id === 'memory' ? 'flex' : 'flex') : 'none';
+      });
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function highlightTier(tier, ms, ok) {
+      [0, 1, 2, 3].forEach(t => {
+        const el = document.getElementById('card-t' + t);
+        el.className = 'tier-card' + (t === tier ? ' active-t' + t : '');
+      });
+      const badge = document.getElementById('last-latency');
+      badge.textContent = `${ok ? 'SUCCESS' : 'FAILED'} // TIER ${tier} // ${ms} ms`;
+      badge.style.color = ok ? 'var(--green)' : 'var(--red)';
+    }
+
+    function renderTrace(res) {
+      highlightTier(res.active_tier, res.elapsed_ms, res.success);
+      const tbody = document.getElementById('trace-body');
+      tbody.innerHTML = '';
+      (res.logs || []).forEach(l => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${l.timestamp_ms.toFixed(1)}</td>
+          <td class="badge-t${l.tier}">T${l.tier}</td>
+          <td>${l.level}</td>
+          <td>${l.message}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function sendCommand(customText) {
+      const input = document.getElementById('cmd-input');
+      const instruction = (customText || input.value || '').trim();
+      if (!instruction) return;
+      if (!customText) input.value = '';
+      document.getElementById('last-latency').textContent = 'Routing...';
+      const resp = await fetch('/api/route', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ instruction })
+      });
+      const data = await resp.json();
+      renderTrace(data);
+      await refreshState();
+    }
+
+    async function triggerUndo() {
+      await fetch('/api/undo', { method: 'POST' });
+      await refreshState();
+    }
+
+    async function toggleTTS() {
+      const next = !(currentState.voice && currentState.voice.tts_enabled);
+      await fetch('/api/voice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tts_enabled: next })
+      });
+      await refreshState();
+    }
+
+    async function resolveConfirm(approve) {
+      await fetch('/api/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ approve })
+      });
+      await refreshState();
+    }
+
+    async function saveMemory() {
+      const key = document.getElementById('mem-key').value.trim();
+      const value = document.getElementById('mem-val').value.trim();
+      if (!key || !value) return;
+      document.getElementById('mem-key').value = '';
+      document.getElementById('mem-val').value = '';
+      await fetch('/api/memory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key, value, category: 'notes' })
+      });
+      await refreshState();
+    }
+
+    async function deleteMemory(key, category) {
+      await fetch(`/api/memory/${encodeURIComponent(key)}?category=${encodeURIComponent(category)}`, { method: 'DELETE' });
+      await refreshState();
+    }
+
+    async function refreshState() {
+      const resp = await fetch('/api/state');
+      const st = await resp.json();
+      currentState = st;
+
+      document.getElementById('sys-cpu').textContent = `CPU: ${st.system.cpu_percent}%`;
+      document.getElementById('sys-ram').textContent = `RAM: ${st.system.ram_percent}% (${st.system.ram_used_gb}/${st.system.ram_total_gb} GB)`;
+      if (st.voice) {
+        document.getElementById('sys-hotkey').textContent = `PTT: ${st.voice.hotkey} (${st.voice.hotkey_scope})`;
+        document.getElementById('btn-tts').textContent = `TTS: ${st.voice.tts_enabled ? 'ON' : 'OFF'}`;
+      }
+
+      const banner = document.getElementById('confirm-banner');
+      if (st.pending_confirmation) {
+        banner.style.display = 'flex';
+        document.getElementById('confirm-text').textContent = `${st.pending_confirmation.action}: ${st.pending_confirmation.detail}`;
+      } else {
+        banner.style.display = 'none';
+      }
+
+      // History
+      const histEl = document.getElementById('history-list');
+      document.getElementById('history-count').textContent = `${(st.history || []).length} runs`;
+      histEl.innerHTML = (st.history || []).map(h => `
+        <div class="item-card">
+          <div>
+            <span class="badge-t${h.active_tier}">[T${h.active_tier} // ${h.elapsed_ms} ms]</span>
+            <strong style="margin-left:6px;">${h.instruction}</strong>
+          </div>
+          <button class="btn" onclick="sendCommand(${JSON.stringify(h.instruction).replace(/"/g, '&quot;')})">REPLAY</button>
+        </div>
+      `).join('') || '<div style="color:var(--muted); font-size:12px;">No commands executed in this session yet.</div>';
+
+      // Cache
+      const cacheEl = document.getElementById('tab-cache');
+      const tmplHtml = (st.cache.templates || []).map(t => `
+        <div class="item-card">
+          <div>
+            <code>TEMPLATE (${t.slots} slot)</code>
+            <div style="margin-top:3px;">${t.pattern_example}</div>
+          </div>
+          <span class="badge-t0">Hits: ${t.hits}</span>
+        </div>
+      `).join('');
+      const exactHtml = (st.cache.exact || []).map(e => `
+        <div class="item-card">
+          <div>
+            <code>EXACT [${e.hash}]</code>
+            <div style="margin-top:3px;">${e.instruction}</div>
+          </div>
+          <span class="badge-t0">Hits: ${e.hits}</span>
+        </div>
+      `).join('');
+      cacheEl.innerHTML = tmplHtml + exactHtml || '<div style="color:var(--muted);">Cache is empty.</div>';
+
+      // Tools
+      document.getElementById('tools-count').textContent = (st.tools || []).length;
+      const toolsEl = document.getElementById('tab-tools');
+      toolsEl.innerHTML = (st.tools || []).map(t => `
+        <div class="item-card">
+          <div>
+            <code>${t.name}</code>
+            <div style="color:var(--muted); margin-top:3px;">${t.description}</div>
+          </div>
+        </div>
+      `).join('');
+
+      // Memory
+      const memEl = document.getElementById('memory-list');
+      memEl.innerHTML = (st.memory || []).map(m => `
+        <div class="item-card">
+          <div>
+            <code>[${m.category}] ${m.key}</code>
+            <div style="margin-top:3px;">${m.value}</div>
+          </div>
+          <button class="btn btn-danger" onclick="deleteMemory('${m.key}', '${m.category}')">DEL</button>
+        </div>
+      `).join('') || '<div style="color:var(--muted);">No persistent memories saved yet.</div>';
+
+      // Undo
+      const undoEl = document.getElementById('tab-undo');
+      undoEl.innerHTML = (st.undo.history || []).map(u => `
+        <div class="item-card">
+          <div>
+            <code>${u.category}</code>
+            <div style="margin-top:3px;">${u.label}</div>
+          </div>
+          <span style="color:var(--muted); font-family:var(--font-mono);">${u.timestamp}</span>
+        </div>
+      `).join('') || '<div style="color:var(--muted);">Undo stack is currently empty.</div>';
+    }
+
+    function connectWS() {
+      const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const ws = new WebSocket(`${proto}//${location.host}/ws`);
+      ws.onmessage = (ev) => {
+        try {
+          const msg = JSON.parse(ev.data);
+          if (msg.type === 'route_result') {
+            renderTrace(msg.data);
+            refreshState();
+          }
+        } catch (e) {}
+      };
+      ws.onclose = () => setTimeout(connectWS, 2000);
+    }
+
+    refreshState();
+    connectWS();
+    setInterval(refreshState, 5000);
+  </script>
+</body>
+</html>

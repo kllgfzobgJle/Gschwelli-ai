@@ -1,29 +1,47 @@
-# AETHER — Tiered Hybrid Automation Router
+# AETHER — 4-Tier Hybrid Windows 11 Desktop Automation Router
 
-Lightweight, zero-latency, local-first Windows 11 desktop automation router built around a **4-Tier Waterfall Architecture**:
+AETHER is a lightweight, zero-latency, local-first Windows 11 desktop automation system. It routes every incoming instruction through a strict 4-Tier Waterfall and features a Dual-Mode GUI (Floating Overlay + Web Control Center), Parameterized Tier 0 Template Caching, Persistent Memory, Reversible Undo Stack, Confirmation Gates, and Global Hotkey/Voice Control.
 
-1. **Tier 0 — Deterministic SQLite Cache (`<10 ms`)**:
-   - Instant SHA-256 instruction lookup via `cache/aether.db` (`engines/cache_store.py`).
-2. **Tier 1 — Local Fast-Path Executor (`<1.5 s`)**:
-   - Local planning via Ollama (`qwen2.5-coder:7b` at `http://localhost:11434/api/chat`), executing direct OS/file/app actions or persistent UTF-8 PowerShell REPL commands (`executors/ps_repl.py`). No screenshots in Tier 1.
-3. **Tier 2 — Structural Windows UIA / Accessibility (`0.1s - 0.5s`)**:
-   - Direct Windows UI Automation tree inspection and control invocation (`executors/win32_uia.py`) with terminal self-protection (`core/safety.py`).
-4. **Tier 3 — Selective Cloud Vision Fallback (`3s - 8s`)**:
-   - Active target window bounding-box capture (`mss` + `win32gui.GetWindowRect`), Pillow Set-of-Marks (`[1]`, `[2]`, ...) overlay (`executors/vision_som.py`), and `gemini-3.8-flash` (`v1beta`) planning with `thought` / `thought_signature` stripping (`engines/gemini_engine.py`).
+## Architecture (4-Tier Waterfall)
 
-## Clean Window Lifecycle for Notepad
-`tools/app_lifecycle.py` supports two safe ways to open Notepad and write text without overwriting pre-existing tabs:
-- **Atomic Document Launch**: Atomically writes a clean UTF-8 file via `tools/file_ops.py` and launches `notepad.exe <path>` on the interactive desktop (`Winsta0\Default`).
-- **In-App New Tab (`Ctrl+N`)**: Focuses or launches Notepad on `Winsta0\Default`, triggers `Ctrl+N` to open a fresh tab, and pastes/types the text.
+1. **TIER 0 (Deterministic SQLite & Parameterized Template Cache, `<10 ms`):**
+   - Checks `cache/aether.db` (`verified_plans` for exact SHA-256 matches and `plan_templates` for parameterized `{slot_0}` matches).
+   - Replays verified execution plans immediately without invoking any LLM.
+2. **TIER 1 (Local Fast-Path Executor, `<1.5 s`):**
+   - Queries local Ollama (`qwen2.5-coder:7b` at `http://localhost:11434/api/chat`).
+   - Executes actions via native Python tools or persistent PowerShell REPL (`executors/ps_repl.py`). No screenshots allowed in Tier 1.
+3. **TIER 2 (Structural Windows UIA / Accessibility, `0.1s - 0.5s`):**
+   - Queries the active window's UI Automation tree (`executors/win32_uia.py`) and performs direct handle actions.
+   - Blocks terminal/console self-clicks (`core/safety.py`).
+4. **TIER 3 (Selective Cloud Vision Fallback, `3s - 8s`):**
+   - Captures only the active target window bounding box (`executors/vision_som.py`), draws Set-of-Marks (`[1]`, `[2]`, ...) tags, compresses to JPEG, and queries `gemini-3.8-flash` (`v1beta`), stripping `thought` and `thought_signature` parts before JSON validation.
+
+## Capabilities & Phases
+
+- **Phase 1 — Core Action Library, Parameterized Cache, Memory & Gates:**
+  - **22 Registered `@action` Tools** across `tools/app_lifecycle.py`, `tools/file_ops.py`, `tools/system_settings.py`, `tools/browser_ops.py`, `tools/productivity.py`, `tools/dev_tools.py`, and `memory/memory_manager.py`.
+  - **Reversible Undo Stack (`core/undo.py`):**Snapshots overwritten files, newly created files, moves/renames, and system settings so `undo` reverses the last operation.
+  - **Human Confirmation Gate (`core/confirm.py`):** Non-forgeable gate for destructive/power actions.
+- **Phase 2 — Dual-Mode GUI:**
+  - **Mode A (`ui/overlay.py`):** Frameless PyQt6 Floating Command Bar + System Tray icon summoned globally via `Ctrl+Space`.
+  - **Mode B (`server/api.py` + `ui/dashboard/index.html`):** Full Dark-Glass Web/Desktop Control Center with live WebSocket telemetry, Cache Inspector, Tool Explorer, Memory Manager, and Undo Stack viewer.
+- **Phase 3 — Hybrid Voice & Global Hotkey Daemon:**
+  - **Global Push-to-Talk (`core/hotkey.py`):** 30 Hz Win32 `GetAsyncKeyState` listener for `Ctrl+Space`.
+  - **Self-Calibrating Echo Cancellation (`core/echo.py`):** Band-energy subtraction (`EchoGuard`).
+  - **Local STT & TTS (`core/stt.py`, `core/tts.py`, `engines/voice_engine.py`):** Lazy-loaded `faster-whisper` + non-blocking TTS feedback.
 
 ## Usage
+
 ```powershell
-# Direct execution mode
+# Direct CLI execution
 python main.py -r "Starte den Windows Editor (Notepad) und schreibe den Text 'AETHER Setup erfolgreich' in ein neues Dokument."
 
-# Open a new tab inside Notepad via Ctrl+N and write text
-python main.py -r "Open notepad and write 'Hello from a new tab' in a new tab"
+# Launch Dual-Mode GUI (Floating Overlay + System Tray + Control Center Server)
+python main.py --gui
 
-# Interactive REPL mode
+# Launch Dual-Mode GUI and open the Full Web Control Center Dashboard (http://127.0.0.1:8765)
+python main.py --dashboard
+
+# Interactive Terminal REPL
 python main.py
 ```

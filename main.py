@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import ctypes
 import sys
+import time
+import webbrowser
 
 from rich.console import Console
 from rich.panel import Panel
@@ -78,6 +80,27 @@ def main() -> int:
         type=str,
         help="Execute a single automation instruction directly and exit.",
     )
+    parser.add_argument(
+        "--gui",
+        action="store_true",
+        help="Launch Mode A Floating Command Bar Overlay + System Tray + Background Dashboard Server.",
+    )
+    parser.add_argument(
+        "--dashboard",
+        action="store_true",
+        help="Launch Dual-Mode GUI and open the Full Web/Desktop Control Center Dashboard in browser.",
+    )
+    parser.add_argument(
+        "--server",
+        action="store_true",
+        help="Run the FastAPI + WebSocket Control Center server and Global Hotkey Daemon.",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8765,
+        help="Port for the AETHER Control Center server (default: 8765).",
+    )
     args = parser.parse_args()
 
     router = AetherRouter()
@@ -87,13 +110,49 @@ def main() -> int:
         render_result(console, args.request, res)
         return 0 if res.success else 1
 
+    if args.gui or args.dashboard:
+        from ui.overlay import run_dual_mode_gui
+
+        return run_dual_mode_gui(
+            router=router,
+            port=args.port,
+            open_dashboard_on_start=bool(args.dashboard),
+        )
+
+    if args.server:
+        from engines.voice_engine import VoiceDaemon
+        from server.api import start_background_server
+
+        vd = VoiceDaemon(router=router)
+        vd.start()
+        start_background_server(router=router, voice_daemon=vd, port=args.port, open_browser=False)
+        console.print(
+            Panel(
+                f"[bold cyan]AETHER Server & Global Hotkey Daemon Active[/bold cyan]\n"
+                f"Dashboard URL: [underline]http://127.0.0.1:{args.port}[/underline]\n"
+                f"Push-to-Talk Hotkey: [bold]Ctrl+Space[/bold] ({vd.ptt.scope})\n"
+                f"Press Ctrl+C to stop.",
+                border_style="cyan",
+            )
+        )
+        try:
+            while True:
+                time.sleep(0.5)
+        except KeyboardInterrupt:
+            vd.stop()
+            return 0
+
     console.print(
         Panel(
             "[bold cyan]AETHER[/bold cyan] Interactive Mode (4-Tier Waterfall Router)\n"
-            "Type an instruction and press Enter, or [bold]exit[/bold] / [bold]quit[/bold] to leave.",
+            "Type an instruction and press Enter, or use:\n"
+            "  • [bold]dashboard[/bold] — start & open the Web Control Center (`http://127.0.0.1:8765`)\n"
+            "  • [bold]undo[/bold]      — reverse the most recent reversible action\n"
+            "  • [bold]exit[/bold]      — quit AETHER",
             border_style="cyan",
         )
     )
+    server_started = False
     while True:
         try:
             user_input = console.input("[bold bright_cyan]AETHER > [/bold bright_cyan]").strip()
@@ -104,6 +163,20 @@ def main() -> int:
             continue
         if user_input.lower() in {"exit", "quit", "q"}:
             break
+        if user_input.lower() == "dashboard":
+            if not server_started:
+                from engines.voice_engine import VoiceDaemon
+                from server.api import start_background_server
+
+                vd = VoiceDaemon(router=router)
+                vd.start()
+                start_background_server(router=router, voice_daemon=vd, port=args.port, open_browser=True)
+                server_started = True
+            else:
+                webbrowser.open(f"http://127.0.0.1:{args.port}")
+            console.print(f"[green]Opened Control Center at http://127.0.0.1:{args.port}[/green]")
+            continue
+
         res = router.route(user_input)
         render_result(console, user_input, res)
 
