@@ -1,0 +1,22 @@
+# Python bytecode & caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+
+# AETHER runtime cache & generated notes
+cache/
+workspace/
+
+# Reference inspiration repositories (read-only local sources)
+Inspirations/
+inspirations/
+
+# Secrets & local configs
+config/api_keys.json
+.env
+*.log

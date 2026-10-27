@@ -1,0 +1,42 @@
+# AETHER Configuration (Tiered Hybrid Automation Router)
+
+app:
+  name: "AETHER"
+  version: "1.0.0"
+  workspace_dir: "."
+  notes_dir: "workspace/notes"
+
+tier0_cache:
+  enabled: true
+  db_path: "cache/aether.db"
+  ttl_seconds: 604800  # 7 days
+
+tier1_ollama:
+  enabled: true
+  base_url: "http://localhost:11434"
+  chat_endpoint: "/api/chat"
+  model: "qwen2.5-coder:7b"
+  timeout_seconds: 12.0
+  temperature: 0.0
+  max_tokens: 1024
+
+tier2_uia:
+  enabled: true
+  backend: "uia"
+  timeout_seconds: 0.5
+
+tier3_vision:
+  enabled: true
+  model: "gemini-3.8-flash"
+  api_version: "v1beta"
+  max_output_tokens: 8192
+  temperature: 0.0
+  timeout_seconds: 25.0
+  max_retries: 1
+  jpeg_max_width: 1280
+  jpeg_quality: 85
+
+safety:
+  allow_destructive_ps: false
+  protect_own_process: true
+  block_terminal_ocr_clicks: true
