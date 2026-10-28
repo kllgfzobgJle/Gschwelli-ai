@@ -430,6 +430,224 @@
       background: var(--cyan-dim);
       color: var(--cyan-accent);
     }
+    .btn-new-workspace {
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      color: var(--cyan-accent);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-new-workspace:hover {
+      background: var(--cyan-accent);
+      color: #0A0D12;
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+    }
+    .workspace-dropdown-divider {
+      height: 1px;
+      background: #1E293B;
+      margin: 4px 0;
+    }
+    .btn-dropdown-new-ws {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      color: #F1F5F9;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.12s ease;
+    }
+    .btn-dropdown-new-ws:hover {
+      background: rgba(6, 182, 212, 0.1);
+      color: #06B6D4;
+    }
+    .ws-menu-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .ws-menu-item-name {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #F1F5F9;
+    }
+    .ws-menu-item-dir {
+      font-size: 9.5px;
+      font-family: var(--font-mono);
+      color: #64748B;
+    }
+
+    /* Workspace Modal Backdrop & Card */
+    .workspace-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(10, 13, 18, 0.82);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 1100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .workspace-modal-card {
+      width: 480px;
+      max-width: 92vw;
+      background: #121824;
+      border: 1px solid #1E293B;
+      border-radius: 8px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 16px rgba(6, 182, 212, 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: wsModalIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes wsModalIn {
+      from { opacity: 0; transform: scale(0.96) translateY(-8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .workspace-modal-header {
+      padding: 13px 18px;
+      background: #0E1522;
+      border-bottom: 1px solid #1E293B;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .workspace-modal-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .workspace-modal-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #F1F5F9;
+      letter-spacing: 0.3px;
+    }
+    .workspace-modal-close-btn {
+      background: transparent;
+      border: none;
+      color: #64748B;
+      font-size: 20px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+    .workspace-modal-close-btn:hover {
+      color: #F1F5F9;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .workspace-modal-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .ws-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .ws-form-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #94A3B8;
+      letter-spacing: 0.2px;
+    }
+    .ws-required {
+      color: #EF4444;
+    }
+    .ws-form-input, .ws-form-textarea, .ws-form-select {
+      background: #0A0D12;
+      border: 1px solid #1E293B;
+      border-radius: 5px;
+      color: #F1F5F9;
+      font-family: inherit;
+      font-size: 12px;
+      padding: 8px 10px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .ws-form-input:focus, .ws-form-textarea:focus, .ws-form-select:focus {
+      border-color: #06B6D4;
+      box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
+    }
+    .ws-form-textarea {
+      resize: vertical;
+      min-height: 64px;
+      line-height: 1.4;
+    }
+    .ws-form-hint {
+      font-size: 10.5px;
+      color: #64748B;
+    }
+    .ws-modal-error {
+      padding: 8px 12px;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      border-radius: 4px;
+      color: #EF4444;
+      font-size: 11px;
+    }
+    .workspace-modal-footer {
+      padding: 12px 18px;
+      background: #0A0D12;
+      border-top: 1px solid #1E293B;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .btn-ws-secondary {
+      background: transparent;
+      border: 1px solid #1E293B;
+      color: #94A3B8;
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-ws-secondary:hover {
+      color: #F1F5F9;
+      border-color: #334155;
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .btn-ws-primary {
+      background: #06B6D4;
+      border: 1px solid #06B6D4;
+      color: #0A0D12;
+      padding: 6px 18px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .btn-ws-primary:hover {
+      background: #0891B2;
+      border-color: #0891B2;
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+    }
 
     /* B. Tasks & To-Dos Panel */
     .task-list {
@@ -510,6 +728,31 @@
       letter-spacing: 0.3px;
       font-family: var(--font-mono);
     }
+    .task-pipeline-section {
+      display: flex;
+      flex-direction: column;
+    }
+    .task-progress-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 4px 0 10px 0;
+    }
+    .task-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--cyan-accent);
+      border-radius: 2px;
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, box-shadow 0.3s ease;
+    }
+    .task-counter-suffix {
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 400;
+      margin-left: 2px;
+    }
     .badge-agent {
       background: rgba(148, 163, 184, 0.12);
       color: var(--text-secondary);
@@ -535,13 +778,154 @@
       color: var(--text-muted);
       border: 1px solid rgba(100, 116, 139, 0.2);
     }
+    /* 5 Status Badges */
+    .badge-backlog {
+      background: rgba(100, 116, 139, 0.15);
+      color: #94A3B8;
+      border: 1px solid rgba(100, 116, 139, 0.3);
+      cursor: pointer;
+    }
+    .badge-in-progress {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--cyan-accent);
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      cursor: pointer;
+    }
+    .badge-agent-delegated {
+      background: rgba(168, 85, 247, 0.15);
+      color: #C084FC;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      cursor: pointer;
+      animation: pulse-delegated 2s infinite ease-in-out;
+    }
+    @keyframes pulse-delegated {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    .badge-blocked {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--amber-warning);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      cursor: pointer;
+    }
+    .badge-done {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--emerald-success);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      cursor: pointer;
+    }
+    /* Priority Badges */
+    .badge-priority {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+    }
+    .badge-priority-p1 {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--red-panic);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+    .badge-priority-p2 {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--amber-warning);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+    .badge-priority-p3 {
+      background: rgba(100, 116, 139, 0.15);
+      color: var(--text-muted);
+      border: 1px solid rgba(100, 116, 139, 0.3);
+    }
+    /* Delegation Button */
+    .task-delegate-btn {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      color: var(--text-muted);
+      font-size: 11px;
+      padding: 2px 5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: all 0.15s ease;
+    }
+    .task-delegate-btn:hover {
+      border-color: var(--cyan-accent);
+      color: var(--cyan-accent);
+      background: var(--cyan-dim);
+    }
+    .task-delegate-btn.active {
+      background: rgba(168, 85, 247, 0.18);
+      border-color: rgba(168, 85, 247, 0.5);
+      color: #C084FC;
+      box-shadow: 0 0 6px rgba(168, 85, 247, 0.3);
+    }
+    /* Inline Creator Input */
+    .task-inline-creator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 4px 8px;
+      transition: border-color 0.15s ease;
+    }
+    .task-inline-creator:focus-within {
+      border-color: var(--cyan-accent);
+      box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.25);
+    }
+    .task-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 11.5px;
+      padding: 3px 0;
+    }
+    .task-input::placeholder {
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+    .btn-add-task-inline {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      cursor: pointer;
+      padding: 0 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s ease;
+    }
+    .btn-add-task-inline:hover {
+      color: var(--cyan-accent);
+    }
+    .input-error-shake {
+      animation: shake 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+      border-color: var(--red-panic) !important;
+    }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
+      40%, 60% { transform: translate3d(3px, 0, 0); }
+    }
     .btn-add-task {
       background: transparent;
       border: 1px dashed var(--border-subtle);
       border-radius: 6px;
       color: var(--text-muted);
-      font-size: 11px;
-      padding: 6px;
+      font-size: 10.5px;
+      padding: 5px;
       text-align: center;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -549,6 +933,7 @@
       align-items: center;
       justify-content: center;
       gap: 5px;
+      margin-top: 6px;
     }
     .btn-add-task:hover {
       border-color: var(--cyan-accent);
@@ -561,6 +946,48 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
+    }
+    .file-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow-x: auto;
+      padding: 2px 0 6px 0;
+      scrollbar-width: none;
+    }
+    .file-filter-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .file-filter-tab {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .file-filter-tab:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      border-color: var(--border-bright);
+    }
+    .file-filter-tab.active {
+      background: var(--cyan-dim);
+      border-color: var(--cyan-accent);
+      color: var(--cyan-accent);
+      font-weight: 600;
+      box-shadow: 0 0 6px rgba(6, 182, 212, 0.25);
+    }
+    .file-tree-empty {
+      padding: 8px 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-style: italic;
     }
     .kb-folder-header {
       display: flex;
@@ -2238,85 +2665,112 @@
 
           <!-- Section 1: Project / Local Workspace Card -->
           <div class="sidebar-section">
-            <div class="workspace-card" id="workspace-switcher-card">
+            <div class="section-header-row" style="margin-bottom: 6px;">
               <span class="workspace-tag">PROJECT / LOCAL WORKSPACE</span>
+              <button class="btn-new-workspace" id="btn-new-workspace" title="Neuer Workspace">+ Neuer Workspace</button>
+            </div>
+            <div class="workspace-card project-card" id="workspace-switcher-card" data-testid="active-workspace-card">
               <div class="workspace-title-row">
-                <span class="workspace-title" id="active-project-title">Active: 3D Fabrication & Automation</span>
+                <span class="workspace-title" id="active-project-title">Active: General Workspace</span>
                 <span class="dropdown-chevron">▼</span>
               </div>
               <div class="workspace-meta-row">
                 <span class="branch-icon">⎇</span>
-                <span id="active-project-branch">main / 6 files indexed</span>
+                <span id="active-project-branch">main / <span id="files-indexed-count">6</span> files indexed</span>
               </div>
               <!-- Interactive Project Switcher Dropdown -->
               <div class="workspace-dropdown-menu" id="workspace-dropdown">
-                <div class="workspace-menu-item active" data-project="3D Fabrication & Automation">
-                  <span>3D Fabrication & Automation</span>
+                <div class="workspace-menu-item active" data-project="General Workspace" data-workspace-id="ws-default">
+                  <div class="ws-menu-item-info">
+                    <span class="ws-menu-item-name">General Workspace</span>
+                    <span class="ws-menu-item-dir">workspace/default</span>
+                  </div>
                   <span style="color:var(--cyan-accent);">✓</span>
                 </div>
-                <div class="workspace-menu-item" data-project="Robotic Pick & Place">
-                  <span>Robotic Pick & Place</span>
+                <div class="workspace-menu-item" data-project="Robotic Pick & Place" data-workspace-id="ws-robotic">
+                  <div class="ws-menu-item-info">
+                    <span class="ws-menu-item-name">Robotic Pick & Place</span>
+                    <span class="ws-menu-item-dir">workspace/robotic</span>
+                  </div>
                 </div>
-                <div class="workspace-menu-item" data-project="Drone Vision Inspection">
-                  <span>Drone Vision Inspection</span>
+                <div class="workspace-menu-item" data-project="Drone Vision Inspection" data-workspace-id="ws-drone">
+                  <div class="ws-menu-item-info">
+                    <span class="ws-menu-item-name">Drone Vision Inspection</span>
+                    <span class="ws-menu-item-dir">workspace/drone</span>
+                  </div>
                 </div>
+                <div class="workspace-dropdown-divider"></div>
+                <button class="btn-dropdown-new-ws" id="btn-new-workspace-dropdown">
+                  <span style="color:var(--cyan-accent);">+</span> Neuer Workspace
+                </button>
               </div>
             </div>
           </div>
 
           <!-- Section 2: Tasks & To-Dos Panel -->
-          <div class="sidebar-section">
+          <div class="sidebar-section task-pipeline-section">
             <div class="section-header-row">
-              <span class="section-title">TASKS & TO-DOS</span>
-              <span class="section-counter" id="task-counter">2 / 4</span>
+              <span class="section-title">TASKS &amp; PIPELINE</span>
+              <span class="section-counter" id="task-counter-container">
+                <span id="task-counter">1 / 4</span> <span class="task-counter-suffix">erledigt</span>
+              </span>
             </div>
+            <!-- Reactive Visual Progress Bar -->
+            <div class="task-progress-container" title="Fortschrittsanzeige">
+              <div class="task-progress-bar" id="task-progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+            </div>
+            <!-- Dynamic Task List -->
             <div class="task-list" id="task-list-container">
-              <!-- Rendered reactively from AppState -->
+              <!-- Rendered reactively from AppState.tasks -->
             </div>
-            <button class="btn-add-task" id="btn-add-task">
-              <span>+</span> Add task
+            <!-- Inline Task Creator -->
+            <div class="task-inline-creator">
+              <input type="text" 
+                     id="input-new-task" 
+                     class="task-input" 
+                     placeholder="+ Neue Aufgabe hinzufügen... (Enter)" 
+                     autocomplete="off" 
+                     spellcheck="false" 
+                     aria-label="Neue Aufgabe hinzufügen" />
+              <button class="btn-add-task-inline" id="btn-add-task-inline" title="Aufgabe hinzufügen">+</button>
+            </div>
+            <!-- Modal Dialog Fallback Button (Retained for test compatibility) -->
+            <button class="btn-add-task" id="btn-add-task" title="Neue Aufgabe per Dialog">
+              <span>+</span> Dialog-Eingabe
             </button>
           </div>
 
-          <!-- Section 3: Knowledge Base File Tree -->
-          <div class="sidebar-section kb-tree-card">
+          <!-- Section 3: Knowledge & Artifacts File Explorer -->
+          <div class="sidebar-section kb-tree-card" id="file-tree-card">
             <div class="section-header-row">
-              <span class="section-title">KNOWLEDGE BASE</span>
+              <span class="section-title">KNOWLEDGE &amp; ARTIFACTS</span>
               <button class="nav-icon-btn" id="btn-add-kb" style="width:20px;height:20px;font-size:12px;" title="Add File">+</button>
             </div>
-            <div class="kb-folder-header" id="kb-folder-toggle">
+
+            <!-- Category Filter Pills -->
+            <div class="file-filter-bar" id="file-filter-pills">
+              <button class="file-filter-tab active" data-file-filter="all">All</button>
+              <button class="file-filter-tab" data-file-filter="code">Code</button>
+              <button class="file-filter-tab" data-file-filter="docs">Docs</button>
+              <button class="file-filter-tab" data-file-filter="tables">Tables</button>
+              <button class="file-filter-tab" data-file-filter="media">Media</button>
+              <button class="file-filter-tab" data-file-filter="configs">Configs</button>
+            </div>
+
+            <!-- Folder Header with Dynamic Path -->
+            <div class="kb-folder-header" id="kb-folder-toggle" title="Click to collapse/expand">
               <span id="kb-chevron">▾</span>
-              <span>📁 fabrication/</span>
+              <span id="kb-folder-name">📁 workspace/default/</span>
             </div>
-            <div class="kb-file-list" id="kb-file-list">
-              <div class="kb-file-item" data-file="workflow.md">
-                <span class="kb-file-icon">📄</span>
-                <span>workflow.md</span>
-              </div>
-              <div class="kb-file-item" data-file="agent_kinematics.py">
-                <span class="kb-file-icon">🐍</span>
-                <span>agent_kinematics.py</span>
-              </div>
-              <div class="kb-file-item selected" data-file="toolhead_mount.scad">
-                <span class="kb-file-icon">⚙️</span>
-                <span>toolhead_mount.scad</span>
-              </div>
-              <div class="kb-file-item" data-file="mount_assembly.step">
-                <span class="kb-file-icon">📦</span>
-                <span>mount_assembly.step</span>
-              </div>
-              <div class="kb-file-item" data-file="pipeline_config.yaml">
-                <span class="kb-file-icon">📄</span>
-                <span>pipeline_config.yaml</span>
-              </div>
-              <div class="kb-file-item" data-file="safety_protocol.md">
-                <span class="kb-file-icon">🛡️</span>
-                <span>safety_protocol.md</span>
-              </div>
+
+            <!-- Dynamic File Tree List -->
+            <div class="kb-file-list file-tree file-list" id="kb-file-list">
+              <!-- Dynamically populated via FileExplorer.render() -->
             </div>
+
             <div class="kb-sync-footer">
               <span class="kb-sync-dot"></span>
-              <span id="kb-sync-text">Synced 12s ago • 48 chunks</span>
+              <span id="kb-sync-text">Synced just now • Local &amp; Remote</span>
             </div>
           </div>
 
@@ -2831,7 +3285,7 @@
                 <span>📚 Knowledge Studio // RAG &amp; Workspace Indexer</span>
                 <span class="badge badge-complete" id="ks-index-status-badge">INDEXED • 48 CHUNKS</span>
               </h2>
-              <p style="color:var(--text-secondary);font-size:11.5px;margin-top:2px;">Inspect indexed fabrication files, edit source code, preview vector chunks, and run semantic retrieval queries.</p>
+              <p style="color:var(--text-secondary);font-size:11.5px;margin-top:2px;">Inspect indexed workspace files, edit source code, preview artifacts, and run semantic retrieval queries.</p>
             </div>
             <div style="display:flex;align-items:center;gap:8px;">
               <input id="ks-search-input" type="text" placeholder="Filter files or chunks..." style="background:#070d16;border:1px solid var(--border-subtle);color:var(--text-primary);padding:5px 10px;border-radius:6px;font-size:11.5px;font-family:var(--font-mono);width:200px;" />
@@ -2847,12 +3301,12 @@
                 <span class="badge badge-agent" id="ks-file-count-badge">6 FILES</span>
               </div>
               <div id="ks-file-list" style="display:flex;flex-direction:column;gap:4px;margin-top:6px;">
-                <div class="kb-file-item ks-file-entry selected" data-ks-file="toolhead_mount.scad"><span>⚙️</span><span>toolhead_mount.scad</span><span class="badge badge-agent" style="margin-left:auto;">14 chunks</span></div>
-                <div class="kb-file-item ks-file-entry" data-ks-file="workflow.md"><span>📄</span><span>workflow.md</span><span class="badge badge-agent" style="margin-left:auto;">6 chunks</span></div>
-                <div class="kb-file-item ks-file-entry" data-ks-file="agent_kinematics.py"><span>🐍</span><span>agent_kinematics.py</span><span class="badge badge-agent" style="margin-left:auto;">11 chunks</span></div>
-                <div class="kb-file-item ks-file-entry" data-ks-file="mount_assembly.step"><span>📦</span><span>mount_assembly.step</span><span class="badge badge-agent" style="margin-left:auto;">9 chunks</span></div>
-                <div class="kb-file-item ks-file-entry" data-ks-file="pipeline_config.yaml"><span>⚙️</span><span>pipeline_config.yaml</span><span class="badge badge-agent" style="margin-left:auto;">4 chunks</span></div>
-                <div class="kb-file-item ks-file-entry" data-ks-file="safety_protocol.md"><span>🛡️</span><span>safety_protocol.md</span><span class="badge badge-agent" style="margin-left:auto;">4 chunks</span></div>
+                <div class="kb-file-item ks-file-entry file-tree-item selected" data-ks-file="README.md" data-file="README.md"><span>📄</span><span>README.md</span><span class="badge badge-agent" style="margin-left:auto;">1.4KB</span></div>
+                <div class="kb-file-item ks-file-entry file-tree-item" data-ks-file="agent_runner.py" data-file="agent_runner.py"><span>🐍</span><span>agent_runner.py</span><span class="badge badge-agent" style="margin-left:auto;">3.8KB</span></div>
+                <div class="kb-file-item ks-file-entry file-tree-item" data-ks-file="pipeline_config.json" data-file="pipeline_config.json"><span>⚙️</span><span>pipeline_config.json</span><span class="badge badge-agent" style="margin-left:auto;">0.9KB</span></div>
+                <div class="kb-file-item ks-file-entry file-tree-item" data-ks-file="metrics_report.csv" data-file="metrics_report.csv"><span>📊</span><span>metrics_report.csv</span><span class="badge badge-agent" style="margin-left:auto;">2.2KB</span></div>
+                <div class="kb-file-item ks-file-entry file-tree-item" data-ks-file="system_diagram.svg" data-file="system_diagram.svg"><span>🖼️</span><span>system_diagram.svg</span><span class="badge badge-agent" style="margin-left:auto;">5.1KB</span></div>
+                <div class="kb-file-item ks-file-entry file-tree-item" data-ks-file="environment.yaml" data-file="environment.yaml"><span>⚙️</span><span>environment.yaml</span><span class="badge badge-agent" style="margin-left:auto;">0.5KB</span></div>
               </div>
               <div style="margin-top:auto;padding-top:10px;border-top:1px solid var(--border-subtle);font-family:var(--font-mono);font-size:10.5px;color:var(--text-muted);display:flex;flex-direction:column;gap:4px;">
                 <div>Embedding: <span style="color:var(--text-primary);">nomic-embed-text-v1.5</span></div>
@@ -2864,37 +3318,20 @@
             <!-- Center: Interactive Source Editor / Previewer -->
             <div class="placeholder-card" style="display:flex;flex-direction:column;min-height:0;overflow:hidden;">
               <div style="display:flex;align-items:center;justify-content:space-between;">
-                <span class="section-title" id="ks-active-file-header">ACTIVE FILE VIEWER // toolhead_mount.scad</span>
+                <span class="section-title" id="ks-active-file-header">ACTIVE FILE VIEWER // README.md</span>
                 <div style="display:flex;align-items:center;gap:6px;">
                   <span class="badge badge-complete" id="ks-editor-saved-badge">SYNCHRONIZED</span>
                   <button class="toolbar-btn" id="btn-ks-save" style="padding:3px 9px;font-size:10.5px;">💾 Save &amp; Re-chunk</button>
                 </div>
               </div>
-              <textarea id="ks-editor-textarea" spellcheck="false" style="width:100%;flex:1;background:#070d16;color:#e2e8f0;border:1px solid var(--border-subtle);border-radius:6px;padding:12px;font-family:var(--font-mono);font-size:11.5px;line-height:1.55;resize:none;outline:none;">// Toolhead Mount v3 — High Precision CNC/3D Bracket
-// Material: Carbon-Reinforced PA12 • Tolerance: ±0.05mm
-$fn = 64;
+              <textarea id="ks-editor-textarea" spellcheck="false" style="width:100%;flex:1;background:#070d16;color:#e2e8f0;border:1px solid var(--border-subtle);border-radius:6px;padding:12px;font-family:var(--font-mono);font-size:11.5px;line-height:1.55;resize:none;outline:none;"># Universal Agent Workspace
 
-module mount_v3() {
-    difference() {
-        union() {
-            // Base plate: 80.00 mm x 50.00 mm x 6.00 mm
-            translate([0, 0, 3])
-                cube([80, 50, 6], center=true);
-            // Upright mount wall: 24.00 mm height
-            translate([-36, 0, 12])
-                cube([8, 50, 24], center=true);
-        }
-        // Bolt holes x 5 (M4 countersunk clearance)
-        for (x = [-25, 0, 25]) {
-            translate([x, -14, -1]) cylinder(h=10, d=4.2);
-        }
-        for (y = [-14, 14]) {
-            translate([-41, y, 16]) rotate([0, 90, 0]) cylinder(h=12, d=4.2);
-        }
-    }
-}
+Domain-agnostic Operating Canvas for autonomous multimodal agents.
 
-mount_v3();</textarea>
+## Capabilities
+- Multi-viewport perception and tool routing
+- Reversible undo rollback stack
+- Live blackboard and memory state visualization</textarea>
             </div>
 
             <!-- Right: Chunk Embeddings & Semantic Retrieval Tester -->
@@ -3248,56 +3685,183 @@ mount_v3();</textarea>
       </div>
     </div>
 
+    <!-- ====================================================================
+         NEW WORKSPACE CREATION MODAL
+         ==================================================================== -->
+    <div class="workspace-modal-backdrop" id="workspace-modal-backdrop" style="display: none;">
+      <div class="workspace-modal-card modal-card workspace-modal" id="workspace-modal">
+        <div class="workspace-modal-header">
+          <div class="workspace-modal-title-group">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            <span class="workspace-modal-title">Neuer Workspace / New Workspace</span>
+          </div>
+          <button class="workspace-modal-close-btn" id="btn-close-ws-modal" title="Schließen (Esc)">&times;</button>
+        </div>
+        <form id="form-new-workspace" class="workspace-modal-form" onsubmit="return false;">
+          <div class="workspace-modal-body">
+            <div class="ws-form-group">
+              <label class="ws-form-label" for="ws-name-input">
+                Workspace Name <span class="ws-required">*</span>
+              </label>
+              <input
+                type="text"
+                id="ws-name-input"
+                name="name"
+                class="ws-form-input"
+                placeholder="z. B. Data Analysis &amp; Processing"
+                required
+                autocomplete="off"
+              />
+              <span class="ws-form-hint">Eindeutiger Name des autonomen Arbeitsbereichs</span>
+            </div>
+            <div class="ws-form-group">
+              <label class="ws-form-label" for="ws-prompt-input">
+                System-Prompt / Mission des Agenten
+              </label>
+              <textarea
+                id="ws-prompt-input"
+                name="prompt"
+                class="ws-form-textarea"
+                rows="3"
+                placeholder="z. B. Du bist ein autonomer Agent für Datenanalyse und API-Synthese..."
+              ></textarea>
+              <span class="ws-form-hint">Definiert Ziel, Rollenverhalten und Kontext des Agenten</span>
+            </div>
+            <div class="ws-form-group">
+              <label class="ws-form-label" for="ws-dir-input">
+                Lokales Arbeitsverzeichnis
+              </label>
+              <input
+                type="text"
+                id="ws-dir-input"
+                name="working_dir"
+                class="ws-form-input ws-dir-input"
+                placeholder="workspace/data_analysis (optional)"
+                autocomplete="off"
+              />
+              <span class="ws-form-hint">Relativer Pfad im Projekt (Standard: workspace/&lt;slug&gt;)</span>
+            </div>
+            <div class="ws-form-group">
+              <label class="ws-form-label" for="ws-model-select">
+                Agenten-Modell / AI Provider
+              </label>
+              <select id="ws-model-select" name="model" class="ws-form-select">
+                <option value="ollama-7b" selected>Ollama 7B (Lokal, Standard)</option>
+                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+                <option value="claude-3.7-sonnet">Claude 3.7 Sonnet</option>
+              </select>
+              <span class="ws-form-hint">Standardmodell für Aufgaben und Inferenz in diesem Workspace</span>
+            </div>
+            <div id="ws-modal-error" class="ws-modal-error" style="display: none;"></div>
+          </div>
+          <div class="workspace-modal-footer">
+            <button type="button" class="btn-ws-secondary" id="btn-cancel-ws">Abbrechen</button>
+            <button type="submit" class="btn-ws-primary" id="btn-create-ws">
+              <span>+</span> Erstellen
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
   </div>
 
   <!-- ==========================================================================
        8. JAVASCRIPT: REACTIVE APPSTATE & INTERACTIVITY (Milestone 2 Specification)
        ========================================================================== -->
   <script>
+    /* ==========================================================================
+       Universal Task & Workspace Definitions (Milestone 2 Specification)
+       ========================================================================== */
+    const TASK_STATUS_FLOW = ['backlog', 'in_progress', 'agent_delegated', 'blocked', 'done'];
+    const TASK_PRIORITY_FLOW = ['P1', 'P2', 'P3'];
+
+    const TASK_STATUS_METADATA = {
+      backlog: { label: 'BACKLOG', class: 'badge-backlog', desc: 'In Warteschlange' },
+      in_progress: { label: 'IN PROGRESS', class: 'badge-in-progress', desc: 'In Bearbeitung' },
+      agent_delegated: { label: 'DELEGATED', class: 'badge-agent-delegated', desc: 'An Agent delegiert' },
+      blocked: { label: 'BLOCKED', class: 'badge-blocked', desc: 'Blockiert' },
+      done: { label: 'DONE', class: 'badge-done', desc: 'Erledigt' }
+    };
+
     /* Global Reactive AppState Store */
     const AppState = {
       activeTab: 'mission_control',
+      activeWorkspaceId: 'ws-default',
+      workspaces: [
+        {
+          id: 'ws-default',
+          name: 'General Workspace',
+          prompt: 'Universal Autonomous Agent Operating Canvas',
+          working_dir: 'workspace/default',
+          model: 'ollama-7b',
+          is_active: true
+        },
+        {
+          id: 'ws-robotic',
+          name: 'Robotic Pick & Place',
+          prompt: 'Robotic manipulation and vision guidance',
+          working_dir: 'workspace/robotic',
+          model: 'ollama-7b',
+          is_active: false
+        },
+        {
+          id: 'ws-drone',
+          name: 'Drone Vision Inspection',
+          prompt: 'Aerial autonomous inspection pipeline',
+          working_dir: 'workspace/drone',
+          model: 'ollama-7b',
+          is_active: false
+        }
+      ],
       project: {
         name: '3D Fabrication & Automation',
         branch: 'main',
         indexedFiles: 6,
-        activeFile: 'toolhead_mount.scad',
+        activeFile: 'README.md',
         lastSync: '12s ago',
-        totalChunks: 48
+        totalChunks: 48,
+        working_dir: 'workspace/default'
       },
       mission: {
         id: 'M-024',
-        name: 'Export toolhead_mount.stl',
+        name: 'General Workspace Mission',
         status: 'PAUSED • APPROVAL', // 'PAUSED • APPROVAL' | 'COMPLETED' | 'ABORTED' | 'EMERGENCY HALT'
         confidence: '99.2%',
         targetsMapped: 12,
         fusionMode: 'UIA + VISION FUSION',
-        exportPath: 'C:\\Fabrication\\toolhead_mount.stl'
+        exportPath: 'C:\\Fabrication\\toolhead_mount.stl',
+        prompt: 'Universal Autonomous Agent Operating Canvas'
       },
       approvalGate: {
         active: true,
         title: 'HUMAN-IN-THE-LOOP APPROVAL NEEDED',
-        detail: 'Overwrite toolhead_mount.stl • backup saved • SEC-810',
+        detail: 'Action requires human confirmation gate • SEC-810',
         rule: 'SEC-810'
       },
       tasks: [
-        { id: 't1', title: 'Validate mount geometry', completed: true, badge: 'Complete', badgeType: 'complete' },
-        { id: 't2', title: 'Resolve export destination', completed: true, badge: 'Complete', badgeType: 'complete' },
-        { id: 't3', title: 'Export toolhead mount', completed: false, badge: 'Approval needed', badgeType: 'approval' },
-        { id: 't4', title: 'Run fabrication pipeline', completed: false, badge: 'Queued', badgeType: 'queued' }
+        { id: 't1', title: 'Repository-Architektur & Module analysieren', status: 'done', priority: 'P1', delegated: false, completed: true, badge: 'Complete', badgeType: 'complete', meta: {} },
+        { id: 't2', title: 'Backend-Telemetrie & State-Synchronisation', status: 'in_progress', priority: 'P1', delegated: true, completed: false, badge: 'Agent', badgeType: 'in_progress', meta: {} },
+        { id: 't3', title: 'Cross-Platform End-to-End Test Suite ausführen', status: 'backlog', priority: 'P2', delegated: false, completed: false, badge: 'Queued', badgeType: 'queued', meta: {} },
+        { id: 't4', title: 'Offline Zero-Dependency Bundle verifizieren', status: 'blocked', priority: 'P3', delegated: false, completed: false, badge: 'Blocked', badgeType: 'blocked', meta: {} }
       ],
       blackboard: {
         agentId: 'AGENT-01',
         activeStep: 'execute',
         pipeline: [
-          { id: 'plan', label: '[Plan]', status: 'COMPLETE', icon: '✓', desc: 'Prepare fabrication export', detail: 'Load toolhead_mount.scad → binary STL' },
-          { id: 'uia_detect', label: '[UIA Detect]', status: 'COMPLETE', icon: '✓', desc: 'Resolve application targets', detail: '12 nodes matched • Export → [04]' },
-          { id: 'verify', label: '[Verify]', status: 'COMPLETE', icon: '✓', desc: 'Validate path & geometry', detail: 'Manifold ✓ • overwrite requires approval' },
-          { id: 'execute', label: '[Execute]', status: 'BLOCKED', icon: '⚠', desc: 'Commit export to disk', detail: 'Waiting at human approval gate' }
+          { id: 'plan', label: '[Plan]', status: 'COMPLETE', icon: '✓', desc: 'Prepare execution plan', detail: 'Initialize sandbox environment' },
+          { id: 'uia_detect', label: '[UIA Detect]', status: 'COMPLETE', icon: '✓', desc: 'Resolve application targets', detail: '12 nodes matched • Active target [04]' },
+          { id: 'verify', label: '[Verify]', status: 'COMPLETE', icon: '✓', desc: 'Validate execution path', detail: 'Verification clean • ready for human gate' },
+          { id: 'execute', label: '[Execute]', status: 'BLOCKED', icon: '⚠', desc: 'Commit action to target', detail: 'Waiting at human approval gate' }
         ],
         execStatus: 'BLOCKED',
         sharedState: {
-          target_dir: 'C:\\Fabrication',
+          target_dir: 'workspace/default',
           exit_code: 0,
           checkpoint: '#018'
         }
@@ -3313,7 +3877,160 @@ mount_v3();</textarea>
         tokPerSec: 42,
         vram: '4.2GB'
       },
-      backendConnected: false
+      backendConnected: false,
+
+      // Workspace Methods
+      createWorkspace(name, prompt = '', workingDir = '', model = 'ollama-7b') {
+        const cleanName = (name || '').trim();
+        if (!cleanName) {
+          throw new Error('Workspace name cannot be empty');
+        }
+        const wsId = 'ws-' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6);
+        const slug = cleanName.toLowerCase().replace(/[^a-z0-9_-]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '') || 'workspace';
+        const finalDir = (workingDir || '').trim() || `workspace/${slug}`;
+        const finalPrompt = (prompt || '').trim() || 'Universal Autonomous Agent Operating Canvas';
+
+        const newWs = {
+          id: wsId,
+          name: cleanName,
+          prompt: finalPrompt,
+          working_dir: finalDir,
+          model: model || 'ollama-7b',
+          is_active: false
+        };
+
+        this.workspaces.push(newWs);
+        this.saveWorkspaces();
+        this.switchWorkspace(wsId);
+
+        // Asynchronous backend synchronization
+        fetch('/api/workspaces', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: newWs.name,
+            prompt: newWs.prompt,
+            working_dir: newWs.working_dir
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.workspace && data.workspace.id) {
+            newWs.id = data.workspace.id;
+            if (this.activeWorkspaceId === wsId) {
+              this.activeWorkspaceId = data.workspace.id;
+            }
+            this.saveWorkspaces();
+            renderWorkspaces();
+          }
+        })
+        .catch(err => {
+          console.warn('[AppState] Backend offline, workspace stored in localStorage:', err);
+        });
+
+        return newWs;
+      },
+
+      switchWorkspace(id) {
+        const target = this.workspaces.find(w => w.id === id || w.name === id);
+        if (!target) {
+          console.warn(`[AppState] Workspace ${id} not found`);
+          return false;
+        }
+
+        this.activeWorkspaceId = target.id;
+        this.workspaces.forEach(w => {
+          w.is_active = (w.id === target.id);
+        });
+
+        if (this.project) {
+          this.project.name = target.name;
+          this.project.working_dir = target.working_dir;
+        }
+        if (this.mission) {
+          this.mission.name = target.name;
+          this.mission.prompt = target.prompt;
+        }
+
+        this.saveWorkspaces();
+        renderWorkspaces();
+        renderTasks();
+
+        if (typeof FileExplorer !== 'undefined' && FileExplorer.loadFiles) {
+          FileExplorer.loadFiles(target.working_dir);
+        }
+
+        // Notify backend asynchronously
+        fetch('/api/workspaces/activate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: target.id })
+        }).catch(() => {});
+
+        if (typeof appendReplLog === 'function') {
+          appendReplLog(null, `[WORKSPACE] Switched to "${target.name}" (${target.working_dir})`, 'info');
+        }
+
+        return true;
+      },
+
+      saveWorkspaces() {
+        try {
+          localStorage.setItem('gschwelli_workspaces', JSON.stringify(this.workspaces));
+          localStorage.setItem('gschwelli_active_workspace', this.activeWorkspaceId);
+          localStorage.setItem('gschwelli_active_workspace_id', this.activeWorkspaceId);
+        } catch (e) {}
+      },
+
+      async loadWorkspaces() {
+        try {
+          const cached = localStorage.getItem('gschwelli_workspaces');
+          const activeId = localStorage.getItem('gschwelli_active_workspace_id') || localStorage.getItem('gschwelli_active_workspace');
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              this.workspaces = parsed;
+              if (activeId && parsed.some(w => w.id === activeId)) {
+                this.activeWorkspaceId = activeId;
+              } else {
+                this.activeWorkspaceId = parsed[0].id;
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('[AppState] Failed to parse cached workspaces:', e);
+        }
+
+        renderWorkspaces();
+
+        // Asynchronous backend hydration
+        try {
+          const resp = await fetch('/api/workspaces');
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data.workspaces && data.workspaces.length > 0) {
+              const backendWs = data.workspaces;
+              if (!backendWs.some(w => w.name && w.name.includes('Robotic'))) {
+                backendWs.push({
+                  id: 'ws-robotic',
+                  name: 'Robotic Pick & Place',
+                  prompt: 'Robotic manipulation and vision guidance',
+                  working_dir: 'workspace/robotic',
+                  is_active: false
+                });
+              }
+              this.workspaces = backendWs;
+              if (data.active_workspace_id) {
+                this.activeWorkspaceId = data.active_workspace_id;
+              }
+              this.saveWorkspaces();
+              renderWorkspaces();
+            }
+          }
+        } catch (e) {
+          // offline mode
+        }
+      }
     };
 
     /* --------------------------------------------------------------------------
@@ -3329,56 +4046,718 @@ mount_v3();</textarea>
       }[m]));
     }
 
+    function renderWorkspaces() {
+      const activeWs = AppState.workspaces.find(w => w.id === AppState.activeWorkspaceId) || AppState.workspaces[0];
+      if (!activeWs) return;
+
+      const titleEl = document.getElementById('active-project-title');
+      if (titleEl) {
+        titleEl.textContent = `Active: ${activeWs.name}`;
+      }
+
+      const branchEl = document.getElementById('active-project-branch');
+      if (branchEl) {
+        const count = (typeof FileExplorer !== 'undefined' && FileExplorer.files) ? FileExplorer.files.length : 6;
+        branchEl.innerHTML = `main / <span id="files-indexed-count">${count}</span> files indexed`;
+      }
+
+      const folderNameEl = document.getElementById('kb-folder-name');
+      if (folderNameEl) {
+        folderNameEl.textContent = `📁 ${activeWs.working_dir || activeWs.name}/`;
+      }
+
+      const dropdown = document.getElementById('workspace-dropdown');
+      if (dropdown) {
+        let itemsHtml = AppState.workspaces.map(ws => {
+          const isActive = ws.id === AppState.activeWorkspaceId;
+          const safeName = escapeHtml(ws.name);
+          const safeDir = escapeHtml(ws.working_dir || '');
+          return `
+            <div class="workspace-menu-item ${isActive ? 'active' : ''}" 
+                 data-project="${safeName}" 
+                 data-workspace-id="${ws.id}">
+              <div class="ws-menu-item-info">
+                <span class="ws-menu-item-name">${safeName}</span>
+                <span class="ws-menu-item-dir">${safeDir}</span>
+              </div>
+              ${isActive ? '<span style="color:var(--cyan-accent);">✓</span>' : ''}
+            </div>
+          `;
+        }).join('');
+
+        itemsHtml += `
+          <div class="workspace-dropdown-divider"></div>
+          <button class="btn-dropdown-new-ws" id="btn-new-workspace-dropdown">
+            <span style="color:var(--cyan-accent);">+</span> Neuer Workspace
+          </button>
+        `;
+
+        dropdown.innerHTML = itemsHtml;
+
+        dropdown.querySelectorAll('.workspace-menu-item').forEach(item => {
+          item.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const wsId = item.getAttribute('data-workspace-id');
+            const projName = item.getAttribute('data-project');
+            if (wsId) {
+              AppState.switchWorkspace(wsId);
+            } else if (projName) {
+              const matched = AppState.workspaces.find(w => w.name === projName);
+              if (matched) AppState.switchWorkspace(matched.id);
+            }
+            dropdown.classList.remove('open');
+          });
+        });
+
+        const btnDropdownNew = document.getElementById('btn-new-workspace-dropdown');
+        if (btnDropdownNew) {
+          btnDropdownNew.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.remove('open');
+            openWorkspaceModal();
+          });
+        }
+      }
+    }
+
+    function openWorkspaceModal() {
+      const modalBackdrop = document.getElementById('workspace-modal-backdrop');
+      if (!modalBackdrop) return;
+      modalBackdrop.style.display = 'flex';
+      const nameInput = document.getElementById('ws-name-input');
+      if (nameInput) {
+        nameInput.value = '';
+        nameInput.focus();
+      }
+      const promptInput = document.getElementById('ws-prompt-input');
+      if (promptInput) promptInput.value = '';
+      const dirInput = document.getElementById('ws-dir-input');
+      if (dirInput) dirInput.value = '';
+      const errEl = document.getElementById('ws-modal-error');
+      if (errEl) errEl.style.display = 'none';
+    }
+
+    function closeWorkspaceModal() {
+      const modalBackdrop = document.getElementById('workspace-modal-backdrop');
+      if (modalBackdrop) modalBackdrop.style.display = 'none';
+    }
+
+    function initWorkspaceModal() {
+      const btnNewWs = document.getElementById('btn-new-workspace');
+      if (btnNewWs) {
+        btnNewWs.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openWorkspaceModal();
+        });
+      }
+
+      const btnClose = document.getElementById('btn-close-ws-modal');
+      if (btnClose) {
+        btnClose.addEventListener('click', () => closeWorkspaceModal());
+      }
+
+      const btnCancel = document.getElementById('btn-cancel-ws');
+      if (btnCancel) {
+        btnCancel.addEventListener('click', () => closeWorkspaceModal());
+      }
+
+      const modalBackdrop = document.getElementById('workspace-modal-backdrop');
+      if (modalBackdrop) {
+        modalBackdrop.addEventListener('click', (e) => {
+          if (e.target === modalBackdrop) {
+            closeWorkspaceModal();
+          }
+        });
+      }
+
+      const form = document.getElementById('form-new-workspace');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const nameInput = document.getElementById('ws-name-input');
+          const promptInput = document.getElementById('ws-prompt-input');
+          const dirInput = document.getElementById('ws-dir-input');
+          const modelSelect = document.getElementById('ws-model-select');
+          const errEl = document.getElementById('ws-modal-error');
+
+          const name = nameInput ? nameInput.value.trim() : '';
+          if (!name) {
+            if (errEl) {
+              errEl.textContent = 'Bitte einen Workspace-Namen angeben.';
+              errEl.style.display = 'block';
+            }
+            return;
+          }
+
+          const prompt = promptInput ? promptInput.value.trim() : '';
+          const workingDir = dirInput ? dirInput.value.trim() : '';
+          const model = modelSelect ? modelSelect.value : 'ollama-7b';
+
+          try {
+            AppState.createWorkspace(name, prompt, workingDir, model);
+            closeWorkspaceModal();
+          } catch (err) {
+            if (errEl) {
+              errEl.textContent = err.message || 'Fehler beim Erstellen des Workspace.';
+              errEl.style.display = 'block';
+            }
+          }
+        });
+      }
+
+      const modal = document.getElementById('workspace-modal');
+      if (modal) {
+        modal.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            closeWorkspaceModal();
+            e.stopPropagation();
+          } else {
+            e.stopPropagation();
+          }
+        });
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       Reactive Task Pipeline
+       -------------------------------------------------------------------------- */
+    function saveTasks() {
+      try {
+        localStorage.setItem('gschwelli_tasks', JSON.stringify(AppState.tasks));
+      } catch (err) {}
+    }
+
+    function loadTasksFromStorage() {
+      try {
+        const raw = localStorage.getItem('gschwelli_tasks');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            AppState.tasks = parsed;
+          }
+        }
+      } catch (e) {}
+    }
+
     function renderTasks() {
       const container = document.getElementById('task-list-container');
       if (!container) return;
 
-      const completedCount = AppState.tasks.filter(t => t.completed).length;
-      const totalCount = AppState.tasks.length;
+      const total = AppState.tasks.length;
+      const doneCount = AppState.tasks.filter(t => t.status === 'done' || t.completed === true).length;
+
+      // 1. Text counter (format strictly "done / total" for split testing)
       const counterEl = document.getElementById('task-counter');
       if (counterEl) {
-        counterEl.textContent = `${completedCount} / ${totalCount}`;
+        counterEl.textContent = `${doneCount} / ${total}`;
       }
 
-      container.innerHTML = AppState.tasks.map(task => {
-        let badgeClass = 'badge-queued';
-        if (task.badgeType === 'complete') badgeClass = 'badge-complete';
-        if (task.badgeType === 'approval') badgeClass = 'badge-approval';
+      // 2. Visual progress bar
+      const progressBar = document.getElementById('task-progress-bar');
+      if (progressBar) {
+        const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+        progressBar.style.width = `${pct}%`;
+        progressBar.setAttribute('aria-valuenow', pct);
+        
+        if (pct === 100) {
+          progressBar.style.background = 'var(--emerald-success)';
+          progressBar.style.boxShadow = '0 0 8px rgba(16, 185, 129, 0.4)';
+        } else if (pct >= 50) {
+          progressBar.style.background = 'linear-gradient(90deg, var(--cyan-accent) 0%, var(--emerald-success) 100%)';
+          progressBar.style.boxShadow = '0 0 6px rgba(6, 182, 212, 0.3)';
+        } else if (pct > 0) {
+          progressBar.style.background = 'var(--cyan-accent)';
+          progressBar.style.boxShadow = 'none';
+        } else {
+          progressBar.style.background = 'var(--border-subtle)';
+          progressBar.style.boxShadow = 'none';
+        }
+      }
 
-        const checkboxClass = task.completed ? 'checked' : (task.badgeType === 'approval' ? 'amber-border' : '');
+      // 3. Task list items
+      container.innerHTML = AppState.tasks.map(task => {
+        const isDone = task.status === 'done' || task.completed === true;
+        const statusKey = task.status || (isDone ? 'done' : 'backlog');
+        const statusCfg = TASK_STATUS_METADATA[statusKey] || TASK_STATUS_METADATA.backlog;
+        const priority = task.priority || 'P2';
+        const isDelegated = Boolean(task.delegated || statusKey === 'agent_delegated');
+        
+        const checkboxClass = isDone ? 'checked' : (statusKey === 'blocked' ? 'amber-border' : '');
+        const safeTitle = escapeHtml(task.title || 'Aufgabe');
 
         return `
-          <div class="task-item" data-task-id="${task.id}">
+          <div class="task-item" data-task-id="${task.id}" data-task-status="${statusKey}">
             <div class="task-left">
-              <div class="custom-checkbox ${checkboxClass}" onclick="toggleTask('${task.id}')">
+              <div class="custom-checkbox task-checkbox ${checkboxClass}" 
+                   onclick="toggleTask('${task.id}', event)" 
+                   role="checkbox" 
+                   aria-checked="${isDone}" 
+                   title="Status umschalten (Erledigt / Backlog)">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </div>
-              <span class="task-text ${task.completed ? 'completed' : ''}">${escapeHtml(task.title)}</span>
+              <span class="task-text ${isDone ? 'completed' : ''}" title="${safeTitle}">${safeTitle}</span>
             </div>
             <div class="task-badges">
-              <span class="badge badge-agent">Agent</span>
-              <span class="badge ${badgeClass}">${escapeHtml(task.badge)}</span>
+              <span class="badge badge-priority badge-priority-${priority.toLowerCase()}" 
+                    title="Priorität ${priority} (Klicken zum Wechseln)" 
+                    onclick="cycleTaskPriority('${task.id}', event)">
+                ${priority}
+              </span>
+              <span class="badge task-status-badge task-status ${statusCfg.class}" 
+                    data-task-status="${statusKey}" 
+                    title="Status: ${statusCfg.desc} (Klicken für nächsten Status)" 
+                    onclick="cycleTaskStatus('${task.id}', event)">
+                ${statusCfg.label}
+              </span>
+              <button class="btn-delegate task-delegate-btn ${isDelegated ? 'active' : ''}" 
+                      data-action="delegate" 
+                      title="${isDelegated ? 'Von Agent zurückholen' : 'An Agent delegieren (⚡)'}" 
+                      onclick="toggleTaskDelegation('${task.id}', event)">
+                ${isDelegated ? '🤖' : '⚡'}
+              </button>
             </div>
           </div>
         `;
       }).join('');
     }
 
-    function toggleTask(taskId) {
+    function toggleTask(taskId, e) {
+      if (e) e.stopPropagation();
       const task = AppState.tasks.find(t => t.id === taskId);
       if (!task) return;
-      task.completed = !task.completed;
-      if (task.completed) {
+
+      const wasDone = task.status === 'done' || task.completed === true;
+      if (wasDone) {
+        task.status = 'backlog';
+        task.completed = false;
+        task.badge = 'Queued';
+        task.badgeType = 'queued';
+      } else {
+        task.status = 'done';
+        task.completed = true;
+        task.delegated = false;
         task.badge = 'Complete';
         task.badgeType = 'complete';
+      }
+      saveTasks();
+      renderTasks();
+      syncTaskToBackend(task, 'PATCH');
+    }
+
+    function cycleTaskStatus(taskId, e) {
+      if (e) e.stopPropagation();
+      const task = AppState.tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      const currIdx = TASK_STATUS_FLOW.indexOf(task.status);
+      const nextIdx = (currIdx + 1) % TASK_STATUS_FLOW.length;
+      task.status = TASK_STATUS_FLOW[nextIdx];
+      task.completed = (task.status === 'done');
+
+      if (task.status === 'agent_delegated') {
+        task.delegated = true;
+        task.badge = 'Delegated';
+        task.badgeType = 'agent';
+      } else if (task.status === 'done') {
+        task.delegated = false;
+        task.badge = 'Complete';
+        task.badgeType = 'complete';
+      } else if (task.status === 'blocked') {
+        task.badge = 'Blocked';
+        task.badgeType = 'approval';
       } else {
         task.badge = 'Queued';
         task.badgeType = 'queued';
       }
+
+      saveTasks();
       renderTasks();
+      syncTaskToBackend(task, 'PATCH');
     }
+
+    function cycleTaskPriority(taskId, e) {
+      if (e) e.stopPropagation();
+      const task = AppState.tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      const currIdx = TASK_PRIORITY_FLOW.indexOf(task.priority);
+      const nextIdx = (currIdx + 1) % TASK_PRIORITY_FLOW.length;
+      task.priority = TASK_PRIORITY_FLOW[nextIdx];
+
+      saveTasks();
+      renderTasks();
+      syncTaskToBackend(task, 'PATCH');
+    }
+
+    function toggleTaskDelegation(taskId, e) {
+      if (e) e.stopPropagation();
+      const task = AppState.tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      task.delegated = !task.delegated;
+      if (task.delegated) {
+        task.status = 'agent_delegated';
+        task.completed = false;
+        task.badge = 'Delegated';
+        task.badgeType = 'agent';
+        if (typeof appendReplLog === 'function') {
+          appendReplLog(null, `[AGENT QUEUE] Task delegiert: "${task.title}"`, 'info');
+        }
+      } else {
+        if (task.status === 'agent_delegated') {
+          task.status = 'backlog';
+          task.badge = 'Queued';
+          task.badgeType = 'queued';
+        }
+        if (typeof appendReplLog === 'function') {
+          appendReplLog(null, `[AGENT QUEUE] Delegation aufgehoben: "${task.title}"`, 'info');
+        }
+      }
+
+      saveTasks();
+      renderTasks();
+      syncTaskToBackend(task, 'PATCH');
+    }
+
+    function initTaskInlineCreator() {
+      const input = document.getElementById('input-new-task');
+      const addInlineBtn = document.getElementById('btn-add-task-inline');
+
+      function submitTask() {
+        if (!input) return;
+        const val = input.value;
+        const trimmed = val.trim();
+
+        if (!trimmed) {
+          input.classList.add('input-error-shake');
+          setTimeout(() => input.classList.remove('input-error-shake'), 400);
+          return;
+        }
+
+        const newTask = {
+          id: 't' + (AppState.tasks.length + 1) + '-' + Date.now().toString(36),
+          title: trimmed,
+          status: 'backlog',
+          priority: 'P2',
+          delegated: false,
+          completed: false,
+          badge: 'Queued',
+          badgeType: 'queued',
+          meta: { created_at: new Date().toISOString() }
+        };
+
+        AppState.tasks.push(newTask);
+        input.value = '';
+        saveTasks();
+        renderTasks();
+        syncTaskToBackend(newTask, 'POST');
+      }
+
+      if (input) {
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            e.stopPropagation();
+            submitTask();
+          } else {
+            e.stopPropagation();
+          }
+        });
+      }
+
+      if (addInlineBtn) {
+        addInlineBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          submitTask();
+        });
+      }
+    }
+
+    async function syncTaskToBackend(task, method = 'PATCH') {
+      try {
+        if (method === 'POST') {
+          await fetch('/api/tasks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              title: task.title,
+              status: task.status,
+              priority: task.priority,
+              delegated: task.delegated,
+              meta: task.meta || {}
+            })
+          });
+        } else if (method === 'PATCH') {
+          await fetch(`/api/tasks/${task.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              status: task.status,
+              priority: task.priority,
+              delegated: task.delegated
+            })
+          });
+        }
+      } catch (err) {}
+    }
+
+    /* --------------------------------------------------------------------------
+       Dynamic File Explorer Component (Milestone 2)
+       -------------------------------------------------------------------------- */
+    const FileExplorer = {
+      currentCategory: 'all',
+      files: [],
+      defaultFiles: [
+        {
+          name: 'README.md',
+          path: 'workspace/default/README.md',
+          is_dir: false,
+          size: 1420,
+          ext: 'md',
+          category: 'doc',
+          content: '# Universal Agent Workspace\n\nDomain-agnostic Operating Canvas for autonomous multimodal agents.\n\n## Capabilities\n- Multi-viewport perception and tool routing\n- Reversible undo rollback stack\n- Live blackboard and memory state visualization'
+        },
+        {
+          name: 'agent_runner.py',
+          path: 'workspace/default/agent_runner.py',
+          is_dir: false,
+          size: 3840,
+          ext: 'py',
+          category: 'code',
+          content: '"""Universal Agent Runner Script."""\nimport sys\n\ndef main():\n    print("[AGENT] Initializing autonomous canvas runner...")\n    print("[AGENT] Ready for multimodal instructions.")\n\nif __name__ == "__main__":\n    main()'
+        },
+        {
+          name: 'pipeline_config.json',
+          path: 'workspace/default/pipeline_config.json',
+          is_dir: false,
+          size: 920,
+          ext: 'json',
+          category: 'config',
+          content: '{\n  "version": "2.0",\n  "mode": "autonomous",\n  "safety_level": "moderate",\n  "allowed_tools": ["filesystem", "repl", "vision"]\n}'
+        },
+        {
+          name: 'metrics_report.csv',
+          path: 'workspace/default/metrics_report.csv',
+          is_dir: false,
+          size: 2150,
+          ext: 'csv',
+          category: 'data',
+          content: 'step,action,latency_ms,status,confidence\n1,perception_scan,120,success,0.99\n2,plan_generation,340,success,0.96\n3,gate_verification,85,success,0.99\n4,sandbox_execution,210,success,0.98'
+        },
+        {
+          name: 'system_diagram.svg',
+          path: 'workspace/default/system_diagram.svg',
+          is_dir: false,
+          size: 5120,
+          ext: 'svg',
+          category: 'media',
+          content: '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="100" height="100" rx="8" fill="#121824" stroke="#06B6D4" stroke-width="2"/><text x="60" y="65" fill="#E2E8F0" font-family="monospace" font-size="10" text-anchor="middle">CANVAS</text></svg>'
+        },
+        {
+          name: 'environment.yaml',
+          path: 'workspace/default/environment.yaml',
+          is_dir: false,
+          size: 480,
+          ext: 'yaml',
+          category: 'config',
+          content: 'environment: production\nsandbox: isolated\ntimeout_seconds: 30\nlog_stream: stdout'
+        }
+      ],
+
+      async init() {
+        this.bindEvents();
+        await this.loadFiles();
+      },
+
+      bindEvents() {
+        const filterBar = document.getElementById('file-filter-pills');
+        if (filterBar) {
+          filterBar.addEventListener('click', (e) => {
+            const btn = e.target.closest('.file-filter-tab');
+            if (!btn) return;
+            const filter = btn.getAttribute('data-file-filter');
+            this.setFilter(filter);
+          });
+        }
+
+        const toggleBtn = document.getElementById('kb-folder-toggle');
+        const listEl = document.getElementById('kb-file-list');
+        const chevron = document.getElementById('kb-chevron');
+        if (toggleBtn && listEl) {
+          toggleBtn.addEventListener('click', () => {
+            const isHidden = listEl.style.display === 'none';
+            listEl.style.display = isHidden ? 'flex' : 'none';
+            if (chevron) chevron.textContent = isHidden ? '▾' : '▸';
+          });
+        }
+      },
+
+      async loadFiles(wsPath) {
+        try {
+          const url = wsPath ? `/api/workspace/files?path=${encodeURIComponent(wsPath)}` : '/api/workspace/files';
+          const res = await fetch(url);
+          if (res.ok) {
+            const data = await res.json();
+            const remoteFiles = Array.isArray(data) ? data : (data.files || []);
+            this.files = remoteFiles.length > 0 ? remoteFiles : this.defaultFiles;
+          } else {
+            this.files = this.defaultFiles;
+          }
+        } catch (err) {
+          this.files = this.defaultFiles;
+        }
+
+        const countBadge = document.getElementById('files-indexed-count');
+        if (countBadge) countBadge.textContent = this.files.length;
+        const branchEl = document.getElementById('active-project-branch');
+        if (branchEl && !countBadge) branchEl.textContent = `main / ${this.files.length} files indexed`;
+
+        this.render();
+      },
+
+      setFilter(filter) {
+        this.currentCategory = filter || 'all';
+        document.querySelectorAll('.file-filter-tab').forEach(tab => {
+          tab.classList.toggle('active', tab.getAttribute('data-file-filter') === this.currentCategory);
+        });
+        this.render();
+      },
+
+      matchesCategory(file, filter) {
+        if (!filter || filter === 'all') return true;
+        const cat = (file.category || '').toLowerCase();
+        const ext = (file.ext || '').toLowerCase();
+
+        if (filter === 'code') {
+          return cat === 'code' || ['py', 'js', 'ts', 'jsx', 'tsx', 'html', 'css', 'sh', 'ps1', 'bat', 'rs', 'go', 'c', 'cpp', 'h', 'java'].includes(ext);
+        }
+        if (filter === 'docs') {
+          return cat === 'doc' || cat === 'docs' || ['md', 'txt', 'rst', 'pdf', 'doc', 'docx', 'rtf', 'log'].includes(ext);
+        }
+        if (filter === 'tables') {
+          return cat === 'data' || cat === 'tables' || ['csv', 'tsv', 'jsonl', 'xml', 'parquet', 'db', 'sqlite', 'sql'].includes(ext);
+        }
+        if (filter === 'media') {
+          return cat === 'media' || ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'mp3', 'mp4', 'wav', 'ico'].includes(ext);
+        }
+        if (filter === 'configs') {
+          return cat === 'config' || cat === 'configs' || ['yaml', 'yml', 'toml', 'ini', 'env', 'conf', 'lock', 'json'].includes(ext);
+        }
+        return false;
+      },
+
+      getFileIcon(file) {
+        if (file.is_dir) return '📁';
+        const ext = (file.ext || '').toLowerCase();
+        if (ext === 'py') return '🐍';
+        if (['js', 'ts', 'jsx', 'tsx', 'html', 'css', 'sh', 'ps1', 'rs', 'go'].includes(ext)) return '💻';
+        if (['md', 'txt', 'rst', 'pdf', 'doc', 'log'].includes(ext)) return '📄';
+        if (['csv', 'tsv', 'jsonl', 'xml', 'sql'].includes(ext)) return '📊';
+        if (['png', 'jpg', 'jpeg', 'svg', 'gif', 'webp'].includes(ext)) return '🖼️';
+        if (['yaml', 'yml', 'json', 'toml', 'ini', 'env', 'conf', 'lock'].includes(ext)) return '⚙️';
+        return '📄';
+      },
+
+      render() {
+        const listEl = document.getElementById('kb-file-list');
+        if (!listEl) return;
+
+        const filtered = this.files.filter(f => this.matchesCategory(f, this.currentCategory));
+        if (filtered.length === 0) {
+          listEl.innerHTML = `
+            <div class="file-tree-empty">
+              No files matching "${escapeHtml(this.currentCategory)}"
+            </div>
+          `;
+          return;
+        }
+
+        const activeName = (AppState.project && AppState.project.activeFile) || (this.files[0] && this.files[0].name) || 'README.md';
+
+        listEl.innerHTML = filtered.map(file => {
+          const isSelected = file.name === activeName;
+          const safeName = escapeHtml(file.name);
+          const safePath = escapeHtml(file.path || file.name);
+          const icon = this.getFileIcon(file);
+
+          return `
+            <div class="kb-file-item file-tree-item file-entry ${isSelected ? 'selected' : ''}"
+                 data-file="${safeName}"
+                 data-path="${safePath}"
+                 data-category="${file.category || ''}"
+                 title="${safePath}">
+              <span class="kb-file-icon">${icon}</span>
+              <span>${safeName}</span>
+            </div>
+          `;
+        }).join('');
+
+        const ksListEl = document.getElementById('ks-file-list');
+        if (ksListEl) {
+          ksListEl.innerHTML = this.files.map(file => {
+            const isSelected = file.name === activeName;
+            const safeName = escapeHtml(file.name);
+            const icon = this.getFileIcon(file);
+            const sizeStr = file.size ? `${Math.round(file.size / 100) / 10}KB` : '1.4KB';
+            return `
+              <div class="kb-file-item ks-file-entry file-tree-item ${isSelected ? 'selected' : ''}" 
+                   data-ks-file="${safeName}" 
+                   data-file="${safeName}">
+                <span>${icon}</span>
+                <span>${safeName}</span>
+                <span class="badge badge-agent" style="margin-left:auto;">${sizeStr}</span>
+              </div>
+            `;
+          }).join('');
+
+          ksListEl.querySelectorAll('.ks-file-entry').forEach(entry => {
+            entry.addEventListener('click', () => {
+              const f = entry.getAttribute('data-ks-file');
+              this.selectFile(f);
+            });
+          });
+        }
+
+        listEl.querySelectorAll('.kb-file-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const fileName = item.getAttribute('data-file');
+            this.selectFile(fileName);
+          });
+        });
+      },
+
+      selectFile(fileName) {
+        if (!fileName) return;
+        if (AppState.project) AppState.project.activeFile = fileName;
+
+        document.querySelectorAll('.kb-file-item, .file-tree-item, .ks-file-entry').forEach(el => {
+          el.classList.toggle('selected', el.getAttribute('data-file') === fileName || el.getAttribute('data-ks-file') === fileName);
+        });
+
+        const fileObj = this.files.find(f => f.name === fileName) || { name: fileName };
+        this.previewInViewport2(fileObj);
+
+        if (typeof appendReplLog === 'function') {
+          appendReplLog(null, `[FILE EXPLORER] Active file: ${fileName}`, 'info');
+        }
+      },
+
+      previewInViewport2(file) {
+        const header = document.getElementById('ks-active-file-header');
+        if (header) header.textContent = `ACTIVE FILE // ${file.name}`;
+
+        const editor = document.getElementById('ks-editor-textarea');
+        if (editor) {
+          if (file.content !== undefined) {
+            editor.value = file.content;
+          } else {
+            editor.value = `# ${file.name}\n\nPath: ${file.path || file.name}\nSize: ${file.size || 0} bytes\nCategory: ${file.category || 'generic'}\n\n[Loaded from workspace storage]`;
+          }
+        }
+      }
+    };
 
     function renderBlackboard() {
       const bb = AppState.blackboard;
@@ -4107,7 +5486,7 @@ mount_v3();</textarea>
         });
       });
 
-      // 3. Workspace Dropdown Toggle
+      // 3. Workspace Dropdown Toggle & Switcher Setup
       const wsCard = document.getElementById('workspace-switcher-card');
       const wsDropdown = document.getElementById('workspace-dropdown');
       if (wsCard && wsDropdown) {
@@ -4115,68 +5494,46 @@ mount_v3();</textarea>
           e.stopPropagation();
           wsDropdown.classList.toggle('open');
         });
-        document.querySelectorAll('.workspace-menu-item').forEach(item => {
-          item.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const proj = item.getAttribute('data-project');
-            AppState.project.name = proj;
-            document.getElementById('active-project-title').textContent = `Active: ${proj}`;
-            document.querySelectorAll('.workspace-menu-item').forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            wsDropdown.classList.remove('open');
-          });
-        });
         document.addEventListener('click', (e) => {
           if (wsDropdown.classList.contains('open') && !wsCard.contains(e.target)) {
             wsDropdown.classList.remove('open');
             e.stopPropagation();
-            e.preventDefault();
           }
         }, true);
       }
 
-      // 4. Add Task Button
+      // Initialize Workspaces, Tasks & File Explorer (Milestone 2)
+      AppState.loadWorkspaces();
+      loadTasksFromStorage();
+      renderTasks();
+      initTaskInlineCreator();
+      initWorkspaceModal();
+      FileExplorer.init();
+
+      // 4. Modal Dialog Fallback Add Task Button (Retained for test compatibility)
       const btnAddTask = document.getElementById('btn-add-task');
       if (btnAddTask) {
         btnAddTask.addEventListener('click', () => {
-          const title = prompt('Enter new task description:', 'Verify toolpath clearance');
+          const title = prompt('Enter new task description:', 'Systemdiagnose durchführen');
           if (title && title.trim()) {
-            AppState.tasks.push({
-              id: 't' + (AppState.tasks.length + 1),
+            const newTask = {
+              id: 't' + (AppState.tasks.length + 1) + '-' + Date.now().toString(36),
               title: title.trim(),
+              status: 'backlog',
+              priority: 'P2',
+              delegated: false,
               completed: false,
               badge: 'Queued',
-              badgeType: 'queued'
-            });
+              badgeType: 'queued',
+              meta: { created_at: new Date().toISOString() }
+            };
+            AppState.tasks.push(newTask);
+            saveTasks();
             renderTasks();
+            syncTaskToBackend(newTask, 'POST');
           }
         });
       }
-
-      // 5. Knowledge Base Folder Collapse / Expand Toggle
-      const kbFolderToggle = document.getElementById('kb-folder-toggle');
-      const kbFileList = document.getElementById('kb-file-list');
-      const kbChevron = document.getElementById('kb-chevron');
-      if (kbFolderToggle && kbFileList) {
-        kbFolderToggle.addEventListener('click', () => {
-          const isCollapsed = kbFileList.style.display === 'none';
-          kbFileList.style.display = isCollapsed ? 'flex' : 'none';
-          if (kbChevron) {
-            kbChevron.textContent = isCollapsed ? '▾' : '▸';
-          }
-        });
-      }
-
-      // 6. Knowledge Base Tree Selection
-      document.querySelectorAll('.kb-file-item').forEach(item => {
-        item.addEventListener('click', () => {
-          document.querySelectorAll('.kb-file-item').forEach(i => i.classList.remove('selected'));
-          item.classList.add('selected');
-          const file = item.getAttribute('data-file');
-          AppState.project.activeFile = file;
-          appendReplLog(null, `[KB] Active file context: ${file}`, 'info');
-        });
-      });
 
       // 7. Settings Modal / Drawer Toggle
       const btnSettings = document.getElementById('btn-settings');
@@ -4397,10 +5754,12 @@ mount_v3();</textarea>
       // 11a. Attach Context Button
       if (btnAttach && omniboxInput) {
         btnAttach.addEventListener('click', () => {
+          const activeFile = (AppState.project && AppState.project.activeFile) || 'README.md';
+          const workingDir = (AppState.project && AppState.project.working_dir) || 'workspace/default';
           const curVal = omniboxInput.value;
-          omniboxInput.value = curVal ? `${curVal} @toolhead_mount.scad` : '@toolhead_mount.scad ';
+          omniboxInput.value = curVal ? `${curVal} @${activeFile}` : `@${activeFile} `;
           omniboxInput.focus();
-          appendReplLog(null, '[CONTEXT] Attached reference: workspace/fabrication/toolhead_mount.scad', 'info');
+          appendReplLog(null, `[CONTEXT] Attached reference: ${workingDir}/${activeFile}`, 'info');
         });
       }
 
@@ -4601,12 +5960,12 @@ mount_v3();</textarea>
 
       // 14. Milestone 5: Knowledge Studio, Vision SOM & Focus Chat Interactivity
       const ksFilesContent = {
-        'toolhead_mount.scad': `// Toolhead Mount v3 — High Precision CNC/3D Bracket\n// Material: Carbon-Reinforced PA12 • Tolerance: ±0.05mm\n$fn = 64;\n\nmodule mount_v3() {\n    difference() {\n        union() {\n            translate([0, 0, 3]) cube([80, 50, 6], center=true);\n            translate([-36, 0, 12]) cube([8, 50, 24], center=true);\n        }\n        for (x = [-25, 0, 25]) translate([x, -14, -1]) cylinder(h=10, d=4.2);\n        for (y = [-14, 14]) translate([-41, y, 16]) rotate([0, 90, 0]) cylinder(h=12, d=4.2);\n    }\n}\nmount_v3();`,
-        'workflow.md': `# 3D Fabrication & Automation Pipeline (M-024)\n1. Validate OpenSCAD CSG geometry for 2-manifold integrity.\n2. Attach Win32 UIA + Vision SOM perception to OpenSCAD window.\n3. Verify target path C:\\Fabrication\\toolhead_mount.stl.\n4. Enforce SEC-810 human confirmation gate before overwriting existing STL.`,
-        'agent_kinematics.py': `"""Toolhead Mount Kinematics & Clearance Validator."""\nimport math\n\ndef verify_clearance(width_mm: float = 80.0, wall_height_mm: float = 24.0) -> dict:\n    manifold = width_mm > 0 and wall_height_mm >= 20.0\n    return {"manifold": manifold, "facets": 1248, "tolerance_mm": 0.05}`,
-        'mount_assembly.step': `ISO-10303-21;\nHEADER;\nFILE_DESCRIPTION(('Toolhead Mount Assembly v3'),'2;1');\nFILE_NAME('mount_assembly.step','2026-10-28T15:40:00',('gschwelli-ai'),('Fabrication Lab'),'','','');\nENDSEC;\nDATA;\n#10=ADVANCED_BREP_SHAPE_REPRESENTATION('mount_v3',(#12),#20);\nENDSEC;`,
-        'pipeline_config.yaml': `pipeline: M-024-fabrication\ntarget_dir: "C:\\\\Fabrication"\nformat: binary_stl\nsafety_policy:\n  rule: SEC-810\n  require_human_approval_on_overwrite: true\n  create_backup: true`,
-        'safety_protocol.md': `# Safety Policy SEC-810\n- Any destructive disk write or file overwrite in C:\\Fabrication is held at the Human-in-the-Loop gate.\n- Automatic backup (.bak) is snapshotted into the reversible Undo stack before write execution.`
+        'README.md': '# Universal Agent Workspace\n\nDomain-agnostic Operating Canvas for autonomous multimodal agents.\n\n## Capabilities\n- Multi-viewport perception and tool routing\n- Reversible undo rollback stack\n- Live blackboard and memory state visualization',
+        'agent_runner.py': '"""Universal Agent Runner Script."""\nimport sys\n\ndef main():\n    print("[AGENT] Initializing autonomous canvas runner...")\n    print("[AGENT] Ready for multimodal instructions.")\n\nif __name__ == "__main__":\n    main()',
+        'pipeline_config.json': '{\n  "version": "2.0",\n  "mode": "autonomous",\n  "safety_level": "moderate",\n  "allowed_tools": ["filesystem", "repl", "vision"]\n}',
+        'metrics_report.csv': 'step,action,latency_ms,status,confidence\n1,perception_scan,120,success,0.99\n2,plan_generation,340,success,0.96\n3,gate_verification,85,success,0.99\n4,sandbox_execution,210,success,0.98',
+        'system_diagram.svg': '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="100" height="100" rx="8" fill="#121824" stroke="#06B6D4" stroke-width="2"/><text x="60" y="65" fill="#E2E8F0" font-family="monospace" font-size="10" text-anchor="middle">CANVAS</text></svg>',
+        'environment.yaml': 'environment: production\nsandbox: isolated\ntimeout_seconds: 30\nlog_stream: stdout'
       };
 
       function selectKnowledgeFile(fileName) {
@@ -4621,8 +5980,13 @@ mount_v3();</textarea>
         const header = document.getElementById('ks-active-file-header');
         if (header) header.textContent = `ACTIVE FILE VIEWER // ${fileName}`;
         const editor = document.getElementById('ks-editor-textarea');
-        if (editor && ksFilesContent[fileName] !== undefined) {
-          editor.value = ksFilesContent[fileName];
+        if (editor) {
+          if (ksFilesContent[fileName] !== undefined) {
+            editor.value = ksFilesContent[fileName];
+          } else if (typeof FileExplorer !== 'undefined' && FileExplorer.files) {
+            const fObj = FileExplorer.files.find(f => f.name === fileName);
+            if (fObj && fObj.content) editor.value = fObj.content;
+          }
         }
       }
 
@@ -4657,7 +6021,7 @@ mount_v3();</textarea>
       if (btnKsSave) {
         btnKsSave.addEventListener('click', () => {
           const editor = document.getElementById('ks-editor-textarea');
-          const activeFile = AppState.project.activeFile || 'toolhead_mount.scad';
+          const activeFile = AppState.project.activeFile || 'README.md';
           if (editor) ksFilesContent[activeFile] = editor.value;
           const badge = document.getElementById('ks-editor-saved-badge');
           if (badge) badge.textContent = 'SAVED & CHUNKED';
