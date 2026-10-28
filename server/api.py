@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import asyncio
+from contextlib import asynccontextmanager
+import json
 from pathlib import Path
 import threading
+import time
 from typing import Any, Dict, List, Optional
+from uuid import uuid4
 import webbrowser
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -25,6 +29,7 @@ from tools.registry import registry
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DASHBOARD_HTML_PATH = BASE_DIR / "ui" / "dashboard" / "index.html"
+WORKSPACE_STORE_FILE = BASE_DIR / "workspace" / "workspaces_store.json"
 
 
 class RouteRequest(BaseModel):
@@ -55,6 +60,245 @@ class REPLRequest(BaseModel):
     command: str = ""
 
 
+class WorkspaceCreateRequest(BaseModel):
+    name: str
+    prompt: Optional[str] = "Universal Autonomous Agent Operating Canvas"
+    working_dir: Optional[str] = None
+
+
+class WorkspaceActivateRequest(BaseModel):
+    id: str
+
+
+class TaskCreateRequest(BaseModel):
+    title: str
+    status: Optional[str] = "backlog"
+    priority: Optional[str] = "P2"
+    delegated: Optional[bool] = False
+    meta: Optional[Dict[str, Any]] = None
+
+
+class TaskUpdateRequest(BaseModel):
+    title: Optional[str] = None
+    status: Optional[str] = None
+    priority: Optional[str] = None
+    delegated: Optional[bool] = None
+    meta: Optional[Dict[str, Any]] = None
+
+
+class WorkspaceStore:
+    """Thread-safe dual-persistence store for workspaces and reactive task pipelines."""
+
+    def __init__(self, store_path: Path):
+        self._path = store_path
+        self._lock = threading.RLock()
+        self._workspaces: List[Dict[str, Any]] = []
+        self._active_workspace_id: str = "ws-default"
+        self._tasks: List[Dict[str, Any]] = []
+        self._init_store()
+
+    def _init_store(self) -> None:
+        with self._lock:
+            if self._path.exists():
+                try:
+                    data = json.loads(self._path.read_text(encoding="utf-8"))
+                    self._workspaces = data.get("workspaces", [])
+                    self._active_workspace_id = data.get("active_workspace_id", "ws-default")
+                    self._tasks = data.get("tasks", [])
+                    if self._workspaces and self._tasks:
+                        return
+                except Exception:
+                    pass
+
+            self._workspaces = [
+                {
+                    "id": "ws-default",
+                    "name": "General Workspace",
+                    "prompt": "Universal Autonomous Agent Operating Canvas",
+                    "working_dir": "workspace/default",
+                    "is_active": True,
+                }
+            ]
+            self._active_workspace_id = "ws-default"
+            self._tasks = [
+                {
+                    "id": "task-1",
+                    "title": "Analyze repository architecture",
+                    "status": "done",
+                    "priority": "P1",
+                    "delegated": False,
+                    "meta": {},
+                },
+                {
+                    "id": "task-2",
+                    "title": "Synthesize backend telemetry and state",
+                    "status": "in_progress",
+                    "priority": "P1",
+                    "delegated": True,
+                    "meta": {},
+                },
+                {
+                    "id": "task-3",
+                    "title": "Draft cross-platform integration tests",
+                    "status": "backlog",
+                    "priority": "P2",
+                    "delegated": False,
+                    "meta": {},
+                },
+                {
+                    "id": "task-4",
+                    "title": "Verify offline zero-dependency bundle",
+                    "status": "blocked",
+                    "priority": "P3",
+                    "delegated": False,
+                    "meta": {},
+                },
+            ]
+            self._save()
+
+    def _save(self) -> None:
+        try:
+            self._path.parent.mkdir(parents=True, exist_ok=True)
+            payload = {
+                "active_workspace_id": self._active_workspace_id,
+                "workspaces": self._workspaces,
+                "tasks": self._tasks,
+            }
+            tmp = self._path.with_suffix(".tmp")
+            tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+            tmp.replace(self._path)
+        except Exception as exc:
+            print(f"[WorkspaceStore] Failed to save store: {exc}")
+
+    def get_workspaces(self) -> List[Dict[str, Any]]:
+        with self._lock:
+            result = []
+            for ws in self._workspaces:
+                item = dict(ws)
+                item["is_active"] = (item.get("id") == self._active_workspace_id)
+                result.append(item)
+            return result
+
+    def get_active_workspace_id(self) -> str:
+        with self._lock:
+            return self._active_workspace_id
+
+    def get_active_working_dir(self) -> Path:
+        with self._lock:
+            for ws in self._workspaces:
+                if ws.get("id") == self._active_workspace_id:
+                    wdir = ws.get("working_dir", "workspace/default")
+                    return BASE_DIR / wdir
+            return BASE_DIR / "workspace" / "default"
+
+    def create_workspace(self, name: str, prompt: str = "", working_dir: Optional[str] = None) -> Dict[str, Any]:
+        with self._lock:
+            ws_id = f"ws-{uuid4().hex[:8]}"
+            slug = "".join(c if c.isalnum() else "_" for c in name.lower()).strip("_") or "workspace"
+            final_dir = working_dir if working_dir else f"workspace/{slug}"
+            new_ws = {
+                "id": ws_id,
+                "name": name,
+                "prompt": prompt or "Universal Autonomous Agent Operating Canvas",
+                "working_dir": final_dir,
+                "is_active": False,
+            }
+            try:
+                (BASE_DIR / final_dir).mkdir(parents=True, exist_ok=True)
+            except Exception:
+                pass
+            self._workspaces.append(new_ws)
+            self._save()
+            return new_ws
+
+    def activate_workspace(self, ws_id: str) -> Optional[Dict[str, Any]]:
+        with self._lock:
+            target_ws = None
+            for ws in self._workspaces:
+                if ws.get("id") == ws_id:
+                    target_ws = ws
+                    break
+            if not target_ws:
+                return None
+            self._active_workspace_id = ws_id
+            for ws in self._workspaces:
+                ws["is_active"] = (ws.get("id") == ws_id)
+            self._save()
+            return dict(target_ws)
+
+    def delete_workspace(self, ws_id: str) -> bool:
+        with self._lock:
+            idx = -1
+            for i, ws in enumerate(self._workspaces):
+                if ws.get("id") == ws_id:
+                    idx = i
+                    break
+            if idx == -1:
+                return False
+            del self._workspaces[idx]
+            if self._active_workspace_id == ws_id:
+                if self._workspaces:
+                    self._active_workspace_id = self._workspaces[0]["id"]
+                    self._workspaces[0]["is_active"] = True
+                else:
+                    self._init_store()
+            self._save()
+            return True
+
+    def get_tasks(self) -> List[Dict[str, Any]]:
+        with self._lock:
+            return [dict(t) for t in self._tasks]
+
+    def create_task(
+        self,
+        title: str,
+        status: str = "backlog",
+        priority: str = "P2",
+        delegated: bool = False,
+        meta: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        with self._lock:
+            t_id = f"task-{uuid4().hex[:6]}"
+            new_task = {
+                "id": t_id,
+                "title": title,
+                "status": status,
+                "priority": priority,
+                "delegated": bool(delegated),
+                "meta": meta or {},
+            }
+            self._tasks.append(new_task)
+            self._save()
+            return new_task
+
+    def update_task(self, task_id: str, **updates: Any) -> Optional[Dict[str, Any]]:
+        with self._lock:
+            for task in self._tasks:
+                if task.get("id") == task_id:
+                    for k, v in updates.items():
+                        if v is not None:
+                            task[k] = v
+                    self._save()
+                    return dict(task)
+            return None
+
+    def delete_task(self, task_id: str) -> bool:
+        with self._lock:
+            idx = -1
+            for i, task in enumerate(self._tasks):
+                if task.get("id") == task_id:
+                    idx = i
+                    break
+            if idx == -1:
+                return False
+            del self._tasks[idx]
+            self._save()
+            return True
+
+
+workspace_store = WorkspaceStore(WORKSPACE_STORE_FILE)
+
+
 def serialize_route_result(res: RouteResult) -> Dict[str, Any]:
     return {
         "success": res.success,
@@ -78,10 +322,16 @@ def serialize_route_result(res: RouteResult) -> Dict[str, Any]:
 
 
 def create_app(router: Optional[AetherRouter] = None, voice_daemon: Any = None) -> FastAPI:
-    app = FastAPI(title="AETHER Control Center API", version="2.0.0")
     active_router = router or AetherRouter()
     ws_clients: List[WebSocket] = []
     loop_holder: Dict[str, Optional[asyncio.AbstractEventLoop]] = {"loop": None}
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI):
+        loop_holder["loop"] = asyncio.get_running_loop()
+        yield
+
+    app = FastAPI(title="AETHER Control Center API", version="2.0.0", lifespan=lifespan)
 
     async def _broadcast(payload: Dict[str, Any]) -> None:
         stale: List[WebSocket] = []
@@ -104,10 +354,6 @@ def create_app(router: Optional[AetherRouter] = None, voice_daemon: Any = None) 
 
     active_router.add_listener(_on_route_finished)
 
-    @app.on_event("startup")
-    async def _startup() -> None:
-        loop_holder["loop"] = asyncio.get_running_loop()
-
     @app.get("/", response_class=HTMLResponse)
     async def index() -> HTMLResponse:
         if DASHBOARD_HTML_PATH.is_file():
@@ -129,6 +375,9 @@ def create_app(router: Optional[AetherRouter] = None, voice_daemon: Any = None) 
                     "battery_percent": round(batt.percent) if batt else None,
                     "battery_plugged": bool(batt.power_plugged) if batt else None,
                 },
+                "workspaces": workspace_store.get_workspaces(),
+                "active_workspace_id": workspace_store.get_active_workspace_id(),
+                "tasks": workspace_store.get_tasks(),
                 "tools": tools_list,
                 "cache": cache_store.list_entries(limit=50),
                 "memory": all_entries_for_ui(),
@@ -202,16 +451,16 @@ def create_app(router: Optional[AetherRouter] = None, voice_daemon: Any = None) 
     @app.post("/api/scenario/reset")
     async def reset_scenario() -> JSONResponse:
         request_confirmation(
-            key="overwrite_stl",
-            title="Overwrite toolhead_mount.stl",
-            detail="backup saved • SEC-810",
-            run=lambda: "Overwrote toolhead_mount.stl in C:\\Fabrication",
+            key="system_file_write",
+            title="Update workspace configuration",
+            detail="Modifying workspace environment • Risk: Moderate",
+            run=lambda: "Applied workspace configuration update",
         )
         return JSONResponse(
             {
                 "status": "scenario_reset",
-                "project": "3D Fabrication & Automation",
-                "mission": "M-024 / Export toolhead_mount.stl",
+                "workspace": "default",
+                "mission": "Universal Agent Task Execution",
             }
         )
 
@@ -238,11 +487,11 @@ def create_app(router: Optional[AetherRouter] = None, voice_daemon: Any = None) 
                     {
                         "mark": 1,
                         "tag": "[01]",
-                        "name": "Menu Bar",
+                        "name": "Navigation Menu",
                         "type": "menu",
                         "rect": [10, 30, 220, 54],
                         "confidence": 0.991,
-                        "selector": "OpenSCAD::MenuBar",
+                        "selector": "Window::MenuBar",
                         "uia_id": "MenuBar.Main",
                     },
                     {
@@ -252,112 +501,327 @@ def create_app(router: Optional[AetherRouter] = None, voice_daemon: Any = None) 
                         "type": "titlebar",
                         "rect": [1340, 6, 1432, 28],
                         "confidence": 0.995,
-                        "selector": "OpenSCAD::WindowControls",
+                        "selector": "Window::Controls",
                         "uia_id": "TitleBar.Controls",
                     },
                     {
                         "mark": 3,
                         "tag": "[03]",
-                        "name": "CSG Tree View",
+                        "name": "Workspace Explorer",
                         "type": "treeview",
                         "rect": [14, 70, 260, 420],
                         "confidence": 0.988,
-                        "selector": "OpenSCAD::CSGView",
-                        "uia_id": "Tree.CSG",
+                        "selector": "Window::FileTree",
+                        "uia_id": "Tree.Workspace",
                     },
                     {
                         "mark": 4,
                         "tag": "[04]",
-                        "name": "Button 'Export'",
+                        "name": "Action Button 'Execute'",
                         "type": "button",
                         "rect": [1280, 810, 1400, 846],
                         "confidence": 0.992,
-                        "selector": "OpenSCAD::ButtonExport",
-                        "uia_id": "Button.ExportSTL",
+                        "selector": "Window::ButtonExecute",
+                        "uia_id": "Button.Execute",
                     },
                     {
                         "mark": 5,
                         "tag": "[05]",
-                        "name": "3D CAD Mesh Viewport",
+                        "name": "Main Canvas Viewport",
                         "type": "viewport",
                         "rect": [270, 70, 1420, 780],
                         "confidence": 0.998,
-                        "selector": "OpenSCAD::OpenGLViewport",
-                        "uia_id": "Viewport.GLWidget",
+                        "selector": "Window::CanvasViewport",
+                        "uia_id": "Viewport.Main",
                     },
                     {
                         "mark": 6,
                         "tag": "[06]",
-                        "name": "Coordinate Axes Gizmo",
+                        "name": "Canvas Status Gizmo",
                         "type": "gizmo",
                         "rect": [285, 730, 345, 790],
                         "confidence": 0.989,
-                        "selector": "OpenSCAD::AxesGizmo",
-                        "uia_id": "Gizmo.XYZ",
+                        "selector": "Window::StatusGizmo",
+                        "uia_id": "Gizmo.Status",
                     },
                     {
                         "mark": 7,
                         "tag": "[07]",
-                        "name": "Camera Orbit/Pan/Zoom",
+                        "name": "Viewport Controls (Pan/Zoom)",
                         "type": "toolbar",
                         "rect": [1390, 80, 1424, 210],
                         "confidence": 0.984,
-                        "selector": "OpenSCAD::CameraTools",
-                        "uia_id": "Toolbar.Camera",
+                        "selector": "Window::ViewTools",
+                        "uia_id": "Toolbar.Controls",
                     },
                     {
                         "mark": 8,
                         "tag": "[08]",
-                        "name": "Dimension X (80.00 mm)",
-                        "type": "callout",
+                        "name": "Property Inspector",
+                        "type": "panel",
                         "rect": [640, 520, 760, 545],
                         "confidence": 0.987,
-                        "selector": "OpenSCAD::DimensionDimX",
-                        "uia_id": "Callout.DimX",
+                        "selector": "Window::Inspector",
+                        "uia_id": "Panel.Inspector",
                     },
                     {
                         "mark": 9,
                         "tag": "[09]",
-                        "name": "Dimension Z (24.00 mm)",
-                        "type": "callout",
+                        "name": "Live Telemetry",
+                        "type": "badge",
                         "rect": [880, 360, 990, 385],
                         "confidence": 0.986,
-                        "selector": "OpenSCAD::DimensionDimZ",
-                        "uia_id": "Callout.DimZ",
+                        "selector": "Window::TelemetryBadge",
+                        "uia_id": "Badge.Telemetry",
                     },
                     {
                         "mark": 10,
                         "tag": "[10]",
-                        "name": "Console Log Drawer",
+                        "name": "Terminal Console",
                         "type": "terminal",
                         "rect": [14, 780, 260, 870],
                         "confidence": 0.979,
-                        "selector": "OpenSCAD::ConsoleOutput",
-                        "uia_id": "Drawer.Console",
+                        "selector": "Window::TerminalDrawer",
+                        "uia_id": "Drawer.Terminal",
                     },
                     {
                         "mark": 11,
                         "tag": "[11]",
-                        "name": "Mesh Quality Telemetry",
+                        "name": "Integrity Badge",
                         "type": "badge",
                         "rect": [290, 80, 480, 108],
                         "confidence": 0.994,
-                        "selector": "OpenSCAD::ManifoldBadge",
-                        "uia_id": "Badge.Telemetry",
+                        "selector": "Window::IntegrityBadge",
+                        "uia_id": "Badge.Integrity",
                     },
                     {
                         "mark": 12,
                         "tag": "[12]",
-                        "name": "Path Input",
+                        "name": "Command / Path Input",
                         "type": "textbox",
                         "rect": [180, 810, 1260, 846],
                         "confidence": 0.985,
-                        "selector": "OpenSCAD::PathInput",
-                        "uia_id": "TextBox.ExportPath",
+                        "selector": "Window::CommandInput",
+                        "uia_id": "TextBox.Command",
                     },
                 ],
             }
         )
+
+    # =========================================================================
+    # Workspace Management Endpoints (Additive REST)
+    # =========================================================================
+
+    @app.get("/api/workspaces")
+    async def list_workspaces() -> JSONResponse:
+        return JSONResponse(
+            {
+                "workspaces": workspace_store.get_workspaces(),
+                "active_workspace_id": workspace_store.get_active_workspace_id(),
+            }
+        )
+
+    @app.post("/api/workspaces", status_code=201)
+    async def create_workspace_endpoint(req: WorkspaceCreateRequest) -> JSONResponse:
+        name = (req.name or "").strip()
+        if not name:
+            return JSONResponse({"error": "Workspace name cannot be empty"}, status_code=400)
+        ws = workspace_store.create_workspace(
+            name=name,
+            prompt=(req.prompt or "").strip() or "Universal Autonomous Agent Operating Canvas",
+            working_dir=(req.working_dir or "").strip() or None,
+        )
+        return JSONResponse(
+            {
+                "status": "created",
+                "workspace": ws,
+                "workspaces": workspace_store.get_workspaces(),
+                "active_workspace_id": workspace_store.get_active_workspace_id(),
+            },
+            status_code=201,
+        )
+
+    @app.post("/api/workspaces/activate")
+    async def activate_workspace_endpoint(req: WorkspaceActivateRequest) -> JSONResponse:
+        ws_id = (req.id or "").strip()
+        ws = workspace_store.activate_workspace(ws_id)
+        if not ws:
+            return JSONResponse({"error": f"Workspace '{ws_id}' not found"}, status_code=404)
+        return JSONResponse(
+            {
+                "status": "activated",
+                "active_workspace_id": ws_id,
+                "workspace": ws,
+                "workspaces": workspace_store.get_workspaces(),
+            }
+        )
+
+    @app.delete("/api/workspaces/{id}")
+    async def delete_workspace_endpoint(id: str) -> JSONResponse:
+        deleted = workspace_store.delete_workspace(id)
+        if not deleted:
+            return JSONResponse({"error": f"Workspace '{id}' not found"}, status_code=404)
+        return JSONResponse(
+            {
+                "status": "deleted",
+                "id": id,
+                "active_workspace_id": workspace_store.get_active_workspace_id(),
+                "workspaces": workspace_store.get_workspaces(),
+            }
+        )
+
+    # =========================================================================
+    # Task Management Endpoints (Additive REST)
+    # =========================================================================
+
+    @app.get("/api/tasks")
+    async def list_tasks() -> JSONResponse:
+        return JSONResponse({"tasks": workspace_store.get_tasks()})
+
+    @app.post("/api/tasks", status_code=201)
+    async def create_task_endpoint(req: TaskCreateRequest) -> JSONResponse:
+        title = (req.title or "").strip()
+        if not title:
+            return JSONResponse({"error": "Task title cannot be empty"}, status_code=400)
+        valid_statuses = {"backlog", "in_progress", "agent_delegated", "blocked", "done"}
+        status = req.status if req.status in valid_statuses else "backlog"
+        valid_priorities = {"P1", "P2", "P3"}
+        priority = req.priority if req.priority in valid_priorities else "P2"
+        task = workspace_store.create_task(
+            title=title,
+            status=status,
+            priority=priority,
+            delegated=bool(req.delegated),
+            meta=req.meta or {},
+        )
+        return JSONResponse(
+            {
+                "status": "created",
+                "task": task,
+                "tasks": workspace_store.get_tasks(),
+            },
+            status_code=201,
+        )
+
+    @app.patch("/api/tasks/{id}")
+    async def update_task_endpoint(id: str, req: TaskUpdateRequest) -> JSONResponse:
+        updates: Dict[str, Any] = {}
+        if req.title is not None:
+            title = req.title.strip()
+            if not title:
+                return JSONResponse({"error": "Task title cannot be empty"}, status_code=400)
+            updates["title"] = title
+        if req.status is not None:
+            valid_statuses = {"backlog", "in_progress", "agent_delegated", "blocked", "done"}
+            if req.status not in valid_statuses:
+                return JSONResponse({"error": f"Invalid status '{req.status}'"}, status_code=400)
+            updates["status"] = req.status
+        if req.priority is not None:
+            valid_priorities = {"P1", "P2", "P3"}
+            if req.priority not in valid_priorities:
+                return JSONResponse({"error": f"Invalid priority '{req.priority}'"}, status_code=400)
+            updates["priority"] = req.priority
+        if req.delegated is not None:
+            updates["delegated"] = bool(req.delegated)
+        if req.meta is not None:
+            updates["meta"] = req.meta
+
+        task = workspace_store.update_task(id, **updates)
+        if not task:
+            return JSONResponse({"error": f"Task '{id}' not found"}, status_code=404)
+        return JSONResponse(
+            {
+                "status": "updated",
+                "task": task,
+                "tasks": workspace_store.get_tasks(),
+            }
+        )
+
+    @app.delete("/api/tasks/{id}")
+    async def delete_task_endpoint(id: str) -> JSONResponse:
+        deleted = workspace_store.delete_task(id)
+        if not deleted:
+            return JSONResponse({"error": f"Task '{id}' not found"}, status_code=404)
+        return JSONResponse(
+            {
+                "status": "deleted",
+                "id": id,
+                "tasks": workspace_store.get_tasks(),
+            }
+        )
+
+    # =========================================================================
+    # Workspace File Browser Endpoint
+    # =========================================================================
+
+    @app.get("/api/workspace/files")
+    async def list_workspace_files(path: Optional[str] = None) -> JSONResponse:
+        if path:
+            target_path = (BASE_DIR / path).resolve()
+        else:
+            target_path = workspace_store.get_active_working_dir().resolve()
+
+        try:
+            target_path.relative_to(BASE_DIR)
+        except ValueError:
+            return JSONResponse({"error": "Path traversal prohibited"}, status_code=403)
+
+        if not target_path.exists() or not target_path.is_dir():
+            return JSONResponse([])
+
+        files_list: List[Dict[str, Any]] = []
+        category_map = {
+            # code
+            "py": "code", "js": "code", "ts": "code", "jsx": "code", "tsx": "code",
+            "html": "code", "css": "code", "sh": "code", "ps1": "code", "bat": "code",
+            "rs": "code", "go": "code", "c": "code", "cpp": "code", "h": "code", "java": "code",
+            # doc
+            "md": "doc", "txt": "doc", "rst": "doc", "pdf": "doc", "doc": "doc", "docx": "doc",
+            "rtf": "doc", "log": "doc",
+            # data
+            "csv": "data", "tsv": "data", "jsonl": "data", "xml": "data", "parquet": "data",
+            "db": "data", "sqlite": "data", "sql": "data",
+            # media
+            "png": "media", "jpg": "media", "jpeg": "media", "gif": "media", "svg": "media",
+            "webp": "media", "mp3": "media", "mp4": "media", "wav": "media", "ico": "media",
+            # config
+            "yaml": "config", "yml": "config", "toml": "config", "ini": "config", "env": "config",
+            "conf": "config", "lock": "config",
+        }
+
+        try:
+            items = list(target_path.iterdir())
+        except Exception:
+            return JSONResponse([])
+
+        for item in sorted(items, key=lambda p: (not p.is_dir(), p.name.lower())):
+            if item.name.startswith(".") or item.name == "__pycache__":
+                continue
+            ext = item.suffix.lstrip(".").lower()
+            if "config" in item.name.lower():
+                category = "config"
+            elif ext in category_map:
+                category = category_map[ext]
+            elif ext == "json":
+                category = "config" if "config" in item.name.lower() else "data"
+            elif item.is_dir():
+                category = "doc"
+            else:
+                category = "doc"
+
+            rel_path = item.relative_to(BASE_DIR).as_posix()
+            files_list.append(
+                {
+                    "name": item.name,
+                    "path": rel_path,
+                    "is_dir": item.is_dir(),
+                    "size": item.stat().st_size if item.is_file() else 0,
+                    "ext": ext,
+                    "category": category,
+                }
+            )
+
+        return JSONResponse(files_list)
 
     @app.websocket("/ws")
     async def websocket_endpoint(ws: WebSocket) -> None:
