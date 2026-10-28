@@ -1,4 +1,4 @@
-# BRIEFING — 2026-10-28T22:06:30Z
+# BRIEFING — 2026-10-28T22:11:30Z
 
 ## Mission
 Explore frontend architecture for Milestone 2 (Workspace Manager & Persistence) in `ui/dashboard/index.html`.
@@ -21,12 +21,22 @@ Explore frontend architecture for Milestone 2 (Workspace Manager & Persistence) 
 - Updated: not yet
 
 ## Investigation State
-- **Explored paths**: None yet
-- **Key findings**: None yet
-- **Unexplored areas**: ui/dashboard/index.html (lines 2220-2340 and script state management), PROJECT.md, DESIGN.md, ORIGINAL_REQUEST.md, previous auditor/reviewer/challenger notes for m2.
+- **Explored paths**:
+  - `server/api.py`: Verified `WorkspaceStore`, `/api/workspaces` (GET, POST, DELETE), `/api/workspaces/activate`, `/api/workspace/files`, `/api/state`.
+  - `tests/test_browser_dom.py`: Verified expected selectors (`#btn-new-workspace`, `#workspace-modal`, `#ws-name-input`, `button:has-text('Erstellen')`, `#active-workspace-card`).
+  - `ui/dashboard/index.html`: Analyzed lines 2220-2265 (hardcoded Left Sidebar project card & dropdown), 3257-3317 (`AppState`), and 4050-4136 (current static event listeners).
+- **Key findings**:
+  - The current Left Sidebar has hardcoded CAD values (`3D Fabrication & Automation`, `toolhead_mount.scad`) and static dropdown items.
+  - No `[+ Neuer Workspace]` modal or button currently exists in `ui/dashboard/index.html`.
+  - Dropdown click-outside handler currently calls `e.preventDefault()`, which interrupts other UI interactions.
+  - `AppState` lacks a `workspaces` collection and CRUD methods; it only has a single `project: { name: ... }` object.
+  - Dual persistence (localStorage + backend `/api/workspaces`) needs to be implemented.
+- **Unexplored areas**: None for M2 Workspace scope.
 
 ## Key Decisions Made
-- Initial setup complete.
+- Use `#workspace-modal` with `.workspace-modal-backdrop` and `.workspace-modal-card` adhering to DESIGN tokens `#0A0D12`, `#121824`, `1px solid #1E293B`, and `#06B6D4`.
+- Provide `#btn-new-workspace` in Left Sidebar (and Top Bar) as well as within `#workspace-dropdown`.
+- Implement `AppState.workspaces`, `AppState.activeWorkspaceId`, `createWorkspace()`, `switchWorkspace()`, `loadWorkspaces()`, `saveWorkspaces()`.
 
 ## Artifact Index
 - DISPATCH.md — incoming instructions
