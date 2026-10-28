@@ -1,0 +1,452 @@
+{
+  "tab_isolation": {
+    "clean": true,
+    "steps_tested": 9,
+    "log": [
+      {
+        "transition": "initial",
+        "active_mode": "mission_control",
+        "panes": {
+          "view-mission-control": {
+            "is_active": true,
+            "display": "grid",
+            "box": "1440x760"
+          },
+          "view-knowledge-studio": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-vision-som": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-focus-chat": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          }
+        }
+      },
+      {
+        "transition": "MC -> KS",
+        "active_mode": "knowledge_studio",
+        "panes": {
+          "view-mission-control": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-knowledge-studio": {
+            "is_active": true,
+            "display": "flex",
+            "box": "1440x760"
+          },
+          "view-vision-som": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-focus-chat": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          }
+        }
+      },
+      {
+        "transition": "KS -> VS",
+        "active_mode": "vision_som",
+        "panes": {
+          "view-mission-control": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-knowledge-studio": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-vision-som": {
+            "is_active": true,
+            "display": "flex",
+            "box": "1440x760"
+          },
+          "view-focus-chat": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          }
+        }
+      },
+      {
+        "transition": "VS -> FC",
+        "active_mode": "focus_chat",
+        "panes": {
+          "view-mission-control": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-knowledge-studio": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-vision-som": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-focus-chat": {
+            "is_active": true,
+            "display": "flex",
+            "box": "1440x760"
+          }
+        }
+      },
+      {
+        "transition": "FC -> MC",
+        "active_mode": "mission_control",
+        "panes": {
+          "view-mission-control": {
+            "is_active": true,
+            "display": "grid",
+            "box": "1440x760"
+          },
+          "view-knowledge-studio": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-vision-som": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-focus-chat": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          }
+        }
+      },
+      {
+        "transition": "MC -> VS",
+        "active_mode": "vision_som",
+        "panes": {
+          "view-mission-control": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-knowledge-studio": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-vision-som": {
+            "is_active": true,
+            "display": "flex",
+            "box": "1440x760"
+          },
+          "view-focus-chat": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          }
+        }
+      },
+      {
+        "transition": "VS -> KS",
+        "active_mode": "knowledge_studio",
+        "panes": {
+          "view-mission-control": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-knowledge-studio": {
+            "is_active": true,
+            "display": "flex",
+            "box": "1440x760"
+          },
+          "view-vision-som": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-focus-chat": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          }
+        }
+      },
+      {
+        "transition": "KS -> FC",
+        "active_mode": "focus_chat",
+        "panes": {
+          "view-mission-control": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-knowledge-studio": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-vision-som": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-focus-chat": {
+            "is_active": true,
+            "display": "flex",
+            "box": "1440x760"
+          }
+        }
+      },
+      {
+        "transition": "FC -> MC",
+        "active_mode": "mission_control",
+        "panes": {
+          "view-mission-control": {
+            "is_active": true,
+            "display": "grid",
+            "box": "1440x760"
+          },
+          "view-knowledge-studio": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-vision-som": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          },
+          "view-focus-chat": {
+            "is_active": false,
+            "display": "none",
+            "box": "0x0"
+          }
+        }
+      }
+    ]
+  },
+  "xss_injection": {
+    "all_blocked": true,
+    "tests": [
+      {
+        "payload": "<script id=\"xss1\">window.__xss1=1;</script>",
+        "dom_id": "xss1",
+        "dom_element_injected": false,
+        "code_executed": false,
+        "innerHTML": "&lt;script id=\"xss1\"&gt;window.__xss1=1;&lt;/script&gt;",
+        "textContent": "<script id=\"xss1\">window.__xss1=1;</script>",
+        "passed": true
+      },
+      {
+        "payload": "<img src=\"invalid_img.png\" id=\"xss2\" onerror=\"window.__xss2=1;\" />",
+        "dom_id": "xss2",
+        "dom_element_injected": false,
+        "code_executed": false,
+        "innerHTML": "&lt;img src=\"invalid_img.png\" id=\"xss2\" onerror=\"window.__xss2=1;\" /&gt;",
+        "textContent": "<img src=\"invalid_img.png\" id=\"xss2\" onerror=\"window.__xss2=1;\" />",
+        "passed": true
+      },
+      {
+        "payload": "<svg id=\"xss3\" onload=\"window.__xss3=1;\"><circle r=\"5\"/></svg>",
+        "dom_id": "xss3",
+        "dom_element_injected": false,
+        "code_executed": false,
+        "innerHTML": "&lt;svg id=\"xss3\" onload=\"window.__xss3=1;\"&gt;&lt;circle r=\"5\"/&gt;&lt;/svg&gt;",
+        "textContent": "<svg id=\"xss3\" onload=\"window.__xss3=1;\"><circle r=\"5\"/></svg>",
+        "passed": true
+      },
+      {
+        "payload": "<span id=\"xss4\" onclick=\"window.__xss4=1;\">Clickme</span>",
+        "dom_id": "xss4",
+        "dom_element_injected": false,
+        "code_executed": false,
+        "innerHTML": "&lt;span id=\"xss4\" onclick=\"window.__xss4=1;\"&gt;Clickme&lt;/span&gt;",
+        "textContent": "<span id=\"xss4\" onclick=\"window.__xss4=1;\">Clickme</span>",
+        "passed": true
+      },
+      {
+        "payload": "\"><iframe id=\"xss5\" src=\"about:blank\"></iframe>",
+        "dom_id": "xss5",
+        "dom_element_injected": false,
+        "code_executed": false,
+        "innerHTML": "\"&gt;&lt;iframe id=\"xss5\" src=\"about:blank\"&gt;&lt;/iframe&gt;",
+        "textContent": "\"><iframe id=\"xss5\" src=\"about:blank\"></iframe>",
+        "passed": true
+      },
+      {
+        "payload": "<a id=\"xss6\" href=\"javascript:window.__xss6=1\">Link</a>",
+        "dom_id": "xss6",
+        "dom_element_injected": false,
+        "code_executed": false,
+        "innerHTML": "&lt;a id=\"xss6\" href=\"javascript:window.__xss6=1\"&gt;Link&lt;/a&gt;",
+        "textContent": "<a id=\"xss6\" href=\"javascript:window.__xss6=1\">Link</a>",
+        "passed": true
+      },
+      {
+        "payload": "<style id=\"xss7\">body{color:red;}</style>",
+        "dom_id": "xss7",
+        "dom_element_injected": false,
+        "code_executed": false,
+        "innerHTML": "&lt;style id=\"xss7\"&gt;body{color:red;}&lt;/style&gt;",
+        "textContent": "<style id=\"xss7\">body{color:red;}</style>",
+        "passed": true
+      }
+    ]
+  },
+  "layout_stress": {
+    "1024x768": {
+      "topNavHeight": 48,
+      "tabsWrapped": false,
+      "tabCount": 4,
+      "toolbarHeight": 38,
+      "tbAnyOverflow": false,
+      "tbButtons": [
+        {
+          "id": "btn-rescan-som",
+          "top": 617,
+          "bottom": 642,
+          "height": 25,
+          "overflows_bottom": false
+        },
+        {
+          "id": "btn-inspect-target",
+          "top": 617,
+          "bottom": 642,
+          "height": 25,
+          "overflows_bottom": false
+        },
+        {
+          "id": "btn-capture-frame",
+          "top": 617,
+          "bottom": 642,
+          "height": 25,
+          "overflows_bottom": false
+        }
+      ],
+      "gateHeight": 44,
+      "gateAnyOverflow": false,
+      "gateButtons": [
+        {
+          "id": "btn-approve",
+          "top": 677.5,
+          "bottom": 719.5,
+          "height": 42,
+          "overflows_bottom": false
+        },
+        {
+          "id": "btn-edit",
+          "top": 677.5,
+          "bottom": 719.5,
+          "height": 42,
+          "overflows_bottom": false
+        },
+        {
+          "id": "btn-abort",
+          "top": 677.5,
+          "bottom": 719.5,
+          "height": 42,
+          "overflows_bottom": false
+        },
+        {
+          "id": "btn-panic",
+          "top": 677.5,
+          "bottom": 719.5,
+          "height": 42,
+          "overflows_bottom": false
+        }
+      ],
+      "omniHeight": 48,
+      "omniAnyOverflow": false,
+      "docScrollW": 1024,
+      "docScrollH": 768,
+      "appScrollW": 1024,
+      "appScrollH": 768,
+      "hasHorizontalScroll": false,
+      "hasVerticalScroll": false
+    },
+    "1440x900": {
+      "topNavHeight": 48,
+      "tabsWrapped": false,
+      "tabCount": 4,
+      "toolbarHeight": 38,
+      "tbAnyOverflow": false,
+      "tbButtons": [
+        {
+          "id": "btn-rescan-som",
+          "top": 749,
+          "bottom": 774,
+          "height": 25,
+          "overflows_bottom": false
+        },
+        {
+          "id": "btn-inspect-target",
+          "top": 749,
+          "bottom": 774,
+          "height": 25,
+          "overflows_bottom": false
+        },
+        {
+          "id": "btn-capture-frame",
+          "top": 749,
+          "bottom": 774,
+          "height": 25,
+          "overflows_bottom": false
+        }
+      ],
+      "gateHeight": 44,
+      "gateAnyOverflow": false,
+      "gateButtons": [
+        {
+          "id": "btn-approve",
+          "top": 817,
+          "bottom": 844,
+          "height": 27,
+          "overflows_bottom": false
+        },
+        {
+          "id": "btn-edit",
+          "top": 817,
+          "bottom": 844,
+          "height": 27,
+          "overflows_bottom": false
+        },
+        {
+          "id": "btn-abort",
+          "top": 817,
+          "bottom": 844,
+          "height": 27,
+          "overflows_bottom": false
+        },
+        {
+          "id": "btn-panic",
+          "top": 817,
+          "bottom": 844,
+          "height": 27,
+          "overflows_bottom": false
+        }
+      ],
+      "omniHeight": 48,
+      "omniAnyOverflow": false,
+      "docScrollW": 1440,
+      "docScrollH": 900,
+      "appScrollW": 1440,
+      "appScrollH": 900,
+      "hasHorizontalScroll": false,
+      "hasVerticalScroll": false
+    }
+  }
+}

@@ -14,11 +14,12 @@ import psutil
 from pydantic import BaseModel
 import uvicorn
 
-from core.confirm import get_pending, resolve as resolve_confirm
+from core.confirm import get_pending, request_confirmation, resolve as resolve_confirm
 from core.router import AetherRouter, RouteResult
 from core.tts import tts_engine
 from core.undo import can_undo, history as undo_history, undo_last
 from engines.cache_store import cache_store
+from executors.ps_repl import ps_repl
 from memory.memory_manager import all_entries_for_ui, forget_fact, remember_fact
 from tools.registry import registry
 
@@ -48,6 +49,10 @@ class ConfirmResolveRequest(BaseModel):
 class VoiceToggleRequest(BaseModel):
     tts_enabled: Optional[bool] = None
     voice_capture_enabled: Optional[bool] = None
+
+
+class REPLRequest(BaseModel):
+    command: str = ""
 
 
 def serialize_route_result(res: RouteResult) -> Dict[str, Any]:
@@ -192,6 +197,166 @@ def create_app(router: Optional[AetherRouter] = None, voice_daemon: Any = None) 
             voice_daemon.status_dict()
             if voice_daemon
             else {"tts_enabled": tts_engine.enabled}
+        )
+
+    @app.post("/api/scenario/reset")
+    async def reset_scenario() -> JSONResponse:
+        request_confirmation(
+            key="overwrite_stl",
+            title="Overwrite toolhead_mount.stl",
+            detail="backup saved • SEC-810",
+            run=lambda: "Overwrote toolhead_mount.stl in C:\\Fabrication",
+        )
+        return JSONResponse(
+            {
+                "status": "scenario_reset",
+                "project": "3D Fabrication & Automation",
+                "mission": "M-024 / Export toolhead_mount.stl",
+            }
+        )
+
+    @app.post("/api/repl")
+    async def execute_repl_command(req: REPLRequest) -> JSONResponse:
+        cmd = (req.command or "").strip()
+        if not cmd:
+            return JSONResponse({"command": "", "output": "", "exit_code": 0})
+        out = await asyncio.to_thread(ps_repl.run, cmd)
+        exit_code = 1 if ("status=failed" in out or "[PS_ERROR]" in out) else 0
+        return JSONResponse({"command": cmd, "output": out, "exit_code": exit_code})
+
+    @app.get("/api/som")
+    async def get_som_targets() -> JSONResponse:
+        return JSONResponse(
+            {
+                "status": "ok",
+                "targets_mapped": 12,
+                "fusion_confidence": 0.992,
+                "resolution": "1440x900",
+                "display": "DISPLAY 01",
+                "fusion_engine": "UIA + VISION FUSION",
+                "marks": [
+                    {
+                        "mark": 1,
+                        "tag": "[01]",
+                        "name": "Menu Bar",
+                        "type": "menu",
+                        "rect": [10, 30, 220, 54],
+                        "confidence": 0.991,
+                        "selector": "OpenSCAD::MenuBar",
+                        "uia_id": "MenuBar.Main",
+                    },
+                    {
+                        "mark": 2,
+                        "tag": "[02]",
+                        "name": "Window Controls",
+                        "type": "titlebar",
+                        "rect": [1340, 6, 1432, 28],
+                        "confidence": 0.995,
+                        "selector": "OpenSCAD::WindowControls",
+                        "uia_id": "TitleBar.Controls",
+                    },
+                    {
+                        "mark": 3,
+                        "tag": "[03]",
+                        "name": "CSG Tree View",
+                        "type": "treeview",
+                        "rect": [14, 70, 260, 420],
+                        "confidence": 0.988,
+                        "selector": "OpenSCAD::CSGView",
+                        "uia_id": "Tree.CSG",
+                    },
+                    {
+                        "mark": 4,
+                        "tag": "[04]",
+                        "name": "Button 'Export'",
+                        "type": "button",
+                        "rect": [1280, 810, 1400, 846],
+                        "confidence": 0.992,
+                        "selector": "OpenSCAD::ButtonExport",
+                        "uia_id": "Button.ExportSTL",
+                    },
+                    {
+                        "mark": 5,
+                        "tag": "[05]",
+                        "name": "3D CAD Mesh Viewport",
+                        "type": "viewport",
+                        "rect": [270, 70, 1420, 780],
+                        "confidence": 0.998,
+                        "selector": "OpenSCAD::OpenGLViewport",
+                        "uia_id": "Viewport.GLWidget",
+                    },
+                    {
+                        "mark": 6,
+                        "tag": "[06]",
+                        "name": "Coordinate Axes Gizmo",
+                        "type": "gizmo",
+                        "rect": [285, 730, 345, 790],
+                        "confidence": 0.989,
+                        "selector": "OpenSCAD::AxesGizmo",
+                        "uia_id": "Gizmo.XYZ",
+                    },
+                    {
+                        "mark": 7,
+                        "tag": "[07]",
+                        "name": "Camera Orbit/Pan/Zoom",
+                        "type": "toolbar",
+                        "rect": [1390, 80, 1424, 210],
+                        "confidence": 0.984,
+                        "selector": "OpenSCAD::CameraTools",
+                        "uia_id": "Toolbar.Camera",
+                    },
+                    {
+                        "mark": 8,
+                        "tag": "[08]",
+                        "name": "Dimension X (80.00 mm)",
+                        "type": "callout",
+                        "rect": [640, 520, 760, 545],
+                        "confidence": 0.987,
+                        "selector": "OpenSCAD::DimensionDimX",
+                        "uia_id": "Callout.DimX",
+                    },
+                    {
+                        "mark": 9,
+                        "tag": "[09]",
+                        "name": "Dimension Z (24.00 mm)",
+                        "type": "callout",
+                        "rect": [880, 360, 990, 385],
+                        "confidence": 0.986,
+                        "selector": "OpenSCAD::DimensionDimZ",
+                        "uia_id": "Callout.DimZ",
+                    },
+                    {
+                        "mark": 10,
+                        "tag": "[10]",
+                        "name": "Console Log Drawer",
+                        "type": "terminal",
+                        "rect": [14, 780, 260, 870],
+                        "confidence": 0.979,
+                        "selector": "OpenSCAD::ConsoleOutput",
+                        "uia_id": "Drawer.Console",
+                    },
+                    {
+                        "mark": 11,
+                        "tag": "[11]",
+                        "name": "Mesh Quality Telemetry",
+                        "type": "badge",
+                        "rect": [290, 80, 480, 108],
+                        "confidence": 0.994,
+                        "selector": "OpenSCAD::ManifoldBadge",
+                        "uia_id": "Badge.Telemetry",
+                    },
+                    {
+                        "mark": 12,
+                        "tag": "[12]",
+                        "name": "Path Input",
+                        "type": "textbox",
+                        "rect": [180, 810, 1260, 846],
+                        "confidence": 0.985,
+                        "selector": "OpenSCAD::PathInput",
+                        "uia_id": "TextBox.ExportPath",
+                    },
+                ],
+            }
         )
 
     @app.websocket("/ws")
