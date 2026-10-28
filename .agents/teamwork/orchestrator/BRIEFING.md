@@ -1,4 +1,4 @@
-# BRIEFING — 2026-10-28T22:14:45Z
+# BRIEFING — 2026-10-28T22:42:50Z
 
 ## Mission
 Transform the existing Web Cockpit into a universal, domain-agnostic Agent Workstation (Operating Canvas) for autonomous agents without domain-specific locks (zero hardcoded CAD/3D-printing elements), satisfying R1-R5 and all acceptance criteria.
@@ -19,7 +19,7 @@ Transform the existing Web Cockpit into a universal, domain-agnostic Agent Works
 2. **Dispatch & Execute**:
    - Milestone 1 (Backend Domain-Agnostic Endpoints & Persistence): DONE (Gate Result: PASS, 118+ tests passing, 0 CAD tokens).
    - E2E Testing Track: DONE (`test_writer_e2e_v2` published `TEST_INFRA.md` & `TEST_READY.md`, 52/52 core tests passing).
-   - Milestone 2 (Workspace Manager & Reactive Task Pipeline): In-progress (`worker_m2_v2` implementing frontend).
+   - Milestone 2 (Workspace Manager & Reactive Task Pipeline): Worker completed, Gate verification panel in progress.
 3. **On failure** (in this order):
    - Retry: nudge stuck agent or re-send task
    - Replace: spawn fresh agent with partial progress
@@ -33,12 +33,12 @@ Transform the existing Web Cockpit into a universal, domain-agnostic Agent Works
   2. PROJECT.md synthesis & milestone decomposition [done]
   3. Milestone 1: Backend Domain-Agnostic Endpoints & Persistence [DONE - Gate PASSED]
   4. E2E Testing Track: Automated Test Suite Upgrade [DONE - TEST_READY published]
-  5. Milestone 2: Workspace Manager & Reactive Task Pipeline (Left Sidebar & State) [in-progress]
+  5. Milestone 2: Workspace Manager & Reactive Task Pipeline (Left Sidebar & State) [in gate review]
   6. Milestone 3: Polymorphic Stage: 4 Viewports & Split-Screen [pending]
   7. Milestone 4: Safety Interceptor, Universal Omnibar & Polish [pending]
   8. Milestone 5: 100% E2E test pass + Phase 2 adversarial hardening [pending]
 - **Current phase**: 2 (Dual Track Execution)
-- **Current focus**: Milestone 2 Implementation (`worker_m2_v2`).
+- **Current focus**: Milestone 2 Gate verification panel (2 Reviewers, 2 Challengers, 1 Auditor).
 
 ## 🔒 Key Constraints
 - NEVER write, modify, or create source code files directly.
@@ -55,9 +55,9 @@ Transform the existing Web Cockpit into a universal, domain-agnostic Agent Works
 
 ## Key Decisions Made
 - Milestone 1 Gate PASSED unconditionally (118+ tests passed, 0 CAD tokens).
-- E2E Testing Track completed: `TEST_READY.md` certified with 52/52 passing tests across `tests/test_api.py` and `tests/test_browser_dom.py`.
-- Milestone 2 exploration completed by 3 subagents.
-- Dispatched `worker_m2_v2` to implement Workspace Manager modal, reactive task pipeline, and dynamic file explorer in `ui/dashboard/index.html`.
+- E2E Testing Track completed: `TEST_READY.md` certified with 52/52 passing tests.
+- Milestone 2 implementation completed by `worker_m2_v2` (100% tests passed across all 5 test suites).
+- Dispatched Milestone 2 Gate verification panel (2 Reviewers, 2 Challengers, 1 Auditor).
 
 ## Team Roster
 | Agent | Type | Work Item | Status | Conv ID |
@@ -75,18 +75,23 @@ Transform the existing Web Cockpit into a universal, domain-agnostic Agent Works
 | explorer_m2_v2_1 | teamwork_explorer | M2 Workspace Manager & Persistence Explorer | completed | 16075370-4e79-4bd0-afa5-648775a023d5 |
 | explorer_m2_v2_2 | teamwork_explorer | M2 Reactive Task Pipeline Explorer | completed | 3e19e823-299b-4ded-9c5d-fc64c3097b59 |
 | spec_miner_m2_v2 | teamwork_spec_miner | M2 Dynamic File Tree & CAD Removal Miner | completed | 3cf8a2ad-f098-4b25-9e97-a05cc64c6d67 |
-| worker_m2_v2 | teamwork_worker | M2 Frontend Workspace & Task Implementation | in-progress | 4faf997d-a5e3-4674-b529-9a128933e428 |
+| worker_m2_v2 | teamwork_worker | M2 Frontend Workspace & Task Implementation | completed | 4faf997d-a5e3-4674-b529-9a128933e428 |
+| reviewer_m2_v2_1 | teamwork_reviewer | M2 Workspace Manager Code Review | in-progress | 4d4740ae-a614-4821-b17f-d2e3d00d1fd6 |
+| reviewer_m2_v2_2 | teamwork_reviewer | M2 Task Pipeline & File Explorer Review | in-progress | b720bdea-6186-46b0-bd2b-61588c1588f2 |
+| challenger_m2_v2_1 | teamwork_challenger | M2 Adversarial DOM & Modal Challenger | in-progress | d4b67861-8f8c-4270-9f14-49967b726eee |
+| challenger_m2_v2_2 | teamwork_challenger | M2 Task Lifecycle & File Filter Challenger | in-progress | 4dbe3605-084f-43f9-b2aa-ca972dd8a811 |
+| auditor_m2_v2 | teamwork_auditor | M2 Forensic Integrity Audit | in-progress | 715eddc0-5bc1-40a9-b96a-72dfd2fe8522 |
 
 ## Succession Status
-- Succession required: no
-- Spawn count: 14 / 16
-- Pending subagents: 4faf997d-a5e3-4674-b529-9a128933e428
+- Succession required: pending subagent completion (spawn count 19 >= 16)
+- Spawn count: 19 / 16
+- Pending subagents: 4d4740ae-a614-4821-b17f-d2e3d00d1fd6, b720bdea-6186-46b0-bd2b-61588c1588f2, d4b67861-8f8c-4270-9f14-49967b726eee, 4dbe3605-084f-43f9-b2aa-ca972dd8a811, 715eddc0-5bc1-40a9-b96a-72dfd2fe8522
 - Predecessor: none
 - Successor: not yet spawned
 
 ## Active Timers
 - Heartbeat cron: db3d98a0-f6a4-45e7-9dea-32dceda77cf0/task-34
-- Safety timer: db3d98a0-f6a4-45e7-9dea-32dceda77cf0/task-319
+- Safety timer: db3d98a0-f6a4-45e7-9dea-32dceda77cf0/task-392
 - On succession: kill all timers before spawning successor
 - On context truncation: handle timers as step 4 of State Recovery
 
