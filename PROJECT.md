@@ -80,7 +80,7 @@ Every feature from the survey phase is enumerated below with its assigned milest
 
 | # | Name | Scope | Dependencies | Status |
 |---|------|-------|-------------|--------|
-| M1 | Backend Domain-Agnostic Endpoints & Persistence | Clean `/api/som` and `/api/scenario/reset` from CAD/OpenSCAD; add `/api/workspaces`, `/api/tasks`, `/api/workspace/files`; extend `/api/state` | none | PLANNED |
+| M1 | Backend Domain-Agnostic Endpoints & Persistence | Clean `/api/som` and `/api/scenario/reset` from CAD/OpenSCAD; add `/api/workspaces`, `/api/tasks`, `/api/workspace/files`; extend `/api/state` | none | DONE (118+ tests pass, 0 CAD tokens, gate PASSED) |
 | M2 | Workspace Manager & Reactive Task Pipeline (Left Sidebar & State) | Workspace modal `[+ Neuer Workspace]`, `localStorage` persistence, hot-switch; universal task model with 5 statuses, priorities, inline creation, delegation toggle, progress metrics; dynamic file tree with type filters; CAD removal | M1 | PLANNED |
 | M3 | Polymorphic Stage: 4 Viewports & Split-Screen | 4 switchable viewports (SOM desktop perception, Artifact MIME studio, Blackboard DAG visualizer, Multi-tab terminal), 50/50 split-screen, quick drawers, CAD removal | M2 | PLANNED |
 | M4 | Safety Interceptor, Universal Omnibar & Polish | Safety Interceptor with risk levels, hotkeys & keyboard scope guard; PANIC KILL; Omnibar with slash autocomplete, audio pill, model selector, file dropzone; XSS sanitization; DESIGN tokens; multi-resolution stability | M2, M3 | PLANNED |

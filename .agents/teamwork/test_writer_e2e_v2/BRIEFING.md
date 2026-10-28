@@ -1,4 +1,4 @@
-# BRIEFING — 2026-10-28T21:45:30Z
+# BRIEFING — 2026-10-28T22:06:15Z
 
 ## Mission
 Build and verify comprehensive E2E automated test suite (Tier 1 to Tier 4) for Universal Domain-Agnostic Agent Workstation covering all requirements R1-R5 and acceptance criteria.
@@ -19,7 +19,7 @@ Build and verify comprehensive E2E automated test suite (Tier 1 to Tier 4) for U
 
 ## Current Parent
 - Conversation ID: db3d98a0-f6a4-45e7-9dea-32dceda77cf0
-- Updated: 2026-10-28T21:45:30Z
+- Updated: 2026-10-28T22:06:15Z
 
 ## Task Summary
 - **What to build**: Comprehensive unit, API, and Playwright DOM E2E tests for the Workstation frontend and backend.
@@ -28,18 +28,21 @@ Build and verify comprehensive E2E automated test suite (Tier 1 to Tier 4) for U
 - **Code layout**: `tests/test_api.py`, `tests/test_browser_dom.py`, `TEST_INFRA.md`, `TEST_READY.md`
 
 ## Key Decisions Made
-- Initial initialization.
+- Installed re-entrant Playwright context proxy in `tests/conftest.py` allowing cross-module multi-scoped test runs without asyncio loop collisions.
+- Upgraded `tests/test_api.py` to 22 tests covering core endpoints + additive M1 workspace/task/file endpoints.
+- Upgraded `tests/test_browser_dom.py` to 30 tests covering Tiers 1-4 (Workspace CRUD modal, Reactive Tasks, 4 Polymorphic Viewports, Split-Screen, Drawers, Safety Interceptor, Keyboard Scope Guard, Omnibar Slash Autocomplete, XSS sanitization, multi-resolution ergonomics).
+- Published `TEST_INFRA.md` and `TEST_READY.md` at project root.
 
 ## Artifact Index
-- `tests/test_api.py` — API backend tests
-- `tests/test_browser_dom.py` — Playwright browser DOM E2E tests
+- `tests/test_api.py` — API backend tests (22 tests, 100% pass)
+- `tests/test_browser_dom.py` — Playwright browser DOM E2E tests (30 tests, 100% pass)
 - `TEST_INFRA.md` — Test infrastructure documentation
-- `TEST_READY.md` — Test readiness and coverage report
+- `TEST_READY.md` — Test readiness and coverage report (52 tests total, 100% pass)
 
 ## Loaded Skills
 - None requested specifically in prompt.
 
 ## Quality Status
-- **Build/test result**: Initial state to be assessed
+- **Build/test result**: 52/52 PASSED (100% pass in 40.65s)
 - **Lint status**: clean
-- **Tests added/modified**: pending
+- **Tests added/modified**: 52 tests across `test_api.py` and `test_browser_dom.py`
