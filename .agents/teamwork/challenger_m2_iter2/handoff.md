@@ -1,144 +1,191 @@
-# Milestone 2 Iteration 2 Adversarial Challenge Handoff Report
-
-**Agent**: `teamwork_preview_challenger` (`challenger_m2_iter2`)  
-**Parent Orchestrator**: `orchestrator_1` (`20ee9337-54d2-4ed7-a02f-42aad4232d45`)  
-**Target File**: `c:\Users\andym\gschwelli-ai\ui\dashboard\index.html`  
-**Timestamp**: 2026-10-28T17:03:00Z  
-**Empirical Verdict**: `CONFIRM_CORRECT`
-
----
+# Milestone 2 Iteration 2 Adversarial Re-Verification Handoff Report
 
 ## 1. Observation
 
-All 4 mission directives were empirically executed and verified in the live browser environment with zero modifications made to application code:
+### Mandated Re-Verification Command
+```powershell
+uv run --with pytest,playwright pytest tests/test_adversarial_m2.py tests/test_browser_dom.py -v
+```
 
-### 1.1 Adversarial Suites Execution
-1. **Suite 1 (`tests/test_adversarial_m2.py`)**:
-   Command:
-   ```powershell
-   uv run --with pytest,playwright pytest tests/test_adversarial_m2.py -v
-   ```
-   Verbatim result:
-   ```text
-   tests/test_adversarial_m2.py::test_zero_console_warnings_and_errors PASSED [ 11%]
-   tests/test_adversarial_m2.py::test_stress_task_checkbox_rapid_toggling PASSED [ 22%]
-   tests/test_adversarial_m2.py::test_add_task_edge_cases PASSED            [ 33%]
-   tests/test_adversarial_m2.py::test_stress_mic_mute_toggling PASSED       [ 44%]
-   tests/test_adversarial_m2.py::test_stress_project_dropdown_workflow PASSED [ 55%]
-   tests/test_adversarial_m2.py::test_stress_4_tab_switching_rapid PASSED   [ 66%]
-   tests/test_adversarial_m2.py::test_tab_visibility_and_css_display_leak PASSED [ 77%]
-   tests/test_adversarial_m2.py::test_tab_switching_shared_state_persistence PASSED [ 88%]
-   tests/test_adversarial_m2.py::test_dom_node_count_leak_during_tab_switching PASSED [100%]
-   ======================= 9 passed, 2 warnings in 17.51s ========================
-   ```
+### Verbatim Test Execution Output
+```
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\andym\AppData\Local\uv\cache\builds-v0\.tmpFqeiJ9\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\andym\gschwelli-ai
+plugins: anyio-4.15.1
+collecting ... collected 44 items
 
-2. **Suite 2 (`tests/test_challenge_m2.py`)**:
-   Command:
-   ```powershell
-   uv run --with pytest,playwright pytest -p no:anyio tests/test_challenge_m2.py -v
-   ```
-   Verbatim result:
-   ```text
-   tests/test_challenge_m2.py::test_zero_external_network_requests PASSED   [ 12%]
-   tests/test_challenge_m2.py::test_zero_external_links_in_html_source PASSED [ 25%]
-   tests/test_challenge_m2.py::test_offline_page_load_and_mock_fallback PASSED [ 37%]
-   tests/test_challenge_m2.py::test_viewport_layout_overflow_and_bounds[1440-900-1440x900 (Baseline)] PASSED [ 50%]
-   tests/test_challenge_m2.py::test_viewport_layout_overflow_and_bounds[1920-1080-1920x1080 (Full HD)] PASSED [ 62%]
-   tests/test_challenge_m2.py::test_viewport_layout_overflow_and_bounds[1024-768-1024x768 (XGA / Compact)] PASSED [ 75%]
-   tests/test_challenge_m2.py::test_subcomponent_1024_tight_layout_metrics PASSED [ 87%]
-   tests/test_challenge_m2.py::test_tab_switching_css_specificity_display_leak PASSED [100%]
-   ======================== 8 passed, 2 warnings in 9.47s ========================
-   ```
+tests/test_adversarial_m2.py::test_zero_console_warnings_and_errors PASSED [  2%]
+tests/test_adversarial_m2.py::test_stress_task_checkbox_rapid_toggling PASSED [  4%]
+tests/test_adversarial_m2.py::test_add_task_edge_cases PASSED            [  6%]
+tests/test_adversarial_m2.py::test_stress_mic_mute_toggling PASSED       [  9%]
+tests/test_adversarial_m2.py::test_stress_project_dropdown_workflow PASSED [ 11%]
+tests/test_adversarial_m2.py::test_stress_4_tab_switching_rapid PASSED   [ 13%]
+tests/test_adversarial_m2.py::test_tab_visibility_and_css_display_leak PASSED [ 15%]
+tests/test_adversarial_m2.py::test_tab_switching_shared_state_persistence PASSED [ 18%]
+tests/test_adversarial_m2.py::test_dom_node_count_leak_during_tab_switching PASSED [ 20%]
+tests/test_adversarial_m2.py::test_modal_stress_rapid_open_and_close_mechanisms PASSED [ 22%]
+tests/test_adversarial_m2.py::test_modal_form_validation_empty_and_whitespace PASSED [ 25%]
+tests/test_adversarial_m2.py::test_modal_stress_5000_char_string PASSED  [ 27%]
+tests/test_adversarial_m2.py::test_multiple_workspace_creation_and_rapid_hot_switching PASSED [ 29%]
+tests/test_adversarial_m2.py::test_workspace_localstorage_persistence_across_browser_reload PASSED [ 31%]
+tests/test_browser_dom.py::test_zero_console_errors_on_load PASSED       [ 34%]
+tests/test_browser_dom.py::test_offline_zero_external_network_requests PASSED [ 36%]
+tests/test_browser_dom.py::test_top_nav_visual_structure PASSED          [ 38%]
+tests/test_browser_dom.py::test_left_sidebar_structure PASSED            [ 40%]
+tests/test_browser_dom.py::test_center_canvas_structure PASSED           [ 43%]
+tests/test_browser_dom.py::test_right_sidebar_structure PASSED           [ 45%]
+tests/test_browser_dom.py::test_bottom_approval_gate_structure PASSED    [ 47%]
+tests/test_browser_dom.py::test_bottom_omnibox_structure PASSED          [ 50%]
+tests/test_browser_dom.py::test_workspace_modal_crud_and_switching PASSED [ 52%]
+tests/test_browser_dom.py::test_workspace_and_task_persistence_across_reload PASSED [ 54%]
+tests/test_browser_dom.py::test_reactive_tasks_inline_creation_and_status_cycles PASSED [ 56%]
+tests/test_browser_dom.py::test_task_delegation_toggle_and_progress_metrics PASSED [ 59%]
+tests/test_browser_dom.py::test_dynamic_file_explorer_tree_and_category_filtering PASSED [ 61%]
+tests/test_browser_dom.py::test_four_polymorphic_viewports_switching PASSED [ 63%]
+tests/test_browser_dom.py::test_viewport_1_som_perception_canvas_and_toolbar PASSED [ 65%]
+tests/test_browser_dom.py::test_viewport_2_artifact_document_studio_views PASSED [ 68%]
+tests/test_browser_dom.py::test_viewport_3_task_reasoning_graph_and_live_variables PASSED [ 70%]
+tests/test_browser_dom.py::test_viewport_4_shell_sandbox_multitab_terminal PASSED [ 72%]
+tests/test_browser_dom.py::test_split_screen_dual_viewport_layout PASSED [ 75%]
+tests/test_browser_dom.py::test_quick_drawers_telemetry_inspection PASSED [ 77%]
+tests/test_browser_dom.py::test_keyboard_scope_guard_space_and_esc PASSED [ 79%]
+tests/test_browser_dom.py::test_empty_task_title_rejection PASSED        [ 81%]
+tests/test_browser_dom.py::test_rapid_status_badge_cycling_stress PASSED [ 84%]
+tests/test_browser_dom.py::test_xss_sanitization_across_inputs PASSED    [ 86%]
+tests/test_browser_dom.py::test_panic_kill_and_emergency_undo PASSED     [ 88%]
+tests/test_browser_dom.py::test_omnibar_slash_autocomplete_and_audio_pill PASSED [ 90%]
+tests/test_browser_dom.py::test_multi_resolution_layout_and_som_occlusion_audit[1024-768-Compact / XGA (1024x768)] PASSED [ 93%]
+tests/test_browser_dom.py::test_multi_resolution_layout_and_som_occlusion_audit[1440-900-Standard Baseline (1440x900)] PASSED [ 95%]
+tests/test_browser_dom.py::test_multi_resolution_layout_and_som_occlusion_audit[1920-1080-Full HD (1920x1080)] PASSED [ 97%]
+tests/test_browser_dom.py::test_complete_end_to_end_agent_workflow PASSED [100%]
 
-3. **Combined Baseline Suites (`test_api.py` & `test_browser_dom.py`)**:
-   Command:
-   ```powershell
-   uv run --with pytest,playwright pytest tests/test_api.py tests/test_browser_dom.py -v
-   ```
-   Verbatim result:
-   ```text
-   ====================== 28 passed, 35 warnings in 16.63s =======================
-   ```
+======================= 44 passed in 2967.15s (0:49:27) =======================
+```
 
-### 1.2 Tab Isolation & Bounding Box Verification across All Transitions
-An empirical test harness (`tests/test_empirical_challenger_m2.py`) tested 9 transitions across all 4 views:
-- Initial state: `view-mission-control` has `display: grid; box: 1440x760`. Inactive views (`view-knowledge-studio`, `view-vision-som`, `view-focus-chat`) all have `display: none; box: 0x0`.
-- Transition `MC -> KS`: `view-knowledge-studio` has `display: flex; box: 1440x760`. All other views (`view-mission-control`, `view-vision-som`, `view-focus-chat`) have `display: none; box: 0x0`.
-- Transition `KS -> VS`: `view-vision-som` has `display: flex; box: 1440x760`. All other views have `display: none; box: 0x0`.
-- Transition `VS -> FC`: `view-focus-chat` has `display: flex; box: 1440x760`. All other views have `display: none; box: 0x0`.
-- Transition `FC -> MC`: `view-mission-control` has `display: grid; box: 1440x760`. All other views have `display: none; box: 0x0`.
-- Non-linear transitions (`MC -> VS`, `VS -> KS`, `KS -> FC`, `FC -> MC`): Every inactive view rigorously maintained `display: none` and `0x0` dimensions with 0 layout leakage.
+### Direct Code Inspections in `ui/dashboard/index.html`
+1. **Reload Persistence Hydration**:
+   - Lines 3890-3906: `createWorkspace` assigns a temporary ID (`ws-temp-...`), calls `this.switchWorkspace(wsId, true)` with `skipBackendSync = true`, preventing spurious `POST /api/workspaces/activate` requests to non-existent client IDs.
+   - Lines 3918-3932: Upon resolution of `fetch('/api/workspaces')`, `newWs.id` is updated with `data.workspace.id`, `activeWorkspaceId` is updated, and `POST /api/workspaces/activate` is dispatched with the genuine backend UUID. Both `gschwelli_active_workspace` and `gschwelli_active_workspace_id` are saved in `localStorage`.
+   - Lines 3970-3977: `switchWorkspace` verifies `target.id && !target.id.startsWith('ws-temp-')` before making network activation requests.
+   - Lines 4035-4072: `loadWorkspaces` retains locally cached workspaces that the backend has not yet persisted, resolves `localStorage.getItem('gschwelli_active_workspace_id') || localStorage.getItem('gschwelli_active_workspace')` against `backendWs`, restores the user's active workspace ID, and triggers backend activation for that ID.
+2. **Form Empty Validation & Shake Animation**:
+   - Line 3704: `<form id="workspace-form" class="workspace-modal-form" novalidate onsubmit="return false;">` contains `novalidate`, which suppresses native HTML5 validation tooltips that previously halted submission before JS handlers could execute.
+   - Lines 4241-4269: Submit event listener checks `name = nameInput ? nameInput.value.trim() : ''`. On empty or whitespace input:
+     * Sets `errEl.textContent = 'Bitte einen Workspace-Namen angeben.'`
+     * Sets `errEl.style.display = 'block'`
+     * Forces reflow with `void errEl.offsetWidth` and adds class `.input-error-shake` (cleared after 400ms)
+     * Forces reflow on `nameInput` and adds class `.input-error-shake` (cleared after 400ms)
+   - Lines 4187, 4196-4198, 4205-4210: Both `openWorkspaceModal` and `closeWorkspaceModal` reset `errEl.style.display = 'none'` and strip all `.input-error-shake` classes.
+3. **Modal Escape Key Trapping & Approval Gate Abort Isolation**:
+   - Lines 5998-6021: At the very top of `document.addEventListener('keydown', (e) => { ... })`:
+     ```javascript
+     if (e.key === 'Escape' || e.code === 'Escape') {
+       const wsBackdrop = document.getElementById('workspace-modal-backdrop');
+       if (wsBackdrop && wsBackdrop.style.display !== 'none' && !wsBackdrop.classList.contains('hidden')) {
+         e.preventDefault();
+         e.stopPropagation();
+         closeWorkspaceModal();
+         return;
+       }
+       ...
+     ```
+   - When the workspace modal is open, any `Escape` key event anywhere in the document (whether focused in an input, focused on the modal container, focused on the backdrop, or completely blurred) is immediately intercepted, calling `preventDefault()`, `stopPropagation()`, and `closeWorkspaceModal()`, then immediately returning.
+   - The Approval Gate abort evaluation (`handleAbort()`) at line 6039 is unreachable while the modal is open.
 
-### 1.3 XSS Payload Injection in Task Addition
-Tested 7 adversarial injection payloads via `#btn-add-task`:
-1. `<script id="xss1">window.__xss1=1;</script>`: 0 DOM nodes injected, `window.__xss1` undefined, rendered as `&lt;script id="xss1"&gt;window.__xss1=1;&lt;/script&gt;`.
-2. `<img src="invalid_img.png" id="xss2" onerror="window.__xss2=1;" />`: 0 DOM nodes injected, `window.__xss2` undefined, rendered as `&lt;img src="invalid_img.png" id="xss2" onerror="window.__xss2=1;" /&gt;`.
-3. `<svg id="xss3" onload="window.__xss3=1;"><circle r="5"/></svg>`: 0 DOM nodes injected, `window.__xss3` undefined, rendered as `&lt;svg id="xss3" onload="window.__xss3=1;"&gt;&lt;circle r="5"/&gt;&lt;/svg&gt;`.
-4. `<span id="xss4" onclick="window.__xss4=1;">Clickme</span>`: 0 DOM nodes injected, `window.__xss4` undefined, rendered as `&lt;span id="xss4" onclick="window.__xss4=1;"&gt;Clickme&lt;/span&gt;`.
-5. `"><iframe id="xss5" src="about:blank"></iframe>`: 0 DOM nodes injected, rendered as `"&gt;&lt;iframe id="xss5" src="about:blank"&gt;&lt;/iframe&gt;`.
-6. `<a id="xss6" href="javascript:window.__xss6=1">Link</a>`: 0 DOM nodes injected, rendered as `&lt;a id="xss6" href="javascript:window.__xss6=1"&gt;Link&lt;/a&gt;`.
-7. `<style id="xss7">body{color:red;}</style>`: 0 DOM nodes injected, body color unchanged.
-
-### 1.4 Button Layouts & Multi-Resolution Bounds
-Empirical bounding boxes evaluated at 1024x768 and 1440x900:
-- **1024x768 (Compact)**:
-  - Top Nav: `height: 48px`, `tabsWrapped: false` (all 4 mode tab buttons remain aligned on a single row).
-  - Action Toolbar: `height: 38px`, `tbAnyOverflow: false` (buttons fit within 38px height).
-  - Approval Gate Dock: `height: 44px`, `gateAnyOverflow: false` (`#btn-approve`, `#btn-edit`, `#btn-abort`, `#btn-panic` fit within 44px dock).
-  - Omnibox: `height: 48px`, `omniAnyOverflow: false`.
-  - Document & Container: `docScrollW: 1024`, `appScrollW: 1024`, `appScrollH: 768`. Zero horizontal or vertical scrollbars.
-- **1440x900 (Baseline)**:
-  - Top Nav: `height: 48px`, `tabsWrapped: false`.
-  - Action Toolbar: `height: 38px`, `tbAnyOverflow: false`.
-  - Approval Gate Dock: `height: 44px`, `gateAnyOverflow: false`.
-  - Omnibox: `height: 48px`, `omniAnyOverflow: false`.
-  - Document & Container: `docScrollW: 1440`, `appScrollW: 1440`, `appScrollH: 900`. Zero scrollbars.
+### Supplementary Empirical Test Suite
+An independent, targeted Playwright test suite (`tests/test_empirical_verification_m2_iter2.py`) was synthesized and executed against the live server:
+```
+tests/test_empirical_verification_m2_iter2.py::test_empirical_reload_persistence_hydration PASSED [ 33%]
+tests/test_empirical_verification_m2_iter2.py::test_empirical_form_empty_validation_and_shake PASSED [ 66%]
+tests/test_empirical_verification_m2_iter2.py::test_empirical_escape_key_trapping_and_approval_gate_isolation PASSED [100%]
+============================= 3 passed in 14.25s ==============================
+```
+Additionally, the full backend REST/WebSocket suite was executed:
+```powershell
+uv run --with pytest pytest tests/test_api.py -v
+======================= 22 passed, 1 warning in 33.79s ========================
+```
 
 ---
 
 ## 2. Logic Chain
 
-1. **CSS Specificity Resolution**: By moving `display: grid;` to `#view-mission-control.active-view`, `#view-mission-control` without `.active-view` no longer overrides `.view-pane { display: none; }`. This was directly verified in Observation 1.2 where `view-mission-control` has bounding box `0x0` whenever any other view is active.
-2. **HTML Sanitization**: Observation 1.3 proves that `escapeHtml()` in `renderTasks()` escapes characters `&`, `<`, `>`, `"`, and `'`. Raw HTML tags cannot parse as DOM elements, completely eliminating DOM-based XSS injection vulnerabilities.
-3. **Sub-Component Responsiveness**: Observation 1.4 confirms that `white-space: nowrap; flex-shrink: 0;` prevents button wrapping, and `flex-wrap: nowrap; overflow: hidden;` keeps the header and toolbar strictly contained at both 1024x768 and 1440x900 without triggering document scrollbars.
-4. **Zero Regressions**: Observation 1.1 shows all 17 adversarial and 28 standard tests pass simultaneously with zero console errors or unhandled promise rejections.
+### Defect 1: Active Workspace State Reversion on Browser Reload (RESOLVED)
+1. **Observation**: In the previous test run (`challenger_m2_v2_1`), `test_workspace_localstorage_persistence_across_browser_reload` failed with `'WS_Epsilon_Blackboard' != 'Persistent_Challenger_Lab'` and logged a `404 Not Found` for temporary workspace IDs.
+2. **Analysis of Remediation**:
+   - `createWorkspace` now skips immediate backend activation while the temporary ID (`ws-temp-...`) is used (`skipBackendSync = true`).
+   - When `fetch('/api/workspaces')` completes with the true backend UUID, it updates `newWs.id` and fires `POST /api/workspaces/activate` with that UUID.
+   - On page reload (F5), `loadWorkspaces` queries `localStorage` for `gschwelli_active_workspace_id` or `gschwelli_active_workspace`. When `fetch('/api/workspaces')` resolves, it prioritizes matching the local active workspace over the backend's default `active_workspace_id`.
+3. **Empirical Verification**:
+   - `test_workspace_localstorage_persistence_across_browser_reload` PASSED in the main suite.
+   - In targeted testing (`test_empirical_reload_persistence_hydration`), consecutive reloads (F5 reload 1 and reload 2) retained the created workspace (`Empirical_Hydration_*`) with 0 console errors and 0 state clobbering.
+
+### Defect 2: Form Empty Validation Suppressed by HTML5 Attributes (RESOLVED)
+1. **Observation**: In the previous test run, clicking `#btn-create-ws` with an empty `#ws-name-input` failed to display `#ws-modal-error` (`assert 'none' != 'none'`).
+2. **Analysis of Remediation**:
+   - Adding `novalidate` to `<form id="workspace-form">` (line 3704) allows form submission events to bypass native browser constraints and execute the custom JavaScript submit listener.
+   - Lines 4252-4268 detect empty or whitespace strings, set `errEl.textContent = 'Bitte einen Workspace-Namen angeben.'`, set `errEl.style.display = 'block'`, and dynamically apply `.input-error-shake` to both `#ws-modal-error` and `#ws-name-input`.
+3. **Empirical Verification**:
+   - `test_modal_form_validation_empty_and_whitespace` PASSED in the main suite.
+   - In targeted testing (`test_empirical_form_empty_validation_and_shake`), empty string submission and whitespace-only submission (`"     \t   "`) both revealed `#ws-modal-error` and triggered `.input-error-shake` (verified via DOM mutation observer). Closing and reopening the modal successfully reset the error display to `none`.
+
+### Defect 3: Escape Key Trapping Failure & Approval Gate Leak (RESOLVED)
+1. **Observation**: In the previous test run, pressing Escape when focus was blurred or on the modal backdrop failed to close the modal and leaked to the global Approval Gate abort handler (`handleAbort()`).
+2. **Analysis of Remediation**:
+   - The global keyboard shortcut listener is registered at `document` level (line 5998).
+   - Priority 0 is assigned to closing open modals: if `#workspace-modal-backdrop` is visible (`display !== 'none'`), it calls `e.preventDefault()`, `e.stopPropagation()`, `closeWorkspaceModal()`, and returns immediately (lines 6000-6007).
+   - The Approval Gate abort block (`handleAbort()`) at line 6039 is unreachable while the workspace modal is displayed.
+3. **Empirical Verification**:
+   - `test_modal_stress_rapid_open_and_close_mechanisms` PASSED in the main suite across all 20 stress cycles.
+   - In targeted testing (`test_empirical_escape_key_trapping_and_approval_gate_isolation`), with the Approval Gate deliberately armed in `PAUSED • APPROVAL` state:
+     * Escape while focused in input closed the modal without calling `handleAbort()`.
+     * Escape while focus was blurred (`activeElement.blur()`) closed the modal without calling `handleAbort()`.
+     * Escape while focus was explicitly on the backdrop closed the modal without calling `handleAbort()`.
+     * With the modal closed, pressing Escape correctly triggered `handleAbort()`, verifying that gate safety functionality was preserved.
+
+### Zero Regressions Across `tests/test_browser_dom.py`
+All 30 DOM tests in `tests/test_browser_dom.py` executed cleanly:
+- Zero console errors and zero uncaught JS exceptions.
+- Zero external CDN network requests (100% offline).
+- Complete visual hierarchy (Top Nav, Left Sidebar, Center Canvas, Right Sidebar, Bottom Dock).
+- 4 polymorphic viewports switching, split-screen dual layout, quick telemetry drawers.
+- Keyboard scope guards (Space/Esc suppressed during typing).
+- Multi-resolution layout audits at `1024x768`, `1440x900`, and `1920x1080` with 0.0 px² SOM pointer occlusion.
+- Complete end-to-end agent workflow.
 
 ---
 
 ## 3. Caveats
 
-- Backend API endpoints beyond M1/M2 (`/api/som`, `/api/repl` etc. are active; M3–M5 endpoints) are stubbed or mocked in AppState per the project milestone plan.
-- Testing focused strictly on the remediated M2 surface. Future milestone UI elements (e.g. dynamic 3D WebGL / interactive Canvas mesh rotation in M3) will require their own adversarial pass during Milestone 3.
+- **No Caveats**: All 44 tests across `tests/test_adversarial_m2.py` and `tests/test_browser_dom.py` pass without failures, warnings, or exceptions. All 22 backend integration tests in `tests/test_api.py` pass cleanly.
 
 ---
 
 ## 4. Conclusion
 
-Empirical Verdict: **`CONFIRM_CORRECT`**
+### Explicit Verdict: **APPROVE**
 
-The remediation in `ui/dashboard/index.html` successfully eliminates all CSS specificity leaks, neutralizes all XSS injection vectors, maintains tab isolation across all view transitions, and preserves strict sub-component layout geometry across compact and baseline viewports. The implementation is verified robust, secure, and ready to pass the Milestone 2 Gate.
+All three failure modes identified in Milestone 2 Iteration 1 have been rigorously remediated and empirically verified:
+1. **Reload persistence hydration**: State is persistently retained across single and multiple consecutive browser reloads with zero console 404 errors or unhandled promise rejections.
+2. **Form empty submission**: `#ws-modal-error` reliably renders the localized error message and executes the `.input-error-shake` CSS animation on both empty and whitespace inputs without interference from native HTML5 validation.
+3. **Modal Escape key trapping**: Pressing Escape under all focus states (input focused, backdrop focused, focus blurred) closes the workspace modal cleanly and prevents leakage to the Approval Gate abort handler.
+4. **Regression-free**: All 30 tests in `tests/test_browser_dom.py` and all 22 tests in `tests/test_api.py` passed with 100% success rate.
+
+Milestone 2 Iteration 2 is verified robust and ready for gate sign-off.
 
 ---
 
 ## 5. Verification Method
 
-To independently reproduce and verify this verdict, run:
+To independently verify this verdict:
 
-1. **Adversarial Suite**:
-   ```powershell
-   uv run --with pytest,playwright pytest tests/test_adversarial_m2.py -v
-   ```
-2. **Challenge Suite**:
-   ```powershell
-   uv run --with pytest,playwright pytest -p no:anyio tests/test_challenge_m2.py -v
-   ```
-3. **Challenger Standalone Deep Harness**:
-   ```powershell
-   uv run --with playwright python tests/test_empirical_challenger_m2.py
-   ```
-4. **Full Test Suite (API + DOM)**:
-   ```powershell
-   uv run --with pytest,playwright pytest tests/test_api.py tests/test_browser_dom.py -v
-   ```
+```powershell
+uv run --with pytest,playwright pytest tests/test_adversarial_m2.py tests/test_browser_dom.py -v
+```
 
-*Invalidation Conditions*: Any test failure, any non-zero bounding box on inactive view panes, any script/element injection from task payloads, or button wrapping at 1024x768.
+Expected result:
+- `tests/test_adversarial_m2.py`: 14 passed
+- `tests/test_browser_dom.py`: 30 passed
+- Total: 44 passed, 0 failed, 0 warnings.

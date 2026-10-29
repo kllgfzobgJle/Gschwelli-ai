@@ -13,6 +13,16 @@ Empirically challenges:
    - Actual element visibility & CSS display computed style (detecting ID specificity leaks).
    - Shared state persistence across tab switches.
    - DOM leak detection (node count invariant).
+4. Workspace Modal Stress:
+   - Rapidly open and close via Escape (focused and blurred), backdrop click, Cancel button, and Close button.
+   - Modal form validation with empty input vs whitespace-only input and UI error container display.
+   - 5,000-character name and prompt strings: layout bounding, text truncation, and document overflow.
+5. Multiple Workspace Creation and Rapid Hot-Switching:
+   - Create 5 distinct workspaces via modal sequentially.
+   - 30 rapid switches without page reload.
+   - Structural DOM node invariance and REPL buffer bounds.
+6. Browser Reload State Persistence:
+   - Verify localStorage population and active workspace retention across page reload (F5).
 """
 
 from __future__ import annotations
@@ -202,8 +212,6 @@ def test_add_task_edge_cases(page: Page) -> None:
     probe_element = page.locator("#xss-test-probe")
     probe_count = probe_element.count()
     
-    # We record whether raw unescaped HTML tags were inserted into the DOM
-    # If probe_count > 0, the DOM parsed raw HTML, indicating an XSS / HTML injection vulnerability
     task_count = page.locator(".task-item").count()
     assert task_count == initial_total + 1, "Task should be added"
 
@@ -293,12 +301,7 @@ def test_stress_4_tab_switching_rapid(page: Page) -> None:
 
 
 def test_tab_visibility_and_css_display_leak(page: Page) -> None:
-    """Adversarial challenge: Verify that inactive tabs are TRULY hidden via CSS display: none.
-    
-    Checks for CSS selector specificity bugs where #view-mission-control { display: grid }
-    overrides .view-pane { display: none }, causing Mission Control to remain rendered
-    simultaneously with Knowledge Studio or Vision SOM!
-    """
+    """Adversarial challenge: Verify that inactive tabs are TRULY hidden via CSS display: none."""
     page.wait_for_load_state("networkidle")
 
     # Switch to Knowledge Studio
@@ -324,9 +327,6 @@ def test_tab_visibility_and_css_display_leak(page: Page) -> None:
     ks_box = metrics["ks_box"]
     mc_box = metrics["mc_box"]
 
-    print(f"Metrics after switching to Knowledge Studio: MC={mc_box}, KS={ks_box}")
-
-    # An inactive view pane MUST have computed display == 'none'
     assert disp_ks != "none", f"Active Knowledge Studio should be visible, got display: {disp_ks}"
     assert disp_mc == "none", (
         f"CSS SPECIFICITY BUG: Inactive Mission Control pane has computed display '{disp_mc}' instead of 'none'! "
@@ -397,7 +397,8 @@ def test_modal_stress_rapid_open_and_close_mechanisms(page: Page) -> None:
     
     Verifies:
     - Open via #btn-new-workspace
-    - Close via Escape key
+    - Close via Escape key while focused in input
+    - Close via Escape key when focus is blurred / on backdrop
     - Open via #btn-new-workspace-dropdown
     - Close via backdrop click (click outside card)
     - Open via #btn-new-workspace and close via #btn-cancel-ws
@@ -415,13 +416,25 @@ def test_modal_stress_rapid_open_and_close_mechanisms(page: Page) -> None:
     # Initial state: modal hidden
     assert modal_backdrop.evaluate("el => window.getComputedStyle(el).display") == "none"
 
-    # 1. Open via #btn-new-workspace, close via Escape key
+    # 1a. Open via #btn-new-workspace, close via Escape key (while focused)
     btn_new_ws.click()
     page.wait_for_timeout(50)
     assert modal_backdrop.evaluate("el => window.getComputedStyle(el).display") != "none", "Modal not displayed after clicking #btn-new-workspace"
     page.keyboard.press("Escape")
     page.wait_for_timeout(50)
-    assert modal_backdrop.evaluate("el => window.getComputedStyle(el).display") == "none", "Modal did not close on Escape key"
+    assert modal_backdrop.evaluate("el => window.getComputedStyle(el).display") == "none", "Modal did not close on Escape key while focused"
+
+    # 1b. Open via #btn-new-workspace, blur focus, close via Escape key
+    btn_new_ws.click()
+    page.wait_for_timeout(50)
+    assert modal_backdrop.evaluate("el => window.getComputedStyle(el).display") != "none"
+    page.evaluate("document.activeElement.blur()")
+    page.keyboard.press("Escape")
+    page.wait_for_timeout(50)
+    assert modal_backdrop.evaluate("el => window.getComputedStyle(el).display") == "none", (
+        "Modal failed to close on Escape key when focus was blurred/not inside input! "
+        "Global keydown listener omitted #workspace-modal-backdrop."
+    )
 
     # 2. Open via #btn-new-workspace, close via backdrop click (click at x=10, y=10 on backdrop)
     btn_new_ws.click()
@@ -485,9 +498,12 @@ def test_modal_form_validation_empty_and_whitespace(page: Page) -> None:
     submit_btn.click()
     page.wait_for_timeout(100)
 
-    # Modal must remain open, error must be visible
+    # Modal must remain open, error must be visible in UI
     assert modal_backdrop.evaluate("el => window.getComputedStyle(el).display") != "none", "Modal closed on empty submission"
-    assert error_el.evaluate("el => window.getComputedStyle(el).display") != "none", "Error message not displayed on empty submission"
+    assert error_el.evaluate("el => window.getComputedStyle(el).display") != "none", (
+        "Error message container #ws-modal-error not displayed on empty submission! "
+        "HTML5 required attribute blocked submit event before custom error handler executed."
+    )
     assert len(error_el.inner_text().strip()) > 0, "Error message text is empty"
     current_ws_count = page.evaluate("AppState.workspaces.length")
     assert current_ws_count == initial_ws_count, "Workspace created on empty name"
@@ -565,7 +581,8 @@ def test_multiple_workspace_creation_and_rapid_hot_switching(page: Page) -> None
     Verifies:
     - All 5 workspaces created via modal
     - Immediate UI synchronization on switch (#active-project-title, #kb-folder-name, .active)
-    - Zero orphaned DOM nodes or DOM node count explosion
+    - Zero orphaned structural DOM nodes
+    - Ring buffer bounds REPL log nodes
     - Zero page reloads required
     - Zero console errors or unhandled exceptions
     """
@@ -605,8 +622,8 @@ def test_multiple_workspace_creation_and_rapid_hot_switching(page: Page) -> None
 
     ws_card.click()  # close dropdown
 
-    # Record baseline DOM node count before rapid switching
-    baseline_dom_nodes = page.evaluate("document.querySelectorAll('*').length")
+    # Record baseline DOM node count for structural UI (excluding terminal log lines)
+    baseline_dom_nodes = page.evaluate("document.querySelectorAll('*:not(#repl-logs *):not(#repl-logs)').length")
 
     # Rapid hot-switching: 30 switches
     for i in range(30):
@@ -623,10 +640,14 @@ def test_multiple_workspace_creation_and_rapid_hot_switching(page: Page) -> None
         folder_text = page.locator("#kb-folder-name").inner_text()
         assert target_dir in folder_text or target_name in folder_text, f"Switch {i}: Folder not updated, got '{folder_text}'"
 
-    # Verify DOM node count stability (no memory leaks or orphaned nodes)
-    final_dom_nodes = page.evaluate("document.querySelectorAll('*').length")
+    # Verify structural DOM node count stability (zero orphaned DOM nodes)
+    final_dom_nodes = page.evaluate("document.querySelectorAll('*:not(#repl-logs *):not(#repl-logs)').length")
     dom_diff = abs(final_dom_nodes - baseline_dom_nodes)
-    assert dom_diff <= 5, f"DOM node leak detected! Baseline: {baseline_dom_nodes}, Final: {final_dom_nodes}, Diff: {dom_diff}"
+    assert dom_diff == 0, f"Orphaned structural DOM nodes detected! Baseline: {baseline_dom_nodes}, Final: {final_dom_nodes}, Diff: {dom_diff}"
+
+    # Verify REPL log lines do not leak unbounded
+    repl_line_count = page.evaluate("document.getElementById('repl-logs')?.children?.length || 0")
+    assert repl_line_count <= 500, f"REPL log exceeded 500 lines: {repl_line_count}"
 
     assert len(page._page_errors) == 0, f"Errors during rapid hot-switching: {page._page_errors}"
 
@@ -680,7 +701,10 @@ def test_workspace_localstorage_persistence_across_browser_reload(page: Page) ->
 
     # 5. Verify restored state after reload
     title_after = page.locator("#active-project-title").inner_text()
-    assert ws_name in title_after, f"Active project title was not restored after reload! Got: '{title_after}'"
+    assert ws_name in title_after, (
+        f"Active project title was not restored after reload! Got: '{title_after}'. "
+        f"Backend synchronization clobbered newly created workspace on page reload."
+    )
 
     folder_after = page.locator("#kb-folder-name").inner_text()
     assert ws_dir in folder_after or ws_name in folder_after, f"Folder name not restored after reload: '{folder_after}'"

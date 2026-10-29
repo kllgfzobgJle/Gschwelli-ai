@@ -153,12 +153,12 @@ def test_openscad_window_and_export_dock_interactions(page: Page) -> None:
     # Menu Render
     page.click("#btn-menu-render")
     page.wait_for_timeout(100)
-    expect(page.locator("#repl-logs")).to_contain_text("CGAL 2-manifold render completed")
+    expect(page.locator("#repl-logs")).to_contain_text("2D Surface Mesh analysis completed")
 
     # Window close button held in sandbox
     page.click("#win-btn-close")
     page.wait_for_timeout(100)
-    expect(page.locator("#repl-logs")).to_contain_text("OpenSCAD viewport locked in sandboxed focus mode")
+    expect(page.locator("#repl-logs")).to_contain_text("DOM inspector viewport locked in sandboxed focus mode")
 
     # Check export button click with force or check whether som-tag-04 intercepts it
     btn_export = page.locator("#btn-export-mesh")

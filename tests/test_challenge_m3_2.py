@@ -193,14 +193,14 @@ def test_m3_export_section_interactions(page: Page) -> None:
     assert export_input.is_visible(), "Export path input #export-path-input must be visible"
 
     initial_val = export_input.input_value()
-    assert "toolhead_mount.stl" in initial_val, f"Unexpected initial export path: {initial_val}"
+    assert "action_target.py" in initial_val, f"Unexpected initial export path: {initial_val}"
 
     # Verify that input initially has readonly attribute
     is_readonly = page.evaluate("() => document.getElementById('export-path-input').readOnly")
     assert is_readonly is True, "Export path input is initially marked readOnly"
 
     # Adversarially modify the input value via DOM event dispatch
-    new_path = r"C:\Fabrication\adversarial_toolhead_mount_v99.stl"
+    new_path = r"c:\workspace\adversarial_action_target_v99.py"
     page.evaluate(
         """(newVal) => {
             const el = document.getElementById('export-path-input');
@@ -314,7 +314,7 @@ def test_m3_simulated_openscad_window_controls(page: Page) -> None:
 
     # Verify REPL log records preview
     repl_text = page.locator("#repl-logs").inner_text()
-    assert "[OpenSCAD] Preview compiled ($fn=64) • 0.412s" in repl_text, (
+    assert "[STREAM] DOM structure analysis completed" in repl_text, (
         f"Preview action not recorded in REPL: {repl_text}"
     )
 
@@ -330,7 +330,7 @@ def test_m3_simulated_openscad_window_controls(page: Page) -> None:
 
     # Verify REPL log records render
     repl_text = page.locator("#repl-logs").inner_text()
-    assert "[OpenSCAD] CGAL 2-manifold render completed (1,248 facets) • 0.842s" in repl_text, (
+    assert "[STREAM] 2D Surface Mesh analysis completed" in repl_text, (
         f"Render action not recorded in REPL: {repl_text}"
     )
 

@@ -1,7 +1,7 @@
-# BRIEFING — 2026-10-28T17:02:30Z
+# BRIEFING — 2026-10-29T10:18:00Z
 
 ## Mission
-Adversarially challenge the remediated Milestone 2 code (index.html) by running adversarial suites, verifying tab bounding box isolation, testing XSS payloads in task addition, and stress-testing button layouts across resolutions (1024x768 and 1440x900).
+Adversarial re-verification of Milestone 2 Iteration 2 in `ui/dashboard/index.html`. Verify that the 3 previous failure modes (Reload persistence hydration, Form empty submission with shake animation, and Modal Escape key trapping without Approval Gate abort leak) are 100% resolved and that zero regressions were introduced into `tests/test_browser_dom.py`. Issue an explicit verdict: APPROVE or REQUEST_CHANGES.
 
 ## 🔒 My Identity
 - Archetype: empirical_challenger
@@ -10,6 +10,7 @@ Adversarially challenge the remediated Milestone 2 code (index.html) by running 
 - Original parent: 20ee9337-54d2-4ed7-a02f-42aad4232d45
 - Milestone: Milestone 2 Iteration 2
 - Instance: 1 of 1
+- Current parent: db3d98a0-f6a4-45e7-9dea-32dceda77cf0
 
 ## 🔒 Key Constraints
 - Review-only — do NOT modify implementation code (ui/dashboard/index.html)
@@ -18,39 +19,44 @@ Adversarially challenge the remediated Milestone 2 code (index.html) by running 
 - Attempt XSS payload in task addition
 - Test button layouts at 1024x768 and 1440x900
 - Deliver empirical verdict: CONFIRM_CORRECT or CHALLENGE_REJECT
+- Re-verify 3 previous failure modes: Reload persistence hydration, form empty submission with shake animation, Escape key trapping.
+- Verify zero regressions in tests/test_browser_dom.py (30/30 passed).
+- Deliver explicit verdict: APPROVE or REQUEST_CHANGES.
 
 ## Current Parent
-- Conversation ID: 20ee9337-54d2-4ed7-a02f-42aad4232d45
-- Updated: 2026-10-28T17:02:30Z
+- Conversation ID: db3d98a0-f6a4-45e7-9dea-32dceda77cf0
+- Updated: 2026-10-28T23:14:18Z
 
 ## Review Scope
-- **Files reviewed**: ui/dashboard/index.html, tests/test_adversarial_m2.py, tests/test_challenge_m2.py, tests/test_api.py, tests/test_browser_dom.py, tests/test_empirical_challenger_m2.py
-- **Interface contracts**: PROJECT.md, .agents/teamwork/ORIGINAL_REQUEST.md
-- **Review criteria**: Tab isolation bounding box (0x0 or hidden), XSS resilience, responsive layout integrity (1024x768, 1440x900), adversarial suite execution
+- **Files reviewed**: `ui/dashboard/index.html`, `tests/test_adversarial_m2.py`, `tests/test_browser_dom.py`, `tests/test_api.py`
+- **Interface contracts**: `PROJECT.md`, `.agents/teamwork/ORIGINAL_REQUEST.md`
+- **Remediation report**: `.agents/teamwork/worker_m2_iter2/handoff.md`
+- **Previous failure report**: `.agents/teamwork/challenger_m2_v2_1/handoff.md`
+- **Review criteria**: 100% resolution of 3 failure modes, zero regressions across 30 browser DOM tests, 0 console errors, 0 unhandled rejections.
 
 ## Key Decisions Made
-- Executed both existing adversarial suites (`test_adversarial_m2.py` and `test_challenge_m2.py`): 100% pass (17/17 tests).
-- Designed and executed comprehensive standalone empirical challenge harness (`tests/test_empirical_challenger_m2.py`) testing:
-  1. 9 tab switching transitions measuring computed display style and bounding box dimensions for all 4 views.
-  2. 7 distinct XSS/HTML injection attack vectors injected through task prompt dialog.
-  3. Responsive layout, toolbar/dock button overflow, and horizontal/vertical scrollbar absence at 1024x768 and 1440x900.
-- Empirical Verdict formulated: **CONFIRM_CORRECT**.
+- Executed mandated adversarial suite: `uv run --with pytest,playwright pytest tests/test_adversarial_m2.py tests/test_browser_dom.py -v`. All 44 tests passed (14 adversarial + 30 DOM).
+- Conducted targeted empirical probe of the 3 remediated failure modes via Playwright automation:
+  1. Reload persistence hydration: Verified multiple consecutive reloads retain newly created workspace and tasks without console 404 or state reversion.
+  2. Form empty submission: Verified `<form novalidate>` allows custom validation to fire, displays `#ws-modal-error`, and applies `.input-error-shake`.
+  3. Escape key trapping: Verified document-level listener intercepts Escape when modal is open with blurred focus or backdrop focus, closes modal, and prevents leakage to Approval Gate abort handler.
+- Verified backend regression health: `uv run --with pytest pytest tests/test_api.py -v` (22/22 passed).
+- Final Verdict formulated: **APPROVE**.
 
 ## Artifact Index
-- c:\Users\andym\gschwelli-ai\.agents\teamwork\challenger_m2_iter2\DISPATCH.md — Received dispatch message
-- c:\Users\andym\gschwelli-ai\.agents\teamwork\challenger_m2_iter2\BRIEFING.md — Persistent context & identity
-- c:\Users\andym\gschwelli-ai\.agents\teamwork\challenger_m2_iter2\progress.md — Liveness & progress tracker
-- c:\Users\andym\gschwelli-ai\.agents\teamwork\challenger_m2_iter2\challenger_empirical_results.json — Full empirical measurement payload
-- c:\Users\andym\gschwelli-ai\tests\test_empirical_challenger_m2.py — Automated empirical challenger script
-- c:\Users\andym\gschwelli-ai\.agents\teamwork\challenger_m2_iter2\handoff.md — 5-component handoff report
+- `.agents/teamwork/challenger_m2_iter2/DISPATCH.md` — Received dispatch messages
+- `.agents/teamwork/challenger_m2_iter2/BRIEFING.md` — Persistent situational awareness
+- `.agents/teamwork/challenger_m2_iter2/progress.md` — Liveness & progress tracker
+- `.agents/teamwork/challenger_m2_iter2/handoff.md` — Final 5-component handoff report
 
 ## Attack Surface
 - **Hypotheses tested**:
-  - H1: Inactive view panes still occupy layout space or exhibit display leaks on arbitrary tab transitions -> REJECTED (All inactive views have `display: none` and `0x0` bounding box).
-  - H2: XSS payloads injected via `#btn-add-task` bypass `escapeHtml()` and instantiate live DOM nodes or execute JS -> REJECTED (All 7 payloads neutralized and rendered as escaped entities).
-  - H3: Top nav tabs, toolbar buttons, or approval gate buttons wrap/overflow at 1024x768 or 1440x900 -> REJECTED (Zero button wrapping, zero toolbar/gate overflow, zero horizontal/vertical scrollbars).
-- **Vulnerabilities found**: None. All 4 remediation items are verified robust.
-- **Untested angles**: M3-M5 upcoming interactive features (handled in future milestone gates per PROJECT.md).
+  - H1: Reload persistence hydration clobbers active workspace or throws 404 in console -> REJECTED (Hydration strictly preserves local active ID, activates genuine backend UUID, 0 errors logged).
+  - H2: Form empty submission is suppressed by HTML5 validation or fails to shake `#ws-modal-error` / `#ws-name-input` -> REJECTED (`novalidate` allows JS handler to execute, `#ws-modal-error` displays with `.input-error-shake`).
+  - H3: Escape key when focus is blurred on modal fails to close or leaks to Approval Gate abort handler -> REJECTED (Document-level listener intercepts Escape at priority 0, closes modal with `preventDefault()` and `stopPropagation()`, Approval Gate abort handler never reached).
+  - H4: Regressions introduced to existing 30 browser DOM tests -> REJECTED (All 30 DOM tests pass without failure or warning).
+- **Vulnerabilities found**: None. All 3 previously failing behaviors are 100% resolved and hardened.
+- **Untested angles**: Milestone 3-5 features (polymorphic viewport deeper interactions scheduled for upcoming milestone gates per PROJECT.md).
 
 ## Loaded Skills
 - None specified

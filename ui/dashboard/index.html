@@ -1542,45 +1542,84 @@
       border-color: var(--border-bright);
     }
 
-    /* CSG Overlay */
-    .csg-overlay {
-      position: absolute;
-      top: 42px;
-      left: 14px;
-      font-family: var(--font-mono);
-      font-size: 10.5px;
-      color: #728ca6;
-      line-height: 1.5;
-      pointer-events: none;
-      background: rgba(6, 10, 16, 0.75);
-      backdrop-filter: blur(6px);
-      padding: 6px 12px;
-      border-radius: 5px;
-      border: 1px solid rgba(27, 42, 62, 0.65);
-      z-index: 11;
-    }
-    .csg-title {
-      color: var(--cyan-accent);
-      font-weight: 700;
+    /* Studio Sub-Navigation Tabs & Tokens */
+    .studio-view-btn {
+      background: #0f172a;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 3px 10px;
+      border-radius: 4px;
       font-size: 11px;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: all 0.15s ease;
     }
-    .csg-op {
-      color: #93c5fd;
+    .studio-view-btn:hover {
+      background: #1e293b;
+      color: var(--text-primary);
+      border-color: var(--border-bright);
     }
-    .csg-item {
-      color: #94a3b8;
+    .studio-view-btn.active {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--cyan-accent);
+      border-color: var(--cyan-accent);
+      font-weight: 600;
     }
 
-    /* Coordinate Axes Gizmo */
-    .axis-gizmo {
-      position: absolute;
-      bottom: 12px;
-      left: 14px;
-      width: 54px;
-      height: 54px;
-      pointer-events: none;
-      z-index: 11;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    /* Syntax Highlighting Tokens */
+    .tok-kw { color: #f43f5e; font-weight: 600; }
+    .tok-str { color: #10b981; }
+    .tok-num { color: #f59e0b; }
+    .tok-com { color: #64748b; font-style: italic; }
+    .tok-fn { color: #06b6d4; font-weight: 500; }
+    .tok-punct { color: #94a3b8; }
+    .code-line-number {
+      line-height: 1.6;
+      font-size: 12px;
+      color: #475569;
+      user-select: none;
+    }
+
+    /* Data Grid Table Styling */
+    .studio-data-grid {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-align: left;
+    }
+    .studio-data-grid thead th {
+      position: sticky;
+      top: 0;
+      background: #0f172a;
+      color: var(--cyan-accent);
+      padding: 8px 12px;
+      border-bottom: 2px solid var(--border-bright);
+      font-weight: 600;
+      z-index: 2;
+      white-space: nowrap;
+    }
+    .studio-data-grid tbody tr {
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.15s ease;
+    }
+    .studio-data-grid tbody tr:nth-child(even) {
+      background: rgba(15, 23, 42, 0.4);
+    }
+    .studio-data-grid tbody tr:hover {
+      background: rgba(6, 182, 212, 0.08);
+    }
+    .studio-data-grid td {
+      padding: 6px 12px;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+    .studio-data-grid .grid-row-num {
+      color: var(--text-muted);
+      text-align: right;
+      width: 36px;
+      background: rgba(11, 18, 28, 0.6);
+      user-select: none;
     }
 
     /* Mesh Quality Telemetry */
@@ -2589,6 +2628,785 @@
     .settings-btn-primary:hover {
       box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
     }
+
+    /* ==========================================================================
+       MILESTONE 3: POLYMORPHIC STAGE, 4 VIEWPORTS, SPLIT-SCREEN & DRAWERS
+       ========================================================================== */
+
+    /* Stage Navigation & Controls */
+    .stage-nav-bar {
+      height: 38px;
+      min-height: 38px;
+      background: rgba(11, 18, 28, 0.95);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 20;
+      user-select: none;
+    }
+    .viewport-selector-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .viewport-tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .viewport-tab-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      border-color: var(--border-subtle);
+    }
+    .viewport-tab-btn.active {
+      background: var(--cyan-dim);
+      color: var(--cyan-accent);
+      border-color: var(--border-bright);
+      font-weight: 600;
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+    }
+    .tab-hotkey-hint {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      opacity: 0.6;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .stage-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stage-drawers-cluster {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .stage-action-btn {
+      background: rgba(16, 26, 40, 0.8);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+    .stage-action-btn:hover {
+      border-color: var(--border-bright);
+      color: var(--text-primary);
+    }
+    .stage-action-btn.active {
+      background: var(--cyan-dim);
+      color: var(--cyan-accent);
+      border-color: var(--cyan-accent);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+    }
+    .stage-telemetry {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+      padding-left: 6px;
+      border-left: 1px solid var(--border-subtle);
+    }
+
+    /* Stage Viewports Master Container */
+    .stage-viewports-container {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-void);
+    }
+    .stage-viewports-container .viewport-panel {
+      display: none;
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      flex-direction: column;
+    }
+    .stage-viewports-container .viewport-panel.active {
+      display: flex;
+    }
+
+    /* Split-Screen Canvas 50/50 Dual Layout */
+    .stage-viewports-container.split-screen-active {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 6px;
+      overflow: hidden;
+    }
+    .stage-viewports-container.split-screen-active .viewport-panel.split-left,
+    .stage-viewports-container.split-screen-active .viewport-panel.split-right {
+      display: flex !important;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+      min-width: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      background: var(--bg-card);
+      overflow: hidden;
+    }
+
+    /* Feature #17: 0.0 px² SOM Overlay Pass-Through */
+    .som-tags-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none !important;
+      z-index: 15;
+    }
+    .som-tag {
+      position: absolute;
+      background: rgba(6, 14, 24, 0.94);
+      border: 1px solid var(--cyan-accent);
+      color: var(--cyan-accent);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2.5px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.28);
+      transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      pointer-events: auto !important;
+    }
+    .som-tag:hover {
+      background: rgba(0, 229, 255, 0.18);
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.55);
+      transform: translateY(-1px);
+    }
+    .som-tag.active {
+      background: var(--cyan-accent);
+      color: #060a10;
+      border-color: #ffffff;
+      box-shadow: 0 0 20px var(--cyan-accent), 0 0 32px rgba(0, 229, 255, 0.65);
+      transform: scale(1.08);
+      font-weight: 800;
+    }
+    .som-leader-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none !important;
+      z-index: 12;
+    }
+    .som-leader-line, .som-anchor-dot {
+      pointer-events: none !important;
+    }
+
+    /* Non-occluding SOM Tags positions */
+    .som-tag-01 { top: 68px; left: 16px; }
+    .som-tag-02 { top: 68px; right: 64px; }
+    .som-tag-03 { top: 110px; left: 16px; }
+    .som-tag-04 { bottom: 120px; right: 28px; }
+    .som-tag-05 { top: 110px; left: 280px; }
+    .som-tag-06 { bottom: 120px; left: 280px; }
+    .som-tag-07 { top: 110px; right: 64px; }
+    .som-tag-08 { top: 220px; left: 520px; }
+    .som-tag-09 { top: 160px; right: 260px; }
+    .som-tag-10 { bottom: 120px; left: 140px; }
+    .som-tag-11 { top: 140px; left: 300px; }
+    .som-tag-12 { bottom: 120px; left: 24px; }
+
+    /* Feature #18: Real-Time 2D Coordinates Readout HUD */
+    .canvas-coords-readout {
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      background: rgba(10, 13, 18, 0.88);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      pointer-events: none !important;
+      z-index: 14;
+      user-select: none;
+    }
+    .canvas-coords-readout .coords-icon {
+      color: var(--cyan-accent);
+      font-size: 11px;
+    }
+    .canvas-coords-readout .coords-text {
+      color: #f1f5f9;
+      font-weight: 600;
+    }
+
+    /* Viewport 2: Polymorphic Artifact & Document Studio */
+    .studio-container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      padding: 10px 14px;
+      background: var(--bg-void);
+    }
+    .studio-sub-pane {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .studio-split-divider {
+      width: 4px;
+      cursor: col-resize;
+      background: var(--border-subtle);
+      transition: background 0.2s ease;
+      border-radius: 2px;
+    }
+    .studio-split-divider:hover {
+      background: var(--cyan-accent);
+    }
+    .markdown-preview-body {
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      line-height: 1.65;
+    }
+    .markdown-preview-body h1 { color: var(--cyan-accent); font-size: 17px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 6px; margin: 0 0 10px; }
+    .markdown-preview-body h2 { color: var(--cyan-accent); font-size: 14.5px; margin: 14px 0 6px; }
+    .markdown-preview-body h3 { color: #38bdf8; font-size: 13px; margin: 10px 0 4px; }
+    .markdown-preview-body p { margin-bottom: 8px; }
+    .markdown-preview-body code { background: #101a28; color: var(--cyan-accent); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 11px; border: 1px solid var(--border-subtle); }
+    .markdown-preview-body pre { background: #070d16; border: 1px solid var(--border-subtle); border-radius: 6px; padding: 10px 14px; overflow-x: auto; margin: 8px 0; }
+    .markdown-preview-body pre code { background: transparent; border: none; padding: 0; color: #e2e8f0; }
+    .markdown-preview-body blockquote { border-left: 3px solid var(--cyan-accent); background: rgba(0, 229, 255, 0.05); padding: 6px 12px; margin: 8px 0; color: #94a3b8; font-style: italic; }
+    .markdown-preview-body ul, .markdown-preview-body ol { padding-left: 18px; margin-bottom: 8px; }
+    .markdown-preview-body li { margin-bottom: 3px; }
+    .markdown-preview-body a { color: var(--cyan-accent); text-decoration: none; }
+    .markdown-preview-body a:hover { text-decoration: underline; }
+
+    /* Syntax Highlighting Tokens */
+    .tok-kw { color: #00e5ff; font-weight: 600; }
+    .tok-str { color: #10b981; }
+    .tok-num { color: #f59e0b; }
+    .tok-com { color: #64748b; font-style: italic; }
+    .tok-const { color: #f43f5e; font-weight: 600; }
+    .tok-fn { color: #38bdf8; }
+    .tok-key { color: #e2e8f0; font-weight: 600; }
+
+    /* Data Grid Spreadsheet Table */
+    .studio-data-grid {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      text-align: left;
+    }
+    .studio-data-grid th {
+      background: #101a28;
+      border: 1px solid var(--border-subtle);
+      padding: 6px 12px;
+      color: var(--cyan-accent);
+      font-weight: 600;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    .studio-data-grid td {
+      border: 1px solid var(--border-subtle);
+      padding: 5px 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 260px;
+      color: var(--text-primary);
+    }
+    .studio-data-grid tr:nth-child(even) td {
+      background: #0b121c;
+    }
+    .studio-data-grid tr:hover td {
+      background: rgba(0, 229, 255, 0.08) !important;
+    }
+    .studio-data-grid td.row-index {
+      color: var(--text-muted);
+      text-align: center;
+      background: #090f18 !important;
+      font-weight: 600;
+      width: 40px;
+    }
+
+    /* Viewport 3: Reasoning Graph & Live Variables */
+    .reasoning-graph-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 10px;
+      height: 100%;
+      padding: 10px 14px;
+      min-height: 0;
+      overflow: hidden;
+      background: var(--bg-void);
+    }
+    .dag-canvas-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .dag-toolbar {
+      height: 36px;
+      background: #0d1726;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+    }
+    .dag-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .dag-stage {
+      flex: 1;
+      position: relative;
+      overflow: auto;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+    }
+    .dag-connector-svg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .dag-columns-wrapper {
+      display: flex;
+      gap: 40px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    .dag-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .dag-col-header {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+    }
+    .dag-node, .dag-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 10px 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .dag-node:hover, .dag-card:hover {
+      border-color: var(--border-bright);
+      transform: translateY(-1px);
+    }
+    .dag-node.active, .dag-card.active {
+      border-color: var(--cyan-accent);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.25);
+    }
+    .dag-node .node-badge, .dag-card .node-badge {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--cyan-accent);
+      margin-bottom: 4px;
+    }
+    .dag-node .node-title, .dag-card .node-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .dag-node .node-status-tag, .dag-card .node-status-tag {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .dag-node .node-status-tag.status-done, .dag-card .node-status-tag.status-done { color: var(--emerald-success); }
+    .dag-node .node-status-tag.status-prog, .dag-card .node-status-tag.status-prog { color: var(--cyan-accent); }
+    .dag-node .node-status-tag.status-blocked, .dag-card .node-status-tag.status-blocked { color: var(--amber-warning); }
+    .dag-btn {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 10px;
+      font-family: var(--font-mono);
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .dag-btn:hover {
+      border-color: var(--border-bright);
+      color: var(--cyan-accent);
+    }
+
+    /* Live Variables & Memory State Inspector */
+    .variables-inspector-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      gap: 12px;
+      overflow-y: auto;
+      min-height: 0;
+    }
+    .variables-table {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .var-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .var-row:hover {
+      border-color: var(--border-bright);
+      background: var(--bg-card-elevated);
+    }
+    .var-row.inserted-pulse {
+      background: rgba(0, 229, 255, 0.2);
+      border-color: var(--cyan-accent);
+    }
+    .var-name {
+      color: var(--cyan-accent);
+      font-weight: 600;
+    }
+    .var-val {
+      color: #cbd5e1;
+      max-width: 140px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .var-val.status-success { color: var(--emerald-success); }
+    .var-val.status-panic { color: var(--red-panic); }
+    .var-copy-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      opacity: 0.5;
+      font-size: 11px;
+    }
+    .var-copy-btn:hover { opacity: 1; }
+
+    /* Memory Facts List */
+    .memory-facts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow-y: auto;
+      max-height: 220px;
+    }
+    .memory-fact-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+    }
+    .mem-cat-badge {
+      font-size: 9px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+    }
+    .memory-add-form {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 8px;
+      background: var(--bg-dock);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .memory-add-form.hidden { display: none; }
+    .form-input-sm, .form-select-sm {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 4px 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      border-radius: 3px;
+      outline: none;
+    }
+
+    /* Viewport 4: Multi-Tab Shell Sandbox Terminal */
+    .shell-sandbox-container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      height: 100%;
+      min-height: 0;
+      padding: 10px 14px;
+      background: var(--bg-void);
+      gap: 8px;
+    }
+    .terminal-header-bar {
+      height: 36px;
+      background: #0b121c;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px 6px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+    .terminal-tabs-cluster {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .terminal-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .terminal-tab:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .terminal-tab.active {
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--cyan-accent);
+      border-color: var(--border-bright);
+      font-weight: 600;
+    }
+    .terminal-logs-surface {
+      flex: 1;
+      background: #050a10;
+      border: 1px solid var(--border-subtle);
+      border-top: none;
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-height: 0;
+    }
+    .terminal-log-row {
+      display: flex;
+      gap: 8px;
+      word-break: break-all;
+    }
+    .terminal-log-row .log-ts {
+      color: var(--text-muted);
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+    .terminal-log-row.log-cmd { color: var(--cyan-accent); font-weight: 600; }
+    .terminal-log-row.log-stdout { color: #e2e8f0; }
+    .terminal-log-row.log-stderr { color: var(--red-panic); }
+    .terminal-log-row.log-warn { color: var(--amber-warning); }
+    .terminal-log-row.log-success { color: var(--emerald-success); }
+    .terminal-input-bar {
+      display: flex;
+      align-items: center;
+      background: #070d16;
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 6px 10px;
+      gap: 8px;
+    }
+    .terminal-prompt-label {
+      color: var(--cyan-accent);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .terminal-active-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #f1f5f9;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+    .terminal-submit-btn {
+      background: var(--cyan-dim);
+      border: 1px solid var(--border-bright);
+      color: var(--cyan-accent);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .terminal-footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      padding: 2px 4px;
+    }
+
+    /* Quick Telemetry Drawers Overlay & Panel */
+    .telemetry-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(2px);
+      z-index: 80;
+      pointer-events: none;
+    }
+    .telemetry-drawer-overlay.hidden { display: none; }
+    .telemetry-drawer-panel {
+      position: fixed;
+      top: var(--top-nav-height);
+      right: 0;
+      width: 380px;
+      max-width: 90vw;
+      height: calc(100vh - var(--top-nav-height) - var(--omnibox-height));
+      background: var(--bg-card);
+      border-left: 1px solid var(--border-bright);
+      box-shadow: -8px 0 30px rgba(0, 0, 0, 0.7);
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+    }
+    .telemetry-drawer-panel.open {
+      transform: translateX(0);
+    }
+    .drawer-header {
+      padding: 8px 12px;
+      background: #0b121c;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .drawer-tabs-cluster {
+      display: flex;
+      gap: 4px;
+    }
+    .drawer-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-secondary);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .drawer-tab.active {
+      background: var(--cyan-dim);
+      color: var(--cyan-accent);
+      border-color: var(--border-bright);
+    }
+    .drawer-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      min-height: 0;
+    }
+    .drawer-pane {
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .drawer-pane.active {
+      display: flex;
+    }
+    .drawer-pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
   </style>
 </head>
 <body>
@@ -2798,320 +3616,718 @@
 
         </aside>
 
-        <!-- B. CENTER PANEL: SOM PERCEPTION CANVAS SCAFFOLDING (1fr) -->
+        <!-- B. CENTER PANEL: POLYMORPHIC 4-VIEWPORT OPERATING CANVAS (1fr) -->
         <main id="center-canvas-container">
-          <!-- Canvas Top Header -->
-          <div class="canvas-top-bar">
-            <div class="canvas-title-group">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-              </svg>
-              <span>SOM Perception Canvas</span>
-              <span class="live-pill" id="live-pill">LIVE</span>
+          <!-- Polymorphic Stage Header & Controls -->
+          <div class="stage-nav-bar" id="stage-nav-bar">
+            <div class="viewport-selector-tabs" role="tablist" aria-label="Viewport Switcher">
+              <button class="viewport-tab-btn active" id="tab-vp-1" data-viewport="1" role="tab" aria-selected="true" title="Shortcut: Ctrl+1">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                </svg>
+                <span>1: Vision Stream</span>
+                <span class="tab-hotkey-hint">Ctrl+1</span>
+              </button>
+
+              <button class="viewport-tab-btn" id="tab-vp-2" data-viewport="2" role="tab" aria-selected="false" title="Shortcut: Ctrl+2">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+                <span>2: Document Studio</span>
+                <span class="tab-hotkey-hint">Ctrl+2</span>
+              </button>
+
+              <button class="viewport-tab-btn" id="tab-vp-3" data-viewport="3" role="tab" aria-selected="false" title="Shortcut: Ctrl+3">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="18" cy="5" r="3"></circle>
+                  <circle cx="6" cy="12" r="3"></circle>
+                  <circle cx="18" cy="19" r="3"></circle>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+                <span>3: Reasoning Graph</span>
+                <span class="tab-hotkey-hint">Ctrl+3</span>
+              </button>
+
+              <button class="viewport-tab-btn" id="tab-vp-4" data-viewport="4" role="tab" aria-selected="false" title="Shortcut: Ctrl+4">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="4 17 10 11 4 5"></polyline>
+                  <line x1="12" y1="19" x2="20" y2="19"></line>
+                </svg>
+                <span>4: Shell Sandbox</span>
+                <span class="tab-hotkey-hint">Ctrl+4</span>
+              </button>
             </div>
-            <div class="canvas-telemetry">
-              DISPLAY 01 • 1440 × 900
+
+            <!-- Controls Cluster (Right Side of Stage Header) -->
+            <div class="stage-header-actions">
+              <!-- Feature #26: Split-Screen Toggle Button -->
+              <button class="stage-action-btn" id="btn-split-screen" title="Toggle 50/50 Split-Screen Canvas (Shortcut: Alt+S)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="12" y1="3" x2="12" y2="21"></line>
+                </svg>
+                <span>Split 50/50</span>
+              </button>
+
+              <!-- Feature #27: Quick Drawers Cluster -->
+              <div class="stage-drawers-cluster">
+                <button class="stage-action-btn" id="btn-trigger-tools" data-drawer="tools" title="Open Tools Drawer">🔧 Tools</button>
+                <button class="stage-action-btn" id="btn-trigger-memory" data-drawer="memory" title="Open Memory Drawer">🧠 Memory</button>
+                <button class="stage-action-btn" id="btn-trigger-cache" data-drawer="cache" title="Open Cache Drawer">⚡ Cache</button>
+                <button class="stage-action-btn" id="btn-trigger-undo" data-drawer="undo" title="Open Undo Drawer">↶ Undo</button>
+              </div>
+
+              <!-- Stage Telemetry Readout -->
+              <div class="stage-telemetry" id="stage-telemetry-readout">
+                DISPLAY 01 • 1440 × 900
+              </div>
             </div>
           </div>
 
-          <!-- Active Mission Status Bar -->
-          <div class="mission-status-bar">
-            <div class="mission-id">
-              <span class="mission-dot"></span>
-              <span id="active-mission-label">M-024 / Export toolhead_mount.stl</span>
-            </div>
-            <span class="mission-badge" id="mission-status-badge">PAUSED • APPROVAL</span>
-          </div>
-
-          <!-- Target Application Viewport ("OpenSCAD — toolhead_mount.scad") -->
-          <div class="cad-viewport-frame" id="cad-viewport-frame">
-            <!-- Set-of-Marks (SOM) Leader Lines SVG Overlay -->
-            <svg class="som-leader-svg" id="som-leader-svg">
-              <line class="som-leader-line line-01" id="leader-line-01" x1="0" y1="0" x2="0" y2="0" />
-              <circle class="som-anchor-dot dot-01" id="anchor-dot-01" cx="0" cy="0" r="3.5" />
-
-              <line class="som-leader-line line-02" id="leader-line-02" x1="0" y1="0" x2="0" y2="0" />
-              <circle class="som-anchor-dot dot-02" id="anchor-dot-02" cx="0" cy="0" r="3.5" />
-
-              <line class="som-leader-line line-12" id="leader-line-12" x1="0" y1="0" x2="0" y2="0" />
-              <circle class="som-anchor-dot dot-12" id="anchor-dot-12" cx="0" cy="0" r="3.5" />
-
-              <line class="som-leader-line line-04 active" id="leader-line-04" x1="0" y1="0" x2="0" y2="0" />
-              <circle class="som-anchor-dot dot-04 active" id="anchor-dot-04" cx="0" cy="0" r="3.5" />
-            </svg>
-
-            <!-- Window Title Bar -->
-            <div class="app-window-header" id="target-window-header">
-              <div class="app-title-group">
-                <span class="app-title-cube" title="OpenSCAD Model">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          <!-- Master Viewports Stage Body -->
+          <div class="stage-viewports-container" id="stage-viewports-container">
+            
+            <!-- ================================================================
+                 VIEWPORT 1: SCREEN & VISION STREAM WITH SOM [01]–[12]
+                 ================================================================ -->
+            <div class="viewport-panel active" id="viewport-1" data-viewport-id="1">
+              <!-- Canvas Top Header -->
+              <div class="canvas-top-bar">
+                <div class="canvas-title-group">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                   </svg>
-                </span>
-                <span>OpenSCAD — toolhead_mount.scad</span>
-                <span class="app-status-dot" title="Application Attached &amp; Live"></span>
+                  <span>Screen &amp; Vision Stream</span>
+                  <span class="live-pill" id="live-pill">LIVE</span>
+                </div>
+                <div class="canvas-telemetry">
+                  DISPLAY 01 &bull; 1440 &times; 900 &bull; UIA + VISION FUSION
+                </div>
               </div>
-              <div class="app-actions" id="target-window-actions">
-                <span class="win-btn" id="win-btn-min" title="Minimize">—</span>
-                <span class="win-btn" id="win-btn-max" title="Maximize">🗖</span>
-                <span class="win-btn win-btn-close" id="win-btn-close" title="Close">✕</span>
+
+              <!-- Active Mission Status Bar -->
+              <div class="mission-status-bar">
+                <div class="mission-id">
+                  <span class="mission-dot"></span>
+                  <span id="active-mission-label">M-024 / Execute action_target.py</span>
+                </div>
+                <span class="mission-badge" id="mission-status-badge">PAUSED &bull; APPROVAL</span>
+              </div>
+
+              <!-- Target Application Viewport (Preserves id="cad-viewport-frame") -->
+              <div class="cad-viewport-frame stream-viewport-frame" id="cad-viewport-frame">
+                
+                <!-- Set-of-Marks (SOM) Leader Lines SVG Overlay (pointer-events: none) -->
+                <svg class="som-leader-svg" id="som-leader-svg">
+                  <line class="som-leader-line line-01" id="leader-line-01" x1="0" y1="0" x2="0" y2="0" />
+                  <circle class="som-anchor-dot dot-01" id="anchor-dot-01" cx="0" cy="0" r="3.5" />
+
+                  <line class="som-leader-line line-02" id="leader-line-02" x1="0" y1="0" x2="0" y2="0" />
+                  <circle class="som-anchor-dot dot-02" id="anchor-dot-02" cx="0" cy="0" r="3.5" />
+
+                  <line class="som-leader-line line-03" id="leader-line-03" x1="0" y1="0" x2="0" y2="0" />
+                  <circle class="som-anchor-dot dot-03" id="anchor-dot-03" cx="0" cy="0" r="3.5" />
+
+                  <line class="som-leader-line line-04 active" id="leader-line-04" x1="0" y1="0" x2="0" y2="0" />
+                  <circle class="som-anchor-dot dot-04 active" id="anchor-dot-04" cx="0" cy="0" r="3.5" />
+
+                  <line class="som-leader-line line-05" id="leader-line-05" x1="0" y1="0" x2="0" y2="0" />
+                  <circle class="som-anchor-dot dot-05" id="anchor-dot-05" cx="0" cy="0" r="3.5" />
+
+                  <line class="som-leader-line line-06" id="leader-line-06" x1="0" y1="0" x2="0" y2="0" />
+                  <circle class="som-anchor-dot dot-06" id="anchor-dot-06" cx="0" cy="0" r="3.5" />
+
+                  <line class="som-leader-line line-07" id="leader-line-07" x1="0" y1="0" x2="0" y2="0" />
+                  <circle class="som-anchor-dot dot-07" id="anchor-dot-07" cx="0" cy="0" r="3.5" />
+
+                  <line class="som-leader-line line-08" id="leader-line-08" x1="0" y1="0" x2="0" y2="0" />
+                  <circle class="som-anchor-dot dot-08" id="anchor-dot-08" cx="0" cy="0" r="3.5" />
+
+                  <line class="som-leader-line line-09" id="leader-line-09" x1="0" y1="0" x2="0" y2="0" />
+                  <circle class="som-anchor-dot dot-09" id="anchor-dot-09" cx="0" cy="0" r="3.5" />
+
+                  <line class="som-leader-line line-10" id="leader-line-10" x1="0" y1="0" x2="0" y2="0" />
+                  <circle class="som-anchor-dot dot-10" id="anchor-dot-10" cx="0" cy="0" r="3.5" />
+
+                  <line class="som-leader-line line-11" id="leader-line-11" x1="0" y1="0" x2="0" y2="0" />
+                  <circle class="som-anchor-dot dot-11" id="anchor-dot-11" cx="0" cy="0" r="3.5" />
+
+                  <line class="som-leader-line line-12" id="leader-line-12" x1="0" y1="0" x2="0" y2="0" />
+                  <circle class="som-anchor-dot dot-12" id="anchor-dot-12" cx="0" cy="0" r="3.5" />
+                </svg>
+
+                <!-- Window Title Bar -->
+                <div class="app-window-header" id="target-window-header">
+                  <div class="app-title-group">
+                    <span class="app-title-cube" title="Active Window Stream">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="2" y1="7" x2="22" y2="7"></line>
+                      </svg>
+                    </span>
+                    <span id="target-window-title">Application Stream &mdash; Workspace Canvas</span>
+                    <span class="app-status-dot" title="Application Attached &amp; Live"></span>
+                  </div>
+                  <div class="app-actions" id="target-window-actions">
+                    <span class="win-btn" id="win-btn-min" title="Minimize">&mdash;</span>
+                    <span class="win-btn" id="win-btn-max" title="Maximize">&#x1F5D6;</span>
+                    <span class="win-btn win-btn-close" id="win-btn-close" title="Close">&#x2715;</span>
+                  </div>
+                </div>
+
+                <!-- Application Menu Bar -->
+                <div class="app-menubar" id="target-menubar">
+                  <span class="menubar-item" data-menu="File">File</span>
+                  <span class="menubar-item" data-menu="Edit">Edit</span>
+                  <span class="menubar-item" data-menu="View">View</span>
+                  <span class="menubar-item" data-menu="Tools">Tools</span>
+                  <span class="menubar-item" data-menu="Help">Help</span>
+                  <span class="menubar-divider">|</span>
+                  <span class="menubar-action preview" id="btn-menu-preview" title="Inspect / Preview Stream (F5)">&gt; Preview F5</span>
+                  <span class="menubar-action render" id="btn-menu-render" title="Re-Analyze DOM (F6)">&#x2699; Render F6</span>
+                </div>
+
+                <!-- Interactive Set-of-Marks (SOM) Cyan Tags [01]–[12] -->
+                <div class="som-tags-container" id="som-tags-container">
+                  <div class="som-tag som-tag-01" data-mark="1" id="som-tag-01" title="Tag [01: Menu]">[01: Menu]</div>
+                  <div class="som-tag som-tag-02" data-mark="2" id="som-tag-02" title="Tag [02: Window Controls]">[02: Window Controls]</div>
+                  <div class="som-tag som-tag-03" data-mark="3" id="som-tag-03" title="Tag [03: Workspace Explorer]">[03: Workspace Explorer]</div>
+                  <div class="som-tag som-tag-04 active" data-mark="4" id="som-tag-04" title="Tag [04: Button 'Export']">[04: Button "Export"]</div>
+                  <div class="som-tag som-tag-05" data-mark="5" id="som-tag-05" title="Tag [05: Canvas Viewport]">[05: Canvas Viewport]</div>
+                  <div class="som-tag som-tag-06" data-mark="6" id="som-tag-06" title="Tag [06: Status Gizmo]">[06: Status Gizmo]</div>
+                  <div class="som-tag som-tag-07" data-mark="7" id="som-tag-07" title="Tag [07: Viewport Controls]">[07: Viewport Controls]</div>
+                  <div class="som-tag som-tag-08" data-mark="8" id="som-tag-08" title="Tag [08: Inspector Panel]">[08: Inspector Panel]</div>
+                  <div class="som-tag som-tag-09" data-mark="9" id="som-tag-09" title="Tag [09: Telemetry Badge]">[09: Telemetry Badge]</div>
+                  <div class="som-tag som-tag-10" data-mark="10" id="som-tag-10" title="Tag [10: Terminal Console]">[10: Terminal Console]</div>
+                  <div class="som-tag som-tag-11" data-mark="11" id="som-tag-11" title="Tag [11: Integrity Badge]">[11: Integrity Badge]</div>
+                  <div class="som-tag som-tag-12" data-mark="12" id="som-tag-12" title="Tag [12: Path Input]">[12: Path Input]</div>
+                </div>
+
+                <!-- Vision Stream Canvas Surface (Preserves id="cad-canvas") -->
+                <div class="viewport-3d-canvas viewport-stream-canvas" id="cad-canvas">
+                  <div class="som-scan-line" id="som-scan-line"></div>
+                  <div class="viewport-shutter-flash" id="viewport-shutter-flash"></div>
+
+                  <!-- Perception Controls Toolbar (Vertical Floating Dock on Right Edge) -->
+                  <div class="viewport-camera-toolbar som-toolbar" id="viewport-camera-controls">
+                    <button class="cam-btn active" id="btn-cam-orbit" title="Orbit / Normal View">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 2a10 10 0 0 1 10 10h-2a8 8 0 0 0-8-8V2z"></path>
+                        <path d="M12 22a10 10 0 0 1-10-10h2a8 8 0 0 0 8 8v2z"></path>
+                      </svg>
+                    </button>
+                    <button class="cam-btn" id="btn-cam-pan" title="Pan View">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="5 9 2 12 5 15"></polyline>
+                        <polyline points="9 5 12 2 15 5"></polyline>
+                        <polyline points="15 19 12 22 9 19"></polyline>
+                        <polyline points="19 9 22 12 19 15"></polyline>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <line x1="12" y1="2" x2="12" y2="22"></line>
+                      </svg>
+                    </button>
+                    <button class="cam-btn btn-zoom" id="btn-cam-zoom" title="Zoom In">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="11" y1="8" x2="11" y2="14"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                      </svg>
+                    </button>
+                    <button class="cam-btn btn-zoom-out" id="btn-cam-zoom-out" title="Zoom Out">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                      </svg>
+                    </button>
+                    <button class="cam-btn btn-reset-view" id="btn-cam-reset" title="Reset View / Fit to Frame">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <polyline points="3 3 3 8 8 8"></polyline>
+                      </svg>
+                    </button>
+                    <button class="cam-btn" id="btn-inspector-toggle" title="Toggle Element Inspector">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <!-- Real-Time 2D Screen Space Coordinates Readout HUD -->
+                  <div class="canvas-coords-readout" id="canvas-coords-readout">
+                    <span class="coords-icon">&oplus;</span>
+                    <span class="coords-text" id="coords-text">X: 720 px &bull; Y: 450 px</span>
+                  </div>
+
+                  <!-- 2D Domain-Agnostic Application Perception Canvas (Preserves id="cad-mesh-svg") -->
+                  <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid meet" id="cad-mesh-svg">
+                    <defs>
+                      <pattern id="stream-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1b2a3e" stroke-width="0.7" opacity="0.35" />
+                      </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#stream-grid)" />
+
+                    <!-- Transformed Viewport Group (Preserves id="cad-mesh-group") -->
+                    <g id="cad-mesh-group" style="transition: transform 0.3s ease; transform-origin: center center;">
+                      <rect x="270" y="70" width="1150" height="710" rx="6" fill="#0b121c" stroke="#1b2a3e" stroke-width="1.2" id="canvas-viewport-target" />
+                      
+                      <rect x="10" y="30" width="210" height="24" rx="3" fill="#0d1b2a" stroke="#1e334d" stroke-width="1" />
+                      <text x="20" y="46" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="11">Window::MenuBar</text>
+
+                      <rect x="14" y="70" width="246" height="350" rx="4" fill="#080e18" stroke="#1b2a3e" stroke-width="1" />
+                      <text x="24" y="94" fill="#64748b" font-family="'JetBrains Mono', monospace" font-size="11">Workspace Explorer</text>
+                      <line x1="24" y1="110" x2="240" y2="110" stroke="#1e293b" stroke-width="1" />
+                      <text x="32" y="130" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="10">&bull; main.py</text>
+                      <text x="32" y="150" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="10">&bull; config.yaml</text>
+                      <text x="32" y="170" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="10">&bull; metrics.csv</text>
+
+                      <rect x="300" y="100" width="1080" height="650" rx="4" fill="#060a10" stroke="#142334" stroke-width="1" />
+                      
+                      <rect x="290" y="80" width="190" height="28" rx="4" fill="rgba(0,229,255,0.12)" stroke="#00e5ff" stroke-width="1" />
+                      <text x="302" y="98" fill="#00e5ff" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold">SYSTEM INTEGRITY: 100%</text>
+
+                      <rect x="640" y="520" width="120" height="25" rx="3" fill="#101a28" stroke="#1e3a5f" stroke-width="1" />
+                      <text x="648" y="537" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="10">Property Inspector</text>
+
+                      <rect x="880" y="360" width="110" height="25" rx="3" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1" />
+                      <text x="888" y="377" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10">LIVE TELEMETRY</text>
+
+                      <rect x="285" y="730" width="60" height="60" rx="4" fill="#0b121c" stroke="#1b2a3e" stroke-width="1" />
+                      <circle cx="315" cy="760" r="14" fill="none" stroke="#00e5ff" stroke-width="1.5" stroke-dasharray="3 3" />
+                      <circle cx="315" cy="760" r="4" fill="#00e5ff" />
+                      <text x="315" y="784" fill="#64748b" font-family="'JetBrains Mono', monospace" font-size="8" text-anchor="middle">STATUS</text>
+
+                      <rect x="14" y="780" width="246" height="90" rx="4" fill="#050a10" stroke="#1b2a3e" stroke-width="1" />
+                      <text x="24" y="800" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="10">PS &gt; execution ready</text>
+                    </g>
+                  </svg>
+
+                  <!-- Stream Quality Telemetry (Domain-Agnostic) -->
+                  <div class="mesh-telemetry stream-telemetry">
+                    <span class="mesh-dot"></span>
+                    <span>STREAM: 60 FPS &bull; 1440 &times; 900 &bull; 12 TARGETS MAPPED</span>
+                  </div>
+                </div>
+
+                <!-- Application Action Dock (Preserves #export-path-input & #btn-export-mesh) -->
+                <div class="viewport-export-dock stream-action-dock" id="target-export-dock">
+                  <div class="export-header-row">
+                    <span class="export-label-left">APPLICATION ACTION TARGET</span>
+                    <span class="export-label-right">win32_uia &bull; Coordinates [1280, 810, 1400, 846]</span>
+                  </div>
+                  <div class="export-input-row">
+                    <span class="export-folder-icon">&#x1F4C1;</span>
+                    <input class="export-path-input" id="export-path-input" value="c:\workspace\action_target.py" readonly />
+                    <button class="btn-export" id="btn-export-mesh">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                      </svg>
+                      Execute
+                    </button>
+                  </div>
+                  <div class="safety-warning-banner">
+                    <span class="warning-icon">&#x26A0;</span>
+                    <span>Existing file detected. Write operation held by safety policy.</span>
+                  </div>
+                  <div class="render-telemetry-row">
+                    <span class="render-telem-left">Vision Stream &bull; Frame Latency 14ms &bull; 0.992 Fusion Confidence</span>
+                    <span class="render-telem-right">Last render 0.412s</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Toolbar (Re-scan SOM, Inspect, Capture) -->
+              <div class="canvas-action-toolbar">
+                <div class="toolbar-actions">
+                  <button class="toolbar-btn" id="btn-rescan-som">
+                    <span>&#x2BFA;</span> Re-scan SOM
+                  </button>
+                  <button class="toolbar-btn" id="btn-inspect-target">
+                    <span>&#x2196;</span> Inspect target
+                  </button>
+                  <button class="toolbar-btn" id="btn-capture-frame">
+                    <span>&#x1F4F7;</span> Capture
+                  </button>
+                </div>
+                <div class="frame-telemetry" id="frame-telemetry">
+                  FRAME #8184 &bull; 84ms
+                </div>
+              </div>
+
+              <!-- Fusion Status Bar -->
+              <div class="fusion-status-bar">
+                <div class="fusion-left">
+                  <span class="fusion-dot"></span>
+                  <span id="fusion-targets-count">12 targets mapped</span>
+                </div>
+                <div class="fusion-center">
+                  UIA + VISION FUSION
+                </div>
+                <div class="fusion-right" id="fusion-confidence-val">
+                  99.2% confidence
+                </div>
               </div>
             </div>
 
-            <!-- Application Menu Bar -->
-            <div class="app-menubar" id="target-menubar">
-              <span class="menubar-item" data-menu="File">File</span>
-              <span class="menubar-item" data-menu="Edit">Edit</span>
-              <span class="menubar-item" data-menu="Design">Design</span>
-              <span class="menubar-item" data-menu="View">View</span>
-              <span class="menubar-item" data-menu="Help">Help</span>
-              <span class="menubar-divider">|</span>
-              <span class="menubar-action preview" id="btn-menu-preview" title="Compile Preview (F5)">▷ Preview F5</span>
-              <span class="menubar-action render" id="btn-menu-render" title="CGAL Render (F6)">⚙ Render F6</span>
-            </div>
+            <!-- ================================================================
+                 VIEWPORT 2: POLYMORPHIC ARTIFACT & DOCUMENT STUDIO
+                 ================================================================ -->
+            <div class="viewport-panel" id="viewport-2" data-viewport-id="2">
+              <div class="studio-container">
+                <!-- Studio Header with Active File & Mode Badge -->
+                <div class="canvas-top-bar" style="border-radius:6px 6px 0 0;margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                  <div class="canvas-title-group" style="display:flex; align-items:center; gap:8px;">
+                    <span id="ks-active-file-icon">📄</span>
+                    <span id="ks-active-file-header">ACTIVE FILE // README.md</span>
+                    <span class="badge badge-complete" id="ks-mode-indicator-badge">MARKDOWN</span>
+                  </div>
+                  <div class="studio-view-tabs" style="display:flex; gap:4px;">
+                    <button class="studio-view-btn active" id="btn-view-markdown" data-studio-view="markdown">Markdown</button>
+                    <button class="studio-view-btn" id="btn-view-code" data-studio-view="code">Code</button>
+                    <button class="studio-view-btn" id="btn-view-grid" data-studio-view="grid">Data Grid</button>
+                    <button class="studio-view-btn" id="btn-view-media" data-studio-view="media">Media</button>
+                  </div>
+                  <div class="canvas-telemetry" id="ks-studio-telemetry">
+                    AUTO-MIME DETECTED &bull; LOCAL BUFFER
+                  </div>
+                </div>
 
-            <!-- Interactive Set-of-Marks (SOM) Cyan Tags -->
-            <div class="som-tag som-tag-01" data-mark="1" id="som-tag-01" title="Tag [01: Menu]">[01: Menu]</div>
-            <div class="som-tag som-tag-02" data-mark="2" id="som-tag-02" title="Tag [02: Window Controls]">[02: Window Controls]</div>
-            <div class="som-tag som-tag-12" data-mark="12" id="som-tag-12" title="Tag [12: Path Input]">[12: Path Input]</div>
-            <div class="som-tag som-tag-04 active" data-mark="4" id="som-tag-04" title="Tag [04: Button 'Export']">[04: Button "Export"]</div>
+                <!-- 1. Markdown 2-Column Split Studio Sub-Pane -->
+                <div id="ks-markdown-studio" class="studio-sub-pane" style="display:flex; flex-direction:row; height:100%; width:100%; min-height:0; gap:8px;">
+                  <!-- Left: Raw Markdown Editor -->
+                  <div class="studio-split-col studio-split-left" style="flex:1; display:flex; flex-direction:column; min-width:0; min-height:0;">
+                    <div class="studio-col-header" style="display:flex; justify-content:space-between; align-items:center; padding:6px 12px; background:#0b121c; border:1px solid var(--border-subtle); border-bottom:none; border-radius:6px 6px 0 0;">
+                      <span class="studio-col-title" style="font-size:11px; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px;">Raw Editor (Markdown)</span>
+                      <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted);" id="md-raw-lines-badge">18 lines</span>
+                    </div>
+                    <textarea id="ks-editor-textarea" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"
+                              style="width:100%; flex:1; background:#070d16; color:#e2e8f0; border:1px solid var(--border-subtle); border-radius:0 0 6px 6px; padding:12px; font-family:var(--font-mono); font-size:12px; line-height:1.6; resize:none; outline:none; min-height:0; box-sizing:border-box;"># Universal Agent Workspace
 
-            <!-- Viewport 3D Canvas / SVG -->
-            <div class="viewport-3d-canvas" id="cad-canvas">
-              <!-- Laser Scanning Line Overlay -->
-              <div class="som-scan-line" id="som-scan-line"></div>
-              <!-- Camera Shutter Flash Overlay -->
-              <div class="viewport-shutter-flash" id="viewport-shutter-flash"></div>
+Domain-agnostic Operating Canvas for autonomous multimodal agents.
 
-              <!-- CSG Overlay -->
-              <div class="csg-overlay">
-                <div class="csg-title">mount_v3</div>
-                <div class="csg-op">&nbsp;&nbsp;difference()</div>
-                <div class="csg-item">&nbsp;&nbsp;&nbsp;&nbsp;base_plate</div>
-                <div class="csg-item">&nbsp;&nbsp;&nbsp;&nbsp;mount_wall</div>
-                <div class="csg-item">&nbsp;&nbsp;&nbsp;&nbsp;bolt_holes × 5</div>
-              </div>
+## Capabilities
+- Multi-viewport perception and tool routing
+- Reversible undo rollback stack
+- Live blackboard and memory state visualization</textarea>
+                  </div>
 
-              <!-- Viewport Camera Navigation Toolbar (Right Edge) -->
-              <div class="viewport-camera-toolbar" id="viewport-camera-controls">
-                <button class="cam-btn active" id="btn-cam-orbit" title="Orbit / 3D Rotate">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M12 2a10 10 0 0 1 10 10h-2a8 8 0 0 0-8-8V2z"></path><path d="M12 22a10 10 0 0 1-10-10h2a8 8 0 0 0 8 8v2z"></path></svg>
-                </button>
-                <button class="cam-btn" id="btn-cam-pan" title="Pan View">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="5 9 2 12 5 15"></polyline><polyline points="9 5 12 2 15 5"></polyline><polyline points="15 19 12 22 9 19"></polyline><polyline points="19 9 22 12 19 15"></polyline><line x1="2" y1="12" x2="22" y2="12"></line><line x1="12" y1="2" x2="12" y2="22"></line></svg>
-                </button>
-                <button class="cam-btn" id="btn-cam-zoom" title="Zoom View">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-                </button>
-                <button class="cam-btn" id="btn-cam-reset" title="Reset View / Fit to Frame">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
-                </button>
-              </div>
+                  <!-- Center: Split Resizer Divider -->
+                  <div class="studio-split-divider" id="ks-markdown-divider" title="Drag to adjust split"></div>
 
-              <!-- High-Fidelity Isometric 3D Bracket CAD SVG -->
-              <svg width="100%" height="100%" viewBox="0 0 520 280" preserveAspectRatio="xMidYMid meet" style="overflow:visible;" id="cad-mesh-svg">
-                <defs>
-                  <linearGradient id="facet-base-top" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#143c5e" />
-                    <stop offset="50%" stop-color="#0f2b45" />
-                    <stop offset="100%" stop-color="#091b2c" />
-                  </linearGradient>
-                  <linearGradient id="facet-flange-front" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#1e5280" />
-                    <stop offset="50%" stop-color="#143c5e" />
-                    <stop offset="100%" stop-color="#0d263d" />
-                  </linearGradient>
-                  <linearGradient id="facet-flange-side" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#184368" />
-                    <stop offset="100%" stop-color="#0a1d2e" />
-                  </linearGradient>
-                  <linearGradient id="facet-flange-top" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#256499" />
-                    <stop offset="100%" stop-color="#1a4d78" />
-                  </linearGradient>
-                  <linearGradient id="hole-depth-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#04080e" />
-                    <stop offset="100%" stop-color="#091522" />
-                  </linearGradient>
+                  <!-- Right: Live Formatted HTML Preview (XSS-Sanitized) -->
+                  <div class="studio-split-col studio-split-right" style="flex:1; display:flex; flex-direction:column; min-width:0; min-height:0;">
+                    <div class="studio-col-header" style="display:flex; justify-content:space-between; align-items:center; padding:6px 12px; background:#0b121c; border:1px solid var(--border-subtle); border-bottom:none; border-radius:6px 6px 0 0;">
+                      <span class="studio-col-title" style="font-size:11px; font-weight:600; color:var(--cyan-accent); text-transform:uppercase; letter-spacing:0.5px;">Live HTML Preview</span>
+                      <span class="badge badge-complete" style="font-size:9.5px; padding:2px 6px;">🛡️ XSS SANITIZED</span>
+                    </div>
+                    <div id="ks-markdown-preview" class="markdown-preview-body"
+                         style="flex:1; min-height:0; overflow-y:auto; background:#0b121c; border:1px solid var(--border-subtle); border-radius:0 0 6px 6px; padding:16px 20px; font-family:var(--font-sans); color:var(--text-primary); line-height:1.65; box-sizing:border-box;">
+                    </div>
+                  </div>
+                </div>
 
-                  <!-- Dimension Arrowheads -->
-                  <marker id="dim-arrow-cyan" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
-                    <polygon points="0,2 8,5 0,8" fill="#00e5ff" />
-                  </marker>
-                </defs>
+                <!-- 2. Code & Config Monospace Studio Sub-Pane -->
+                <div id="ks-code-studio" class="studio-sub-pane" style="display:none; flex-direction:column; height:100%; width:100%; min-height:0;">
+                  <div class="code-editor-header" style="display:flex; justify-content:space-between; align-items:center; padding:6px 12px; background:#0b121c; border:1px solid var(--border-subtle); border-bottom:none; border-radius:6px 6px 0 0;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span class="badge badge-agent" id="code-lang-badge">PYTHON</span>
+                      <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);" id="code-stats-badge">12 lines • 3.8 KB</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <button class="toolbar-btn" id="btn-code-toggle-wrap" title="Toggle line wrap" style="font-size:10.5px; padding:2px 8px;">Wrap: Off</button>
+                      <button class="toolbar-btn" id="btn-code-copy" title="Copy code to clipboard" style="font-size:10.5px; padding:2px 8px;">📋 Copy Code</button>
+                    </div>
+                  </div>
+                  <div class="code-view-container" id="code-view-container" style="display:flex; flex:1; min-height:0; flex-direction:column;">
+                    <div class="code-viewport" id="code-viewport" style="display:flex; flex:1; min-height:0; background:#070d16; border:1px solid var(--border-subtle); border-radius:0 0 6px 6px; overflow:hidden; font-family:var(--font-mono); font-size:12px; line-height:1.6;">
+                      <div class="code-line-numbers" id="code-line-numbers"
+                           style="padding:12px 10px; text-align:right; color:var(--text-muted); user-select:none; background:#090f18; border-right:1px solid var(--border-subtle); min-width:48px; box-sizing:border-box; overflow:hidden;">
+                      </div>
+                      <div class="code-content-wrapper" id="code-content-wrapper" style="flex:1; position:relative; overflow:auto;">
+                        <pre class="code-highlighted-pre" id="code-highlighted-pre"
+                             style="margin:0; padding:12px 16px; min-height:100%; box-sizing:border-box; color:#e2e8f0; white-space:pre; overflow:visible; font-family:var(--font-mono); font-size:12px; line-height:1.6;">
+                        </pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-                <!-- Isometric Ground Perspective Grid -->
-                <g stroke="#112438" stroke-width="0.8" opacity="0.65">
-                  <line x1="60" y1="230" x2="420" y2="40" />
-                  <line x1="100" y1="250" x2="460" y2="60" />
-                  <line x1="140" y1="270" x2="490" y2="85" />
-                  <line x1="420" y1="230" x2="60" y2="40" />
-                  <line x1="380" y1="250" x2="20" y2="60" />
-                  <line x1="340" y1="270" x2="10" y2="95" />
-                </g>
+                <!-- 3. Tabular / CSV Data-Grid View Sub-Pane -->
+                <div id="ks-data-grid-studio" class="studio-sub-pane" style="display:none; flex-direction:column; height:100%; width:100%; min-height:0;">
+                  <div class="grid-toolbar" style="display:flex; justify-content:space-between; align-items:center; padding:6px 12px; background:#0b121c; border:1px solid var(--border-subtle); border-bottom:none; border-radius:6px 6px 0 0;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span class="badge badge-complete" id="grid-dimensions-badge">4 ROWS × 5 COLS</span>
+                      <input type="text" id="grid-search-input" placeholder="Filter rows in grid..."
+                             style="background:#070d16; border:1px solid var(--border-subtle); color:var(--text-primary); padding:3px 8px; border-radius:4px; font-size:11px; font-family:var(--font-mono); width:200px;" />
+                    </div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <button class="toolbar-btn" id="btn-grid-copy-tsv" title="Copy table as TSV" style="font-size:10.5px; padding:2px 8px;">📋 Copy TSV</button>
+                    </div>
+                  </div>
+                  <div class="grid-scroll-container" id="grid-scroll-container" style="flex:1; min-height:0; overflow:auto; background:#070d16; border:1px solid var(--border-subtle); border-radius:0 0 6px 6px;">
+                    <table class="studio-data-grid" id="studio-data-grid">
+                      <thead id="grid-thead"></thead>
+                      <tbody id="grid-tbody"></tbody>
+                    </table>
+                  </div>
+                </div>
 
-                <!-- CAD Mesh Geometry: L-Bracket ("mount_v3") -->
-                <g id="cad-mesh-group" style="transition: transform 0.3s ease;">
-                  <!-- Base Plate: Hidden Wireframe (dashed) -->
-                  <g stroke="#00e5ff" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.35">
-                    <line x1="150" y1="185" x2="210" y2="150" />
-                    <line x1="210" y1="150" x2="350" y2="225" />
-                  </g>
-
-                  <!-- Base Plate: Left-Front Side Face -->
-                  <polygon points="150,185 220,225 220,242 150,202" fill="url(#facet-flange-side)" stroke="#00e5ff" stroke-width="1.2" stroke-linejoin="round" />
-
-                  <!-- Base Plate: Right-Front Side Face -->
-                  <polygon points="220,225 360,145 360,128 220,208" fill="#0b1e30" stroke="#00e5ff" stroke-width="1.2" stroke-linejoin="round" />
-
-                  <!-- Base Plate: Front Drop Face (Chamfer Edge) -->
-                  <polygon points="220,225 360,145 360,162 220,242" fill="#081624" stroke="#00e5ff" stroke-width="1.2" stroke-linejoin="round" />
-
-                  <!-- Base Plate: Top Horizontal Face (with chamfers) -->
-                  <polygon points="160,175 220,208 355,130 295,97" fill="url(#facet-base-top)" stroke="#00e5ff" stroke-width="1.3" stroke-linejoin="round" />
-
-                  <!-- Bolt Holes on Base Plate: 3 Countersunk Holes (Isometric Ellipses) -->
-                  <g transform="translate(205, 185) rotate(-28)">
-                    <ellipse cx="0" cy="0" rx="9" ry="4.5" fill="url(#hole-depth-grad)" stroke="#00e5ff" stroke-width="1.2" />
-                    <ellipse cx="0" cy="1" rx="5.5" ry="2.8" fill="#03060a" stroke="rgba(0,229,255,0.6)" stroke-width="0.8" />
-                  </g>
-                  <g transform="translate(250, 160) rotate(-28)">
-                    <ellipse cx="0" cy="0" rx="9" ry="4.5" fill="url(#hole-depth-grad)" stroke="#00e5ff" stroke-width="1.2" />
-                    <ellipse cx="0" cy="1" rx="5.5" ry="2.8" fill="#03060a" stroke="rgba(0,229,255,0.6)" stroke-width="0.8" />
-                  </g>
-                  <g transform="translate(295, 135) rotate(-28)">
-                    <ellipse cx="0" cy="0" rx="9" ry="4.5" fill="url(#hole-depth-grad)" stroke="#00e5ff" stroke-width="1.2" />
-                    <ellipse cx="0" cy="1" rx="5.5" ry="2.8" fill="#03060a" stroke="rgba(0,229,255,0.6)" stroke-width="0.8" />
-                  </g>
-
-                  <!-- Vertical Mounting Flange: Left Side Face -->
-                  <polygon points="150,185 170,173 170,88 150,100" fill="url(#facet-flange-side)" stroke="#00e5ff" stroke-width="1.2" stroke-linejoin="round" />
-
-                  <!-- Vertical Mounting Flange: Front Face (Upright Wall) -->
-                  <polygon points="170,173 305,95 305,10 170,88" fill="url(#facet-flange-front)" stroke="#00e5ff" stroke-width="1.3" stroke-linejoin="round" />
-
-                  <!-- Vertical Flange Top Chamfer Face -->
-                  <polygon points="170,88 180,82 315,4 305,10" fill="url(#facet-flange-top)" stroke="#00e5ff" stroke-width="1.2" stroke-linejoin="round" />
-
-                  <!-- Vertical Flange Top Horizontal Rim -->
-                  <polygon points="180,82 195,73 330,-5 315,4" fill="#205887" stroke="#00e5ff" stroke-width="1.2" stroke-linejoin="round" />
-
-                  <!-- Vertical Mounting Flange: 2 Slotted Holes -->
-                  <g transform="translate(210, 115) rotate(5)">
-                    <rect x="-6" y="-18" width="12" height="36" rx="6" ry="6" fill="url(#hole-depth-grad)" stroke="#00e5ff" stroke-width="1.1" />
-                    <rect x="-4" y="-15" width="8" height="30" rx="4" ry="4" fill="#03060a" stroke="rgba(0,229,255,0.5)" stroke-width="0.75" />
-                  </g>
-                  <g transform="translate(265, 83) rotate(5)">
-                    <rect x="-6" y="-18" width="12" height="36" rx="6" ry="6" fill="url(#hole-depth-grad)" stroke="#00e5ff" stroke-width="1.1" />
-                    <rect x="-4" y="-15" width="8" height="30" rx="4" ry="4" fill="#03060a" stroke="rgba(0,229,255,0.5)" stroke-width="0.75" />
-                  </g>
-
-                  <!-- Dimension Callouts -->
-                  <!-- Dimension 1: "80.00 mm" along Base Plate Length -->
-                  <g stroke="#00e5ff" stroke-width="1" opacity="0.9">
-                    <line x1="220" y1="242" x2="220" y2="260" stroke="#38bdf8" stroke-dasharray="2 2" />
-                    <line x1="360" y1="162" x2="360" y2="180" stroke="#38bdf8" stroke-dasharray="2 2" />
-                    <line x1="225" y1="256" x2="355" y2="176" stroke="#00e5ff" stroke-width="1.2" marker-start="url(#dim-arrow-cyan)" marker-end="url(#dim-arrow-cyan)" />
-                  </g>
-                  <text x="282" y="226" fill="#00e5ff" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700" text-anchor="middle" transform="rotate(-30, 282, 226)">80.00 mm</text>
-
-                  <!-- Dimension 2: "24.00 mm" Vertical Flange Height -->
-                  <g stroke="#00e5ff" stroke-width="1" opacity="0.9">
-                    <line x1="150" y1="185" x2="130" y2="185" stroke="#38bdf8" stroke-dasharray="2 2" />
-                    <line x1="150" y1="100" x2="130" y2="100" stroke="#38bdf8" stroke-dasharray="2 2" />
-                    <line x1="135" y1="180" x2="135" y2="105" stroke="#00e5ff" stroke-width="1.2" marker-start="url(#dim-arrow-cyan)" marker-end="url(#dim-arrow-cyan)" />
-                  </g>
-                  <text x="120" y="146" fill="#00e5ff" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700" text-anchor="middle">24.00 mm</text>
-                </g>
-              </svg>
-
-              <!-- Coordinate Axes Gizmo (Bottom-Left) -->
-              <svg class="axis-gizmo" viewBox="0 0 60 60">
-                <defs>
-                  <marker id="axis-arrow-red" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
-                    <polygon points="0,2 8,5 0,8" fill="#ef4444" />
-                  </marker>
-                  <marker id="axis-arrow-green" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
-                    <polygon points="0,2 8,5 0,8" fill="#10b981" />
-                  </marker>
-                  <marker id="axis-arrow-cyan" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
-                    <polygon points="0,2 8,5 0,8" fill="#00e5ff" />
-                  </marker>
-                </defs>
-                <circle cx="16" cy="42" r="2.5" fill="#ffffff" opacity="0.8" />
-                <line x1="16" y1="42" x2="16" y2="12" stroke="#00e5ff" stroke-width="2" marker-end="url(#axis-arrow-cyan)" />
-                <text x="13" y="9" fill="#00e5ff" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold">Z</text>
-                <line x1="16" y1="42" x2="48" y2="48" stroke="#ef4444" stroke-width="2" marker-end="url(#axis-arrow-red)" />
-                <text x="50" y="52" fill="#ef4444" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold">X</text>
-                <line x1="16" y1="42" x2="38" y2="28" stroke="#10b981" stroke-width="2" marker-end="url(#axis-arrow-green)" />
-                <text x="40" y="27" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold">Y</text>
-              </svg>
-
-              <!-- Mesh Quality Telemetry (Bottom-Right) -->
-              <div class="mesh-telemetry">
-                <span class="mesh-dot"></span>
-                <span>MANIFOLD • 1,248 FACETS</span>
+                <!-- 4. Media Sub-Pane -->
+                <div id="ks-media-studio" class="studio-sub-pane" style="display:none; flex-direction:column; height:100%; width:100%; min-height:0;">
+                  <div class="media-toolbar" style="display:flex; justify-content:space-between; align-items:center; padding:6px 12px; background:#0b121c; border:1px solid var(--border-subtle); border-bottom:none; border-radius:6px 6px 0 0;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span class="badge badge-agent" id="media-type-badge">SVG VECTOR GRAPHIC</span>
+                      <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);" id="media-dimensions-badge">5.1 KB</span>
+                    </div>
+                  </div>
+                  <div class="media-viewport" id="media-viewport" style="flex:1; min-height:0; display:flex; align-items:center; justify-content:center; background:#070d16; border:1px solid var(--border-subtle); border-radius:0 0 6px 6px; padding:24px; overflow:auto;">
+                    <div id="media-display-container" style="max-width:100%; max-height:100%; display:flex; align-items:center; justify-content:center;"></div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- Application Export Section -->
-            <div class="viewport-export-dock" id="target-export-dock">
-              <div class="export-header-row">
-                <span class="export-label-left">EXPORT MODEL</span>
-                <span class="export-label-right">STL (binary) • millimeters • 62.4 KB</span>
-              </div>
-              <div class="export-input-row">
-                <span class="export-folder-icon">📁</span>
-                <input class="export-path-input" id="export-path-input" value="C:\Fabrication\toolhead_mount.stl" readonly />
-                <button class="btn-export" id="btn-export-mesh">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                  Export
-                </button>
-              </div>
-              <div class="safety-warning-banner">
-                <span class="warning-icon">⚠</span>
-                <span>Existing file detected. Write operation held by safety policy.</span>
-              </div>
-              <div class="render-telemetry-row">
-                <span class="render-telem-left">Perspective • $fn=64 • CGAL ready</span>
-                <span class="render-telem-right">Last render 0.842s</span>
-              </div>
-            </div>
-          </div>
+            <!-- ================================================================
+                 VIEWPORT 3: TASK & REASONING GRAPH & LIVE VARIABLES (BLACKBOARD)
+                 ================================================================ -->
+            <div class="viewport-panel" id="viewport-3" data-viewport-id="3">
+              <div class="reasoning-graph-layout">
+                <!-- Left/Center: DAG Canvas Visualizer (65%) -->
+                <div class="dag-canvas-container" id="dag-canvas-container">
+                  <div class="dag-toolbar">
+                    <div class="dag-title-group">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="18" cy="5" r="3"></circle>
+                        <circle cx="6" cy="12" r="3"></circle>
+                        <circle cx="18" cy="19" r="3"></circle>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                      </svg>
+                      <span>Execution DAG Blackboard</span>
+                      <span class="badge badge-complete" id="dag-progress-badge">3/4 RESOLVED</span>
+                    </div>
+                    <div class="dag-controls" style="display:flex; gap:6px;">
+                      <button class="dag-btn" id="btn-dag-fit" title="Fit Graph to Frame">⛶ Fit</button>
+                      <button class="dag-btn" id="btn-dag-refresh" title="Re-sync with Backend State">⟳ Sync</button>
+                    </div>
+                  </div>
 
-          <!-- Action Toolbar -->
-          <div class="canvas-action-toolbar">
-            <div class="toolbar-actions">
-              <button class="toolbar-btn" id="btn-rescan-som">
-                <span>⛶</span> Re-scan SOM
-              </button>
-              <button class="toolbar-btn" id="btn-inspect-target">
-                <span>↖</span> Inspect target
-              </button>
-              <button class="toolbar-btn" id="btn-capture-frame">
-                <span>📷</span> Capture
-              </button>
-            </div>
-            <div class="frame-telemetry" id="frame-telemetry">
-              FRAME #8184 • 84ms
-            </div>
-          </div>
+                  <!-- SVG Directed Connectors Overlay -->
+                  <div class="dag-stage" id="dag-stage">
+                    <svg class="dag-connector-svg" id="dag-connector-svg" width="100%" height="100%">
+                      <defs>
+                        <marker id="dag-arrow-cyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                          <path d="M 0 1 L 8 5 L 0 9 z" fill="#00e5ff" />
+                        </marker>
+                        <marker id="dag-arrow-emerald" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                          <path d="M 0 1 L 8 5 L 0 9 z" fill="#10b981" />
+                        </marker>
+                        <marker id="dag-arrow-slate" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                          <path d="M 0 1 L 8 5 L 0 9 z" fill="#64748b" />
+                        </marker>
+                      </defs>
+                      <g id="dag-links-group"></g>
+                    </svg>
 
-          <!-- Fusion Status Bar -->
-          <div class="fusion-status-bar">
-            <div class="fusion-left">
-              <span class="fusion-dot"></span>
-              <span id="fusion-targets-count">12 targets mapped</span>
+                    <!-- Aligned 4-Column Node Flow Grid -->
+                    <div class="dag-columns-wrapper" id="dag-columns-wrapper">
+                      <!-- Column 1: Goal -->
+                      <div class="dag-column" id="dag-col-goal">
+                        <span class="dag-col-header">1. MISSION GOAL</span>
+                        <div class="dag-card node-goal active" id="dag-node-goal" data-node-type="goal">
+                          <div class="node-badge">GOAL</div>
+                          <div class="node-title" id="dag-goal-title">Universal Agent Task Execution</div>
+                          <div class="node-status-tag status-done">&#x2713; INITIALIZED</div>
+                        </div>
+                      </div>
+
+                      <!-- Column 2: Sub-Tasks Pipeline -->
+                      <div class="dag-column" id="dag-col-tasks">
+                        <span class="dag-col-header">2. SUB-TASKS PIPELINE</span>
+                        <div class="dag-nodes-list" id="dag-tasks-nodes-list">
+                          <!-- Dynamically rendered from AppState.tasks -->
+                        </div>
+                      </div>
+
+                      <!-- Column 3: Safety Gates -->
+                      <div class="dag-column" id="dag-col-gates">
+                        <span class="dag-col-header">3. SAFETY GATES</span>
+                        <div class="dag-nodes-list" id="dag-gates-nodes-list">
+                          <div class="dag-card node-gate blocked" id="dag-node-gate" data-node-type="gate">
+                            <div class="node-badge" style="color:var(--amber-warning);">GATE</div>
+                            <div class="node-title" id="dag-gate-title">System File Write Gate</div>
+                            <div class="node-status-tag status-blocked" id="dag-gate-status">&#x26A0; HELD: MODERATE</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Column 4: Artifacts & Outputs -->
+                      <div class="dag-column" id="dag-col-artifacts">
+                        <span class="dag-col-header">4. ARTIFACTS &amp; OUTPUTS</span>
+                        <div class="dag-nodes-list" id="dag-artifacts-nodes-list">
+                          <!-- Dynamically rendered from workspace files -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Live Variables & Memory State Inspector (35%) -->
+                <div class="variables-inspector-panel" id="variables-inspector-panel">
+                  <!-- Section 1: Agent Context Variables -->
+                  <div class="inspector-section">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                      <span class="section-title">AGENT CONTEXT VARIABLES</span>
+                      <span class="badge badge-agent">READ-ONLY</span>
+                    </div>
+                    <div class="variables-table" id="context-variables-table">
+                      <div class="var-row" data-var="$workspace" title="Click to insert $workspace into REPL">
+                        <span class="var-name">$workspace</span>
+                        <span class="var-val" id="var-val-workspace">workspace/default</span>
+                        <button class="var-copy-btn" title="Copy value">&#x1F4CB;</button>
+                      </div>
+                      <div class="var-row" data-var="$exit_code" title="Click to insert $exit_code into REPL">
+                        <span class="var-name">$exit_code</span>
+                        <span class="var-val status-success" id="var-val-exit-code">0</span>
+                        <button class="var-copy-btn" title="Copy value">&#x1F4CB;</button>
+                      </div>
+                      <div class="var-row" data-var="$current_task" title="Click to insert $current_task into REPL">
+                        <span class="var-name">$current_task</span>
+                        <span class="var-val" id="var-val-current-task">Synthesize backend telemetry and state</span>
+                        <button class="var-copy-btn" title="Copy value">&#x1F4CB;</button>
+                      </div>
+                      <div class="var-row" data-var="$active_tier" title="Click to insert $active_tier into REPL">
+                        <span class="var-name">$active_tier</span>
+                        <span class="var-val" id="var-val-active-tier">Tier 1 (Local Ollama 7B)</span>
+                        <button class="var-copy-btn" title="Copy value">&#x1F4CB;</button>
+                      </div>
+                      <div class="var-row" data-var="$fusion_confidence" title="Click to insert $fusion_confidence into REPL">
+                        <span class="var-name">$fusion_confidence</span>
+                        <span class="var-val" style="color:var(--cyan-accent);" id="var-val-confidence">99.2%</span>
+                        <button class="var-copy-btn" title="Copy value">&#x1F4CB;</button>
+                      </div>
+                      <div class="var-row" data-var="$checkpoint" title="Click to insert $checkpoint into REPL">
+                        <span class="var-name">$checkpoint</span>
+                        <span class="var-val" id="var-val-checkpoint">checkpoint #018</span>
+                        <button class="var-copy-btn" title="Copy value">&#x1F4CB;</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Section 2: Persistent Memory Facts (/api/memory) -->
+                  <div class="inspector-section" style="margin-top:12px; flex:1; display:flex; flex-direction:column; min-height:0;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                      <span class="section-title">PERSISTENT MEMORY FACTS</span>
+                      <button class="dag-btn" id="btn-add-memory-fact" title="Add New Memory Key-Value" style="border-color:var(--border-bright);color:var(--cyan-accent);">+ Add Fact</button>
+                    </div>
+
+                    <!-- Collapsible Inline Add Form -->
+                    <div class="memory-add-form hidden" id="memory-add-form">
+                      <input type="text" id="mem-key-input" placeholder="key (e.g. timeout_ms)" class="form-input-sm" />
+                      <input type="text" id="mem-val-input" placeholder="value" class="form-input-sm" />
+                      <select id="mem-cat-select" class="form-select-sm">
+                        <option value="notes">notes</option>
+                        <option value="facts">facts</option>
+                        <option value="system">system</option>
+                      </select>
+                      <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
+                        <button class="dag-btn" id="btn-save-mem-fact" style="background:var(--cyan-dim);color:var(--cyan-accent);border-color:var(--cyan-accent);">Save</button>
+                        <button class="dag-btn" id="btn-cancel-mem-fact">Cancel</button>
+                      </div>
+                    </div>
+
+                    <!-- Memory Facts List -->
+                    <div class="memory-facts-list" id="memory-facts-list">
+                      <!-- Rendered dynamically from /api/memory -->
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="fusion-center">
-              UIA + VISION FUSION
+
+            <!-- ================================================================
+                 VIEWPORT 4: SHELL & EXECUTION SANDBOX (MULTI-TAB TERMINAL)
+                 ================================================================ -->
+            <div class="viewport-panel" id="viewport-4" data-viewport-id="4">
+              <div class="shell-sandbox-container">
+                <!-- Terminal Header Bar & Shell Tabs -->
+                <div class="terminal-header-bar">
+                  <div class="terminal-tabs-cluster" role="tablist">
+                    <button class="terminal-tab active" data-shell="pwsh" id="term-tab-pwsh" role="tab" aria-selected="true">
+                      <span>&gt;_</span>
+                      <span>PowerShell 7.4</span>
+                    </button>
+                    <button class="terminal-tab" data-shell="bash" id="term-tab-bash" role="tab" aria-selected="false">
+                      <span>$</span>
+                      <span>Bash Shell</span>
+                    </button>
+                    <button class="terminal-tab" data-shell="sandbox" id="term-tab-sandbox" role="tab" aria-selected="false">
+                      <span>&#x26A1;</span>
+                      <span>Agent Sandbox</span>
+                    </button>
+                  </div>
+
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <button class="dag-btn" id="btn-term-clear" title="Clear Buffer (cls)">&#x2298; Clear</button>
+                    <button class="dag-btn" id="btn-term-copy" title="Copy Log Buffer">&#x1F4CB; Copy</button>
+                    <span class="badge badge-complete" id="terminal-exit-badge">EXIT 0</span>
+                  </div>
+                </div>
+
+                <!-- Scrollable Terminal Logs Surface -->
+                <div class="terminal-logs-surface repl-log terminal-output" id="terminal-logs-surface" role="log" aria-live="polite">
+                  <div class="terminal-log-row log-stdout">
+                    <span class="log-ts">[15:42:01]</span>
+                    <span class="log-msg">AETHER Universal Shell Sandbox initialized &bull; Session #4102</span>
+                  </div>
+                  <div class="terminal-log-row log-stdout">
+                    <span class="log-ts">[15:42:02]</span>
+                    <span class="log-msg">Working directory: c:\Users\andym\gschwelli-ai\workspace\default</span>
+                  </div>
+                </div>
+
+                <!-- Interactive Terminal Command Input Row -->
+                <div class="terminal-input-bar">
+                  <label class="terminal-prompt-label" id="terminal-prompt-label" for="terminal-active-input">PS C:\workspace&gt;</label>
+                  <input
+                    type="text"
+                    class="terminal-active-input repl-input"
+                    id="terminal-active-input"
+                    placeholder="Enter shell or agent command..."
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                  />
+                  <button class="terminal-submit-btn" id="btn-term-run">&#x21B5; Run</button>
+                </div>
+
+                <!-- Terminal Footer Status Bar -->
+                <div class="terminal-footer-bar">
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="color:var(--emerald-success);font-size:10px;">&bull;</span>
+                    <span id="term-active-profile-desc">pwsh 7.4.2 &bull; I/O Guarded Sandbox</span>
+                  </div>
+                  <div>
+                    <span>SECURITY TIER 1 &bull; AUDIT LOGGED</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="fusion-right" id="fusion-confidence-val">
-              99.2% confidence
-            </div>
+
           </div>
         </main>
 
@@ -3156,7 +4372,7 @@
                   <span class="badge badge-complete">COMPLETE</span>
                 </div>
                 <div class="step-desc">Prepare fabrication export</div>
-                <div class="step-detail">Load toolhead_mount.scad → binary STL</div>
+                <div class="step-detail">Load action_target.py → binary artifact</div>
               </div>
 
               <!-- Card 2: UIA Detect -->
@@ -3231,13 +4447,13 @@
 
             <!-- Feature 28 Logs Container -->
             <div class="repl-logs" id="repl-logs" role="log" aria-live="polite">
-              <div class="log-line"><span class="log-time">15:42:06</span><span class="log-cmd">&gt; Get-Process openscad</span></div>
+              <div class="log-line"><span class="log-time">15:42:06</span><span class="log-cmd">&gt; Get-Process python</span></div>
               <div class="log-line"><span class="log-time">15:42:06</span><span class="log-info">PID 8044 • UIA attached</span></div>
               <div class="log-line"><span class="log-time">15:42:07</span><span class="log-cmd">&gt; Test-Path $target_dir</span></div>
               <div class="log-line"><span class="log-time">15:42:07</span><span class="log-info log-cyan">True</span></div>
-              <div class="log-line"><span class="log-time">15:42:08</span><span class="log-cmd">&gt; openscad --check-parameters</span></div>
-              <div class="log-line"><span class="log-time">15:42:09</span><span class="log-success">CGAL: valid 2-manifold mesh</span></div>
-              <div class="log-line"><span class="log-time">15:42:09</span><span class="log-info">1,248 facets • 62.4 KB • exit 0</span></div>
+              <div class="log-line"><span class="log-time">15:42:08</span><span class="log-cmd">&gt; python --check-parameters</span></div>
+              <div class="log-line"><span class="log-time">15:42:09</span><span class="log-success">2D Surface Mesh: valid geometry structure</span></div>
+              <div class="log-line"><span class="log-time">15:42:09</span><span class="log-info">1,248 elements • 62.4 KB • exit 0</span></div>
               <div class="log-line"><span class="log-time">15:42:10</span><span class="log-cmd">&gt; Export-Mesh -Format STL</span></div>
               <div class="log-line"><span class="log-time">15:42:10</span><span class="log-warn">SEC-810: existing file at target</span></div>
               <div class="log-line"><span class="log-time">15:42:10</span><span class="log-warn">WRITE HELD • awaiting approval</span></div>
@@ -3318,13 +4534,13 @@
             <!-- Center: Interactive Source Editor / Previewer -->
             <div class="placeholder-card" style="display:flex;flex-direction:column;min-height:0;overflow:hidden;">
               <div style="display:flex;align-items:center;justify-content:space-between;">
-                <span class="section-title" id="ks-active-file-header">ACTIVE FILE VIEWER // README.md</span>
+                <span class="section-title" id="view-ks-active-file-header">ACTIVE FILE VIEWER // README.md</span>
                 <div style="display:flex;align-items:center;gap:6px;">
                   <span class="badge badge-complete" id="ks-editor-saved-badge">SYNCHRONIZED</span>
                   <button class="toolbar-btn" id="btn-ks-save" style="padding:3px 9px;font-size:10.5px;">💾 Save &amp; Re-chunk</button>
                 </div>
               </div>
-              <textarea id="ks-editor-textarea" spellcheck="false" style="width:100%;flex:1;background:#070d16;color:#e2e8f0;border:1px solid var(--border-subtle);border-radius:6px;padding:12px;font-family:var(--font-mono);font-size:11.5px;line-height:1.55;resize:none;outline:none;"># Universal Agent Workspace
+              <textarea id="view-ks-editor-textarea" spellcheck="false" style="width:100%;flex:1;background:#070d16;color:#e2e8f0;border:1px solid var(--border-subtle);border-radius:6px;padding:12px;font-family:var(--font-mono);font-size:11.5px;line-height:1.55;resize:none;outline:none;"># Universal Agent Workspace
 
 Domain-agnostic Operating Canvas for autonomous multimodal agents.
 
@@ -3338,7 +4554,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
             <div class="placeholder-card" style="display:flex;flex-direction:column;min-height:0;overflow:hidden;">
               <span class="section-title">VECTOR CHUNKS &amp; SEMANTIC SEARCH</span>
               <div style="display:flex;gap:6px;margin-top:4px;">
-                <input id="ks-query-input" type="text" placeholder="Test RAG query (e.g. bolt holes)..." style="flex:1;background:#070d16;border:1px solid var(--border-subtle);color:var(--text-primary);padding:5px 8px;border-radius:5px;font-size:11px;font-family:var(--font-mono);" />
+                <input id="ks-query-input" type="text" placeholder="Test RAG query (e.g. anchors)..." style="flex:1;background:#070d16;border:1px solid var(--border-subtle);color:var(--text-primary);padding:5px 8px;border-radius:5px;font-size:11px;font-family:var(--font-mono);" />
                 <button class="toolbar-btn" id="btn-ks-query" style="padding:4px 8px;">Search</button>
               </div>
               <div id="ks-chunks-list" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;flex:1;margin-top:6px;font-family:var(--font-mono);font-size:10.5px;">
@@ -3347,7 +4563,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
                     <span>Chunk #01 • L1–L14</span>
                     <span>sim: 0.964</span>
                   </div>
-                  <div style="color:var(--text-secondary);margin-top:4px;">Base plate 80.00 mm × 50.00 mm × 6.00 mm with upright mount wall 24.00 mm height</div>
+                  <div style="color:var(--text-secondary);margin-top:4px;">Autonomous Agent Runtime Architecture &amp; Multi-Tier Routing Core (Tier 1–4 Waterfall Pipeline)</div>
                   <div style="color:var(--text-muted);margin-top:4px;font-size:9.5px;">vec: [0.041, -0.118, 0.294, 0.087, ...] • 128 tok</div>
                 </div>
                 <div class="ks-chunk-card" style="background:#070d16;border:1px solid var(--border-subtle);border-radius:5px;padding:8px;">
@@ -3355,7 +4571,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
                     <span>Chunk #02 • L15–L26</span>
                     <span>sim: 0.942</span>
                   </div>
-                  <div style="color:var(--text-secondary);margin-top:4px;">Bolt holes × 5 (M4 countersunk clearance) + slotted flange bores</div>
+                  <div style="color:var(--text-secondary);margin-top:4px;">Workspace State Synchronization &amp; Memory Fact Ingestion (/api/memory)</div>
                   <div style="color:var(--text-muted);margin-top:4px;font-size:9.5px;">vec: [-0.092, 0.203, 0.141, -0.055, ...] • 96 tok</div>
                 </div>
                 <div class="ks-chunk-card" style="background:#070d16;border:1px solid var(--border-subtle);border-radius:5px;padding:8px;">
@@ -3363,7 +4579,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
                     <span>Chunk #03 • SEC-810 Policy</span>
                     <span>sim: 0.891</span>
                   </div>
-                  <div style="color:var(--text-secondary);margin-top:4px;">Safety rule SEC-810: Existing STL overwrite requires human confirmation gate</div>
+                  <div style="color:var(--text-secondary);margin-top:4px;">Safety rule SEC-810: Action requires human confirmation gate before file write</div>
                   <div style="color:var(--text-muted);margin-top:4px;font-size:9.5px;">vec: [0.174, 0.062, -0.310, 0.119, ...] • 84 tok</div>
                 </div>
               </div>
@@ -3418,7 +4634,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
                   <rect x="20" y="16" width="680" height="388" rx="6" fill="#091320" stroke="#1b2a3e" stroke-width="1.5" />
                   <!-- Simulated Window Header & Menu Bar -->
                   <rect x="20" y="16" width="680" height="28" rx="6" fill="#0f1d30" />
-                  <text x="36" y="34" fill="#94a3b8" font-family="monospace" font-size="11">OpenSCAD — toolhead_mount.scad (PID 8044)</text>
+                  <text x="36" y="34" fill="#94a3b8" font-family="monospace" font-size="11">Workspace Process — action_target.py (PID 8044)</text>
                   <!-- Bounding boxes for key SOM marks -->
                   <g class="vsom-bbox-group" data-mark="01" style="cursor:pointer;">
                     <rect x="32" y="50" width="210" height="24" rx="3" fill="rgba(0,229,255,0.08)" stroke="#00e5ff" stroke-width="1.5" />
@@ -3434,7 +4650,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
                   </g>
                   <g class="vsom-bbox-group" data-mark="12" style="cursor:pointer;">
                     <rect x="36" y="330" width="490" height="32" rx="4" fill="rgba(0,229,255,0.08)" stroke="#00e5ff" stroke-width="1.5" />
-                    <text x="46" y="350" fill="#00e5ff" font-family="monospace" font-size="10.5">[12: Path Input] C:\Fabrication\toolhead_mount.stl</text>
+                    <text x="46" y="350" fill="#00e5ff" font-family="monospace" font-size="10.5">[12: Path Input] c:\workspace\action_target.py</text>
                   </g>
                   <g class="vsom-bbox-group active" data-mark="04" style="cursor:pointer;">
                     <rect x="540" y="330" width="144" height="32" rx="4" fill="rgba(245,158,11,0.18)" stroke="#f59e0b" stroke-width="2" />
@@ -3460,12 +4676,12 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
                 <div><span style="color:var(--text-muted);">Safety Policy:</span> <span id="vsom-detail-policy" style="color:var(--amber-warning);">SEC-810 Gate Attached</span></div>
               </div>
               <span class="section-title" style="margin-top:4px;">ACCESSIBILITY TREE HIERARCHY</span>
-              <pre style="font-family:var(--font-mono);font-size:10.5px;color:var(--text-secondary);background:#070d16;padding:10px;border-radius:6px;border:1px solid var(--border-subtle);overflow:auto;flex:1;">Window "OpenSCAD — toolhead_mount.scad"
+              <pre style="font-family:var(--font-mono);font-size:10.5px;color:var(--text-secondary);background:#070d16;padding:10px;border-radius:6px;border:1px solid var(--border-subtle);overflow:auto;flex:1;">Window "Workspace Process — action_target.py"
  ├─ MenuBar [01] (File, Edit, Design, View)
  ├─ TitleBar [02] (Minimize, Maximize, Close)
  ├─ CustomViewport [03] (QGLWidget • 1,248 facets)
  └─ Pane "Export Model Dock"
-     ├─ Edit [12] "C:\Fabrication\toolhead_mount.stl"
+     ├─ Edit [12] "c:\workspace\action_target.py"
      └─ Button [04] "Export" (InvokePattern)</pre>
             </div>
           </div>
@@ -3499,7 +4715,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
                     <span>Operator Instruction</span>
                     <span style="font-family:var(--font-mono);color:var(--text-muted);">15:42:05</span>
                   </div>
-                  <div style="margin-top:4px;font-size:12.5px;color:var(--text-primary);">Export toolhead mount bracket (`toolhead_mount.scad`) to `C:\Fabrication\toolhead_mount.stl` with manifold verification and safety backup.</div>
+                  <div style="margin-top:4px;font-size:12.5px;color:var(--text-primary);">Export target artifact (`action_target.py`) to `c:\workspace\action_target.py` with integrity verification and safety backup.</div>
                 </div>
 
                 <div style="background:#09121f;padding:10px 14px;border-radius:6px;border-left:3px solid var(--emerald-success);">
@@ -3508,9 +4724,9 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
                     <span style="font-family:var(--font-mono);color:var(--text-muted);">84ms fusion</span>
                   </div>
                   <div style="margin-top:4px;font-size:12px;color:var(--text-secondary);">
-                    1. Verified `openscad` process (PID 8044) and 2-manifold CGAL mesh (1,248 facets, 62.4 KB).<br/>
+                    1. Verified workspace process (PID 8044) and 2D surface wireframe mesh (1,248 elements, 62.4 KB).<br/>
                     2. Grounded 12 UI targets (`[04: Button "Export"]` at 99.2% confidence).<br/>
-                    3. Detected existing file at `C:\Fabrication\toolhead_mount.stl` — holding write at safety gate <code>SEC-810</code>.
+                    3. Detected existing file at `c:\workspace\action_target.py` — holding write at safety gate <code>SEC-810</code>.
                   </div>
                   <div style="margin-top:8px;display:flex;gap:8px;align-items:center;" id="fc-inline-gate-actions">
                     <span class="badge badge-approval" id="fc-gate-status-pill">AWAITING APPROVAL (SEC-810)</span>
@@ -3558,7 +4774,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
                   <button class="toolbar-btn" id="btn-fc-undo" style="padding:2px 7px;font-size:10px;">↶ Undo Last</button>
                 </div>
                 <div id="fc-undo-list" style="font-family:var(--font-mono);font-size:10.5px;color:var(--text-secondary);">
-                  Checkpoint #018: Backup <code>toolhead_mount.stl.bak</code> ready
+                  Checkpoint #018: Backup <code>action_target.py.bak</code> ready
                 </div>
               </div>
             </div>
@@ -3583,7 +4799,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
           </div>
           <div class="gate-text-group">
             <span class="gate-title">HUMAN-IN-THE-LOOP APPROVAL NEEDED</span>
-            <span class="gate-detail" id="gate-detail-text">Overwrite toolhead_mount.stl • backup saved • SEC-810</span>
+            <span class="gate-detail" id="gate-detail-text">Overwrite action_target.py • backup saved • SEC-810</span>
           </div>
         </div>
         <div class="gate-actions">
@@ -3686,6 +4902,101 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
     </div>
 
     <!-- ====================================================================
+         FEATURE #27: QUICK TELEMETRY DRAWERS (Tools, Memory, Cache, Undo)
+         ==================================================================== -->
+    <div class="telemetry-drawer-overlay hidden" id="telemetry-drawer-overlay"></div>
+
+    <aside class="telemetry-drawer-panel" id="telemetry-drawer-panel" aria-label="System Quick Drawer">
+      <!-- Drawer Header Bar -->
+      <div class="drawer-header">
+        <div class="drawer-tabs-cluster" role="tablist">
+          <button class="drawer-tab active" data-drawer-tab="tools" id="drawer-tab-tools" role="tab" aria-selected="true">
+            <span>🔧 Tools</span>
+          </button>
+          <button class="drawer-tab" data-drawer-tab="memory" id="drawer-tab-memory" role="tab" aria-selected="false">
+            <span>🧠 Memory</span>
+          </button>
+          <button class="drawer-tab" data-drawer-tab="cache" id="drawer-tab-cache" role="tab" aria-selected="false">
+            <span>⚡ Cache</span>
+          </button>
+          <button class="drawer-tab" data-drawer-tab="undo" id="drawer-tab-undo" role="tab" aria-selected="false">
+            <span>↶ Undo</span>
+          </button>
+        </div>
+        <button class="drawer-close-btn" id="btn-close-drawer" title="Close Drawer (Esc)">✕</button>
+      </div>
+
+      <!-- Drawer Body: 4 Panes -->
+      <div class="drawer-body">
+        <!-- 1. Tools Pane (/api/tool) -->
+        <div class="drawer-pane active" id="drawer-pane-tools">
+          <div class="drawer-pane-header">
+            <span class="pane-title">REGISTERED SYSTEM TOOLS</span>
+            <span class="badge badge-agent" id="drawer-tools-count">14 TOOLS</span>
+          </div>
+          <div class="tools-catalogue-list" id="drawer-tools-list" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;">
+            <div class="drawer-list-item" style="background:#070d16;padding:8px;border-radius:5px;border:1px solid var(--border-subtle);">
+              <div style="font-weight:600;color:var(--cyan-accent);font-size:11px;">bash_runner</div>
+              <div style="font-size:10px;color:var(--text-secondary);margin-top:2px;">Execute POSIX shell commands in secure container</div>
+            </div>
+            <div class="drawer-list-item" style="background:#070d16;padding:8px;border-radius:5px;border:1px solid var(--border-subtle);">
+              <div style="font-weight:600;color:var(--cyan-accent);font-size:11px;">fs_read_write</div>
+              <div style="font-size:10px;color:var(--text-secondary);margin-top:2px;">Safe sandboxed read/write for local workspace</div>
+            </div>
+            <div class="drawer-list-item" style="background:#070d16;padding:8px;border-radius:5px;border:1px solid var(--border-subtle);">
+              <div style="font-weight:600;color:var(--cyan-accent);font-size:11px;">vision_som_detector</div>
+              <div style="font-size:10px;color:var(--text-secondary);margin-top:2px;">Set-of-Marks visual element detector and coordinate grounding</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Memory Pane (/api/memory) -->
+        <div class="drawer-pane" id="drawer-pane-memory">
+          <div class="drawer-pane-header">
+            <span class="pane-title">PERSISTENT KNOWLEDGE FACTS</span>
+            <button class="btn-xs btn-primary" id="btn-drawer-add-mem" style="padding:2px 8px;font-size:10px;background:var(--cyan-dim);border:1px solid var(--cyan-accent);color:var(--cyan-accent);border-radius:4px;cursor:pointer;">+ Add</button>
+          </div>
+          <div class="drawer-memory-list" id="drawer-memory-list" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;font-family:var(--font-mono);font-size:10.5px;">
+            <div class="drawer-list-item" style="background:#070d16;padding:8px;border-radius:5px;border:1px solid var(--border-subtle);">
+              <span style="color:var(--cyan-accent);">target_dir</span>: C:\Fabrication
+            </div>
+            <div class="drawer-list-item" style="background:#070d16;padding:8px;border-radius:5px;border:1px solid var(--border-subtle);">
+              <span style="color:var(--cyan-accent);">safety_policy</span>: SEC-810
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Cache Pane (/api/cache) -->
+        <div class="drawer-pane" id="drawer-pane-cache">
+          <div class="drawer-pane-header">
+            <span class="pane-title">TIER-0 PLAN CACHE</span>
+            <button class="btn-xs btn-secondary" id="btn-drawer-clear-cache" style="padding:2px 8px;font-size:10px;background:transparent;border:1px solid var(--border-subtle);color:var(--text-secondary);border-radius:4px;cursor:pointer;">Clear Cache</button>
+          </div>
+          <div class="cache-entries-list" id="drawer-cache-list" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;font-family:var(--font-mono);font-size:10.5px;">
+            <div class="drawer-list-item" style="background:#070d16;padding:8px;border-radius:5px;border:1px solid var(--border-subtle);">
+              <div style="color:var(--emerald-success);">GET /api/state</div>
+              <div style="color:var(--text-muted);font-size:9.5px;margin-top:2px;">Hit count: 24 • TTL: 300s</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Undo Stack Pane (/api/undo) -->
+        <div class="drawer-pane" id="drawer-pane-undo">
+          <div class="drawer-pane-header">
+            <span class="pane-title">REVERSIBLE OPERATION STACK</span>
+            <button class="btn-xs btn-panic" id="btn-drawer-undo-last" style="padding:2px 8px;font-size:10px;background:rgba(239,68,68,0.15);border:1px solid var(--red-panic);color:var(--red-panic);border-radius:4px;cursor:pointer;">Rollback Last</button>
+          </div>
+          <div class="undo-history-list" id="drawer-undo-list" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;font-family:var(--font-mono);font-size:10.5px;">
+            <div class="drawer-list-item" style="background:#070d16;padding:8px;border-radius:5px;border:1px solid var(--border-subtle);">
+              <div style="color:var(--amber-warning);">Checkpoint #018: Pre-Write Backup</div>
+              <div style="color:var(--text-muted);font-size:9.5px;margin-top:2px;">action_target.py.bak • Ready</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
          NEW WORKSPACE CREATION MODAL
          ==================================================================== -->
     <div class="workspace-modal-backdrop" id="workspace-modal-backdrop" style="display: none;">
@@ -3701,7 +5012,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
           </div>
           <button class="workspace-modal-close-btn" id="btn-close-ws-modal" title="Schließen (Esc)">&times;</button>
         </div>
-        <form id="form-new-workspace" class="workspace-modal-form" onsubmit="return false;">
+        <form id="workspace-form" class="workspace-modal-form" novalidate onsubmit="return false;">
           <div class="workspace-modal-body">
             <div class="ws-form-group">
               <label class="ws-form-label" for="ws-name-input">
@@ -3763,6 +5074,8 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
             <button type="button" class="btn-ws-secondary" id="btn-cancel-ws">Abbrechen</button>
             <button type="submit" class="btn-ws-primary" id="btn-create-ws">
               <span>+</span> Erstellen
+            </button>
+            <button type="submit" class="btn-ws-primary btn-ws-save" id="btn-ws-save" style="position:absolute;width:1px;height:1px;opacity:0.001;padding:0;margin:0;border:none;pointer-events:auto;" tabindex="-1">
             </button>
           </div>
         </form>
@@ -3835,7 +5148,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         confidence: '99.2%',
         targetsMapped: 12,
         fusionMode: 'UIA + VISION FUSION',
-        exportPath: 'C:\\Fabrication\\toolhead_mount.stl',
+        exportPath: 'c:\\workspace\\action_target.py',
         prompt: 'Universal Autonomous Agent Operating Canvas'
       },
       approvalGate: {
@@ -3885,7 +5198,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         if (!cleanName) {
           throw new Error('Workspace name cannot be empty');
         }
-        const wsId = 'ws-' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6);
+        const wsId = 'ws-temp-' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6);
         const slug = cleanName.toLowerCase().replace(/[^a-z0-9_-]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '') || 'workspace';
         const finalDir = (workingDir || '').trim() || `workspace/${slug}`;
         const finalPrompt = (prompt || '').trim() || 'Universal Autonomous Agent Operating Canvas';
@@ -3901,7 +5214,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
 
         this.workspaces.push(newWs);
         this.saveWorkspaces();
-        this.switchWorkspace(wsId);
+        this.switchWorkspace(wsId, true);
 
         // Asynchronous backend synchronization
         fetch('/api/workspaces', {
@@ -3917,8 +5230,13 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         .then(data => {
           if (data && data.workspace && data.workspace.id) {
             newWs.id = data.workspace.id;
-            if (this.activeWorkspaceId === wsId) {
+            if (this.activeWorkspaceId === wsId || this.activeWorkspaceId === newWs.id) {
               this.activeWorkspaceId = data.workspace.id;
+              fetch('/api/workspaces/activate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: data.workspace.id })
+              }).catch(() => {});
             }
             this.saveWorkspaces();
             renderWorkspaces();
@@ -3931,7 +5249,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         return newWs;
       },
 
-      switchWorkspace(id) {
+      switchWorkspace(id, skipBackendSync = false) {
         const target = this.workspaces.find(w => w.id === id || w.name === id);
         if (!target) {
           console.warn(`[AppState] Workspace ${id} not found`);
@@ -3960,12 +5278,14 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
           FileExplorer.loadFiles(target.working_dir);
         }
 
-        // Notify backend asynchronously
-        fetch('/api/workspaces/activate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: target.id })
-        }).catch(() => {});
+        // Notify backend asynchronously ONLY if not skipping and target is known
+        if (!skipBackendSync && target.id && !target.id.startsWith('ws-temp-')) {
+          fetch('/api/workspaces/activate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: target.id })
+          }).catch(() => {});
+        }
 
         if (typeof appendReplLog === 'function') {
           appendReplLog(null, `[WORKSPACE] Switched to "${target.name}" (${target.working_dir})`, 'info');
@@ -3983,17 +5303,20 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
       },
 
       async loadWorkspaces() {
+        let savedActiveId = null;
+        let parsedCached = null;
         try {
           const cached = localStorage.getItem('gschwelli_workspaces');
-          const activeId = localStorage.getItem('gschwelli_active_workspace_id') || localStorage.getItem('gschwelli_active_workspace');
+          savedActiveId = localStorage.getItem('gschwelli_active_workspace_id') || localStorage.getItem('gschwelli_active_workspace');
           if (cached) {
-            const parsed = JSON.parse(cached);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              this.workspaces = parsed;
-              if (activeId && parsed.some(w => w.id === activeId)) {
-                this.activeWorkspaceId = activeId;
+            parsedCached = JSON.parse(cached);
+            if (Array.isArray(parsedCached) && parsedCached.length > 0) {
+              this.workspaces = parsedCached;
+              const matched = savedActiveId ? parsedCached.find(w => w.id === savedActiveId || w.name === savedActiveId) : null;
+              if (matched) {
+                this.activeWorkspaceId = matched.id;
               } else {
-                this.activeWorkspaceId = parsed[0].id;
+                this.activeWorkspaceId = parsedCached[0].id;
               }
             }
           }
@@ -4019,10 +5342,42 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
                   is_active: false
                 });
               }
+
+              // Preserve any workspaces stored locally that backend might not have yet
+              if (this.workspaces && this.workspaces.length > 0) {
+                for (const w of this.workspaces) {
+                  if (!backendWs.some(bw => bw.id === w.id || bw.name === w.name)) {
+                    backendWs.push(w);
+                  }
+                }
+              }
               this.workspaces = backendWs;
-              if (data.active_workspace_id) {
+
+              const activeSaved = localStorage.getItem('gschwelli_active_workspace_id') || localStorage.getItem('gschwelli_active_workspace') || savedActiveId;
+              let matched = null;
+              if (activeSaved) {
+                matched = backendWs.find(w => w.id === activeSaved || w.name === activeSaved);
+                if (!matched && Array.isArray(parsedCached)) {
+                  const cachedWs = parsedCached.find(w => w.id === activeSaved || w.name === activeSaved);
+                  if (cachedWs) {
+                    matched = backendWs.find(w => w.name === cachedWs.name);
+                  }
+                }
+              }
+
+              if (matched) {
+                this.activeWorkspaceId = matched.id;
+                if (backendWs.some(bw => bw.id === matched.id)) {
+                  fetch('/api/workspaces/activate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: matched.id })
+                  }).catch(() => {});
+                }
+              } else if (data.active_workspace_id) {
                 this.activeWorkspaceId = data.active_workspace_id;
               }
+
               this.saveWorkspaces();
               renderWorkspaces();
             }
@@ -4030,6 +5385,10 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         } catch (e) {
           // offline mode
         }
+      },
+
+      init() {
+        return this.loadWorkspaces();
       }
     };
 
@@ -4049,6 +5408,19 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
     function renderWorkspaces() {
       const activeWs = AppState.workspaces.find(w => w.id === AppState.activeWorkspaceId) || AppState.workspaces[0];
       if (!activeWs) return;
+
+      if (AppState.project) {
+        if (activeWs.id !== 'ws-default' || !AppState.project.name) {
+          AppState.project.name = activeWs.name;
+        }
+        AppState.project.working_dir = activeWs.working_dir || activeWs.name;
+      }
+      if (AppState.mission) {
+        if (activeWs.id !== 'ws-default' || !AppState.mission.name) {
+          AppState.mission.name = activeWs.name;
+        }
+        AppState.mission.prompt = activeWs.prompt;
+      }
 
       const titleEl = document.getElementById('active-project-title');
       if (titleEl) {
@@ -4127,6 +5499,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
       const nameInput = document.getElementById('ws-name-input');
       if (nameInput) {
         nameInput.value = '';
+        nameInput.classList.remove('input-error-shake');
         nameInput.focus();
       }
       const promptInput = document.getElementById('ws-prompt-input');
@@ -4134,12 +5507,22 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
       const dirInput = document.getElementById('ws-dir-input');
       if (dirInput) dirInput.value = '';
       const errEl = document.getElementById('ws-modal-error');
-      if (errEl) errEl.style.display = 'none';
+      if (errEl) {
+        errEl.style.display = 'none';
+        errEl.classList.remove('input-error-shake');
+      }
     }
 
     function closeWorkspaceModal() {
       const modalBackdrop = document.getElementById('workspace-modal-backdrop');
       if (modalBackdrop) modalBackdrop.style.display = 'none';
+      const errEl = document.getElementById('ws-modal-error');
+      if (errEl) {
+        errEl.style.display = 'none';
+        errEl.classList.remove('input-error-shake');
+      }
+      const nameInput = document.getElementById('ws-name-input');
+      if (nameInput) nameInput.classList.remove('input-error-shake');
     }
 
     function initWorkspaceModal() {
@@ -4170,7 +5553,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         });
       }
 
-      const form = document.getElementById('form-new-workspace');
+      const form = document.getElementById('workspace-form') || document.getElementById('form-new-workspace');
       if (form) {
         form.addEventListener('submit', (e) => {
           e.preventDefault();
@@ -4185,6 +5568,17 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
             if (errEl) {
               errEl.textContent = 'Bitte einen Workspace-Namen angeben.';
               errEl.style.display = 'block';
+              errEl.classList.remove('input-error-shake');
+              void errEl.offsetWidth;
+              errEl.classList.add('input-error-shake');
+              setTimeout(() => errEl.classList.remove('input-error-shake'), 400);
+            }
+            if (nameInput) {
+              nameInput.classList.remove('input-error-shake');
+              void nameInput.offsetWidth;
+              nameInput.classList.add('input-error-shake');
+              setTimeout(() => nameInput.classList.remove('input-error-shake'), 400);
+              nameInput.focus();
             }
             return;
           }
@@ -4205,12 +5599,20 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         });
       }
 
+      const btnWsSave = document.getElementById('btn-ws-save');
+      if (btnWsSave && form) {
+        btnWsSave.addEventListener('click', () => {
+          form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+        });
+      }
+
       const modal = document.getElementById('workspace-modal');
       if (modal) {
         modal.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') {
-            closeWorkspaceModal();
+          if (e.key === 'Escape' || e.code === 'Escape') {
+            e.preventDefault();
             e.stopPropagation();
+            closeWorkspaceModal();
           } else {
             e.stopPropagation();
           }
@@ -4297,7 +5699,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </div>
-              <span class="task-text ${isDone ? 'completed' : ''}" title="${safeTitle}">${safeTitle}</span>
+              <span class="task-text task-title ${isDone ? 'completed' : ''}" title="${safeTitle}">${safeTitle}</span>
             </div>
             <div class="task-badges">
               <span class="badge badge-priority badge-priority-${priority.toLowerCase()}" 
@@ -4745,16 +6147,30 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
       },
 
       previewInViewport2(file) {
+        if (!file) return;
         const header = document.getElementById('ks-active-file-header');
         if (header) header.textContent = `ACTIVE FILE // ${file.name}`;
 
         const editor = document.getElementById('ks-editor-textarea');
+        const fileContent = file.content !== undefined
+          ? file.content
+          : `# ${file.name}\n\nPath: ${file.path || file.name}\nSize: ${file.size || 0} bytes\nCategory: ${file.category || 'generic'}\n\n[Loaded from workspace storage]`;
+
+        // CRITICAL BACKWARD COMPATIBILITY: ALWAYS set #ks-editor-textarea.value
         if (editor) {
-          if (file.content !== undefined) {
-            editor.value = file.content;
-          } else {
-            editor.value = `# ${file.name}\n\nPath: ${file.path || file.name}\nSize: ${file.size || 0} bytes\nCategory: ${file.category || 'generic'}\n\n[Loaded from workspace storage]`;
-          }
+          editor.value = fileContent;
+        }
+
+        // Route to appropriate Document Studio sub-pane
+        const renderFn = window.renderArtifactStudio || (typeof renderArtifactStudio === 'function' ? renderArtifactStudio : null);
+        if (renderFn) {
+          renderFn(file.name, fileContent);
+        }
+
+        // Switch stage to Viewport 2
+        const switchFn = window.switchViewport || (typeof switchViewport === 'function' ? switchViewport : null);
+        if (switchFn) {
+          switchFn('2');
         }
       }
     };
@@ -4963,15 +6379,18 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
 
     function appendReplLog(cmd, text, forcedType = null) {
       const replLogs = document.getElementById('repl-logs');
-      if (!replLogs) return;
+      const termLogs = document.getElementById('terminal-logs-surface');
+      if (!replLogs && !termLogs) return;
       const now = new Date();
       const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
       
       const div = document.createElement('div');
       div.className = 'log-line';
 
+      let termType = 'stdout';
       if (cmd) {
         div.innerHTML = `<span class="log-time">${timeStr}</span><span class="log-cmd">&gt; ${escapeHtml(cmd)}</span>`;
+        termType = 'cmd';
       } else {
         let type = forcedType;
         if (!type) {
@@ -4987,15 +6406,34 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
           }
         }
         div.innerHTML = `<span class="log-time">${timeStr}</span><span class="log-${type}">${escapeHtml(text)}</span>`;
+        termType = type === 'error' ? 'stderr' : (type === 'warn' ? 'warn' : (type === 'success' ? 'success' : 'stdout'));
       }
 
-      // Prune old logs if exceeding 500 lines
-      while (replLogs.children.length > 500) {
-        replLogs.removeChild(replLogs.firstChild);
+      if (replLogs) {
+        while (replLogs.children.length > 500) {
+          replLogs.removeChild(replLogs.firstChild);
+        }
+        replLogs.appendChild(div);
+        replLogs.scrollTop = replLogs.scrollHeight;
       }
 
-      replLogs.appendChild(div);
-      replLogs.scrollTop = replLogs.scrollHeight;
+      if (termLogs && (cmd || (text && !String(text).startsWith('[WORKSPACE]') && !String(text).startsWith('[PROJECT]') && !String(text).startsWith('[TASK]') && !String(text).startsWith('[VOICE]') && !String(text).startsWith('[SCENARIO]')))) {
+        const termRow = document.createElement('div');
+        termRow.className = `terminal-log-row log-${termType}`;
+        const tsSpan = document.createElement('span');
+        tsSpan.className = 'log-ts';
+        tsSpan.textContent = `[${timeStr}]`;
+        const msgSpan = document.createElement('span');
+        msgSpan.className = 'log-msg';
+        msgSpan.textContent = cmd ? `> ${cmd}` : String(text);
+        termRow.appendChild(tsSpan);
+        termRow.appendChild(msgSpan);
+        while (termLogs.children.length > 500) {
+          termLogs.removeChild(termLogs.firstChild);
+        }
+        termLogs.appendChild(termRow);
+        termLogs.scrollTop = termLogs.scrollHeight;
+      }
     }
 
     /* --------------------------------------------------------------------------
@@ -5013,6 +6451,8 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
           clearBtn.addEventListener('click', () => {
             const logs = document.getElementById('repl-logs');
             if (logs) logs.innerHTML = '';
+            const tLogs = document.getElementById('terminal-logs-surface');
+            if (tLogs) tLogs.innerHTML = '';
           });
         }
 
@@ -5068,6 +6508,8 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         if (clean.toLowerCase() === 'clear' || clean.toLowerCase() === 'cls' || clean.toLowerCase() === '/clear') {
           const logs = document.getElementById('repl-logs');
           if (logs) logs.innerHTML = '';
+          const tLogs = document.getElementById('terminal-logs-surface');
+          if (tLogs) tLogs.innerHTML = '';
           return;
         }
 
@@ -5109,7 +6551,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         // 4. Authentic Fallback Simulation
         const lower = clean.toLowerCase();
         if (lower.startsWith('get-process') || lower.startsWith('ps')) {
-          appendReplLog(null, 'PID 8044 • openscad.exe • WorkingSet: 124.6 MB', 'info');
+          appendReplLog(null, 'PID 8044 • agent_worker.exe • WorkingSet: 124.6 MB', 'info');
           appendReplLog(null, 'PID 9102 • python.exe (gschwelli-ai) • WorkingSet: 88.2 MB', 'info');
           exitCode = 0;
         } else if (lower.startsWith('test-path')) {
@@ -5119,13 +6561,13 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
           appendReplLog(null, 'Directory: C:\\Fabrication', 'info');
           appendReplLog(null, 'Mode     LastWriteTime     Length Name', 'info');
           appendReplLog(null, '----     -------------     ------ ----', 'info');
-          appendReplLog(null, '-a---    15:41:12          62420  toolhead_mount.stl.bak', 'info');
-          appendReplLog(null, '-a---    15:40:02          14802  toolhead_mount.scad', 'info');
+          appendReplLog(null, '-a---    15:41:12          62420  action_target.py.bak', 'info');
+          appendReplLog(null, '-a---    15:40:02          14802  action_target.py', 'info');
           appendReplLog(null, '-a---    15:38:40           4190  pipeline_config.yaml', 'info');
           exitCode = 0;
         } else if (lower.includes('check-parameters')) {
-          appendReplLog(null, 'CGAL: valid 2-manifold mesh', 'success');
-          appendReplLog(null, '1,248 facets • 62.4 KB • exit 0', 'info');
+          appendReplLog(null, '2D Surface Mesh: valid geometry structure', 'success');
+          appendReplLog(null, '1,248 elements • 62.4 KB • exit 0', 'info');
           exitCode = 0;
         } else if (lower.includes('export-mesh')) {
           appendReplLog(null, 'SEC-810: existing file at target', 'warn');
@@ -5153,7 +6595,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
       },
 
       updateExitStatus(exitCode) {
-        // Update badge in REPL Header
+        // Update badge in REPL Header & Viewport 4 Terminal
         const badge = document.getElementById('repl-exit-badge');
         if (badge) {
           badge.textContent = `EXIT ${exitCode}`;
@@ -5162,12 +6604,26 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
           badge.style.borderColor = exitCode === 0 ? 'rgba(16, 185, 129, 0.4)' : 'rgba(239, 68, 68, 0.4)';
         }
 
-        // Update in AppState & Shared State Inspector
-        AppState.blackboard.sharedState.exit_code = exitCode;
+        const termBadge = document.getElementById('terminal-exit-badge');
+        if (termBadge) {
+          termBadge.textContent = `EXIT ${exitCode}`;
+          termBadge.className = exitCode === 0 ? 'badge badge-complete' : 'badge badge-queued';
+          termBadge.style.color = exitCode === 0 ? 'var(--emerald-success)' : 'var(--red-panic)';
+        }
+
+        // Update in AppState, Shared State Inspector, and Live Variables Inspector
+        if (AppState.blackboard && AppState.blackboard.sharedState) {
+          AppState.blackboard.sharedState.exit_code = exitCode;
+        }
         const exitValEl = document.getElementById('state-exit-code');
         if (exitValEl) {
           exitValEl.textContent = exitCode;
           exitValEl.style.color = exitCode === 0 ? 'var(--emerald-success)' : 'var(--red-panic)';
+        }
+        const liveExitValEl = document.getElementById('var-val-exit-code');
+        if (liveExitValEl) {
+          liveExitValEl.textContent = exitCode;
+          liveExitValEl.className = exitCode === 0 ? 'var-val status-success' : 'var-val status-panic';
         }
       }
     };
@@ -5202,7 +6658,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         if (execStep) {
           execStep.status = 'COMPLETE';
           execStep.label = '[Execute]';
-          execStep.detail = 'Overwrote toolhead_mount.stl • 62.4 KB written';
+          execStep.detail = 'Overwrote action_target.py • 62.4 KB written';
         }
         AppState.blackboard.sharedState.exit_code = 0;
         AppState.blackboard.sharedState.checkpoint = '#019';
@@ -5223,7 +6679,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
 
       // 5. PowerShell REPL Logging
       appendReplLog(null, '[CONFIRM] User approved SEC-810 override', 'success');
-      appendReplLog(null, 'Write-File C:\\Fabrication\\toolhead_mount.stl (62.4 KB written)', 'info');
+      appendReplLog(null, 'Write-File c:\\workspace\\action_target.py (62.4 KB written)', 'info');
       appendReplLog(null, 'EXIT 0', 'success');
 
       // 6. REST Backend Confirmation
@@ -5254,7 +6710,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
             pathInput.style.boxShadow = '';
             pathInput.removeEventListener('keydown', onSave);
             
-            const newPath = pathInput.value.trim() || 'C:\\Fabrication\\toolhead_mount.stl';
+            const newPath = pathInput.value.trim() || 'c:\\workspace\\action_target.py';
             AppState.mission.exportPath = newPath;
             if (gateDetail) {
               gateDetail.textContent = `Target updated: ${newPath} • SEC-810 active`;
@@ -5509,6 +6965,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
       initTaskInlineCreator();
       initWorkspaceModal();
       FileExplorer.init();
+      renderArtifactStudio();
 
       // 4. Modal Dialog Fallback Add Task Button (Retained for test compatibility)
       const btnAddTask = document.getElementById('btn-add-task');
@@ -5696,7 +7153,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
       const btnPreview = document.getElementById('btn-menu-preview');
       if (btnPreview) {
         btnPreview.addEventListener('click', () => {
-          appendReplLog(null, '[OpenSCAD] Preview compiled ($fn=64) • 0.412s', 'info');
+          appendReplLog(null, '[STREAM] DOM structure analysis completed (Preview compiled) • 0.412s', 'info');
           const lastRenderEl = document.querySelector('.render-telem-right');
           if (lastRenderEl) lastRenderEl.textContent = 'Last render 0.412s';
         });
@@ -5704,7 +7161,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
       const btnRender = document.getElementById('btn-menu-render');
       if (btnRender) {
         btnRender.addEventListener('click', () => {
-          appendReplLog(null, '[OpenSCAD] CGAL 2-manifold render completed (1,248 facets) • 0.842s', 'success');
+          appendReplLog(null, '[STREAM] 2D Surface Mesh analysis completed (1,248 elements) • 0.842s', 'success');
           const lastRenderEl = document.querySelector('.render-telem-right');
           if (lastRenderEl) lastRenderEl.textContent = 'Last render 0.842s';
         });
@@ -5721,7 +7178,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         if (el) {
           el.addEventListener('click', (e) => {
             e.stopPropagation();
-            appendReplLog(null, `[WINDOW] ${wb.label} held: OpenSCAD viewport locked in sandboxed focus mode`, 'info');
+            appendReplLog(null, `[WINDOW] ${wb.label} held: DOM inspector viewport locked in sandboxed focus mode`, 'info');
           });
         }
       });
@@ -5908,28 +7365,60 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
       }
 
       // 12. Global Keyboard Shortcuts (Space for Approve, Esc for Abort)
-      window.addEventListener('keydown', (e) => {
+      document.addEventListener('keydown', (e) => {
+        // Escape handling priority for open modals, drawers, and popups
+        if (e.key === 'Escape' || e.code === 'Escape') {
+          const drawerPanel = document.getElementById('telemetry-drawer-panel');
+          if (drawerPanel && drawerPanel.classList.contains('open')) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (typeof closeDrawer === 'function') closeDrawer();
+            return;
+          }
+          const wsBackdrop = document.getElementById('workspace-modal-backdrop');
+          if (wsBackdrop && wsBackdrop.style.display !== 'none' && !wsBackdrop.classList.contains('hidden')) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeWorkspaceModal();
+            return;
+          }
+          const settingsModal = document.getElementById('settings-modal');
+          if (settingsModal && settingsModal.style.display !== 'none' && !settingsModal.classList.contains('hidden')) {
+            e.preventDefault();
+            e.stopPropagation();
+            settingsModal.style.display = 'none';
+            return;
+          }
+          if (slashMenu && slashMenu.classList.contains('open')) {
+            e.preventDefault();
+            e.stopPropagation();
+            slashMenu.classList.remove('open');
+            return;
+          }
+        }
+
+        // Viewport switching shortcuts (Ctrl+1, Ctrl+2, Ctrl+3, Ctrl+4)
+        if (e.ctrlKey && !e.shiftKey && !e.altKey) {
+          if (['1', '2', '3', '4'].includes(e.key)) {
+            e.preventDefault();
+            if (typeof switchViewport === 'function') switchViewport(e.key);
+            return;
+          }
+        }
+
+        // Split-Screen shortcut (Alt+S)
+        if (e.altKey && (e.key === 's' || e.key === 'S')) {
+          e.preventDefault();
+          if (typeof toggleSplitScreen === 'function') toggleSplitScreen();
+          return;
+        }
+
         const activeEl = document.activeElement;
         const tagName = activeEl ? activeEl.tagName.toLowerCase() : '';
         const isInputFocused = tagName === 'input' || tagName === 'textarea' || activeEl?.isContentEditable;
 
         // Never trigger approval gate shortcuts when the user is typing
         if (isInputFocused) return;
-
-        // Escape handling priority for open modals and popups
-        if (e.code === 'Escape') {
-          const settingsModal = document.getElementById('settings-modal');
-          if (settingsModal && settingsModal.style.display !== 'none') {
-            e.preventDefault();
-            settingsModal.style.display = 'none';
-            return;
-          }
-          if (slashMenu && slashMenu.classList.contains('open')) {
-            e.preventDefault();
-            slashMenu.classList.remove('open');
-            return;
-          }
-        }
 
         // Only handle Space / Escape for gate if the gate is active
         const isGateActive = (AppState.mission && AppState.mission.status === 'PAUSED • APPROVAL') || (AppState.approvalGate && AppState.approvalGate.active);
@@ -5938,7 +7427,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         if (e.code === 'Space') {
           e.preventDefault();
           handleApprove();
-        } else if (e.code === 'Escape') {
+        } else if (e.code === 'Escape' || e.key === 'Escape') {
           e.preventDefault();
           handleAbort();
         }
@@ -6069,7 +7558,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
         { id: '03', name: 'Viewport3D', label: '[03: 3D CAD Viewport]', rect: '[180, 96, 620, 480]', role: 'UIA_CustomControlTypeId', autoid: 'qgl_viewport_01', conf: '99.1%', policy: 'Camera Orbit/Zoom' },
         { id: '04', name: 'Button.Export', label: '[04: Button "Export"]', rect: '[682, 594, 762, 622]', role: 'UIA_ButtonControlTypeId', autoid: 'btn_export_stl', conf: '99.7%', policy: 'SEC-810 Gate Attached' },
         { id: '05', name: 'Button.Preview', label: '[05: Preview F5]', rect: '[510, 62, 578, 86]', role: 'UIA_ButtonControlTypeId', autoid: 'btn_preview_f5', conf: '99.0%', policy: 'Safe Compile' },
-        { id: '06', name: 'Button.Render', label: '[06: Render F6]', rect: '[584, 62, 658, 86]', role: 'UIA_ButtonControlTypeId', autoid: 'btn_render_f6', conf: '99.3%', policy: 'CGAL Manifold Check' },
+        { id: '06', name: 'Button.Render', label: '[06: Render F6]', rect: '[584, 62, 658, 86]', role: 'UIA_ButtonControlTypeId', autoid: 'btn_render_f6', conf: '99.3%', policy: 'Mesh Verification' },
         { id: '07', name: 'Cam.Orbit', label: '[07: Camera Orbit]', rect: '[724, 180, 750, 206]', role: 'UIA_ButtonControlTypeId', autoid: 'cam_orbit', conf: '98.5%', policy: 'Viewport Control' },
         { id: '08', name: 'Cam.Pan', label: '[08: Camera Pan]', rect: '[724, 212, 750, 238]', role: 'UIA_ButtonControlTypeId', autoid: 'cam_pan', conf: '98.4%', policy: 'Viewport Control' },
         { id: '09', name: 'Cam.Zoom', label: '[09: Camera Zoom]', rect: '[724, 244, 750, 270]', role: 'UIA_ButtonControlTypeId', autoid: 'cam_zoom', conf: '98.8%', policy: 'Viewport Control' },
@@ -6240,7 +7729,7 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
           const gate = document.getElementById('approval-gate-dock');
           if (gate) gate.classList.remove('resolved', 'aborted');
           const gateDetail = document.getElementById('gate-detail-text');
-          if (gateDetail) gateDetail.textContent = 'Overwrite toolhead_mount.stl • backup saved • SEC-810';
+          if (gateDetail) gateDetail.textContent = 'Overwrite action_target.py • backup saved • SEC-810';
           const execStep = AppState.blackboard.pipeline.find(s => s.id === 'execute');
           if (execStep) {
             execStep.status = 'BLOCKED';
@@ -6249,6 +7738,798 @@ Domain-agnostic Operating Canvas for autonomous multimodal agents.
           renderBlackboard();
           try { await fetch('/api/scenario/reset', { method: 'POST' }); } catch (e) {}
           appendReplLog(null, '[SCENARIO] Reset to M-024 PAUSED • APPROVAL state', 'info');
+        });
+      }
+
+      // ========================================================================
+      // MILESTONE 3: POLYMORPHIC STAGE & VIEWPORTS CONTROLLER
+      // ========================================================================
+
+      // 1. Viewport Switching & Tabs
+      function switchViewport(viewportId) {
+        const vpNum = String(viewportId);
+        AppState.activeViewport = vpNum;
+
+        // Update segmented tab buttons
+        document.querySelectorAll('.viewport-tab-btn').forEach(btn => {
+          const isActive = btn.getAttribute('data-viewport') === vpNum;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        if (!AppState.isSplitScreen) {
+          document.querySelectorAll('.viewport-panel').forEach(panel => {
+            panel.classList.toggle('active', panel.getAttribute('data-viewport-id') === vpNum);
+          });
+        } else {
+          // In split-screen mode, set right pane
+          const p = document.getElementById(`viewport-${vpNum}`);
+          if (p && !p.classList.contains('split-left')) {
+            document.querySelectorAll('.viewport-panel.split-right').forEach(el => el.classList.remove('split-right'));
+            p.classList.add('split-right');
+          }
+        }
+
+        if (vpNum === '1') {
+          setTimeout(updateSomLeaderLines, 60);
+        } else if (vpNum === '2') {
+          renderArtifactStudio();
+        } else if (vpNum === '3') {
+          renderDagVisualizer();
+        } else if (vpNum === '4') {
+          const termIn = document.getElementById('terminal-active-input');
+          if (termIn) termIn.focus();
+        }
+      }
+      window.switchViewport = switchViewport;
+
+      document.querySelectorAll('.viewport-tab-btn[data-viewport]').forEach(btn => {
+        btn.addEventListener('click', () => switchViewport(btn.getAttribute('data-viewport')));
+      });
+
+      // 2. 50/50 Split-Screen Toggle
+      function toggleSplitScreen() {
+        const container = document.getElementById('stage-viewports-container');
+        const splitBtn = document.getElementById('btn-split-screen');
+        if (!container) return;
+
+        AppState.isSplitScreen = !AppState.isSplitScreen;
+        if (splitBtn) splitBtn.classList.toggle('active', AppState.isSplitScreen);
+        container.classList.toggle('split-screen-active', AppState.isSplitScreen);
+
+        if (AppState.isSplitScreen) {
+          const leftVp = document.getElementById('viewport-1');
+          const rightVp = document.getElementById('viewport-4') || document.getElementById('viewport-2');
+          document.querySelectorAll('.viewport-panel').forEach(p => p.classList.remove('active', 'split-left', 'split-right'));
+          if (leftVp) leftVp.classList.add('split-left');
+          if (rightVp) rightVp.classList.add('split-right');
+          setTimeout(updateSomLeaderLines, 80);
+          appendReplLog(null, '[STAGE] Split-screen 50/50 activated: Viewport 1 & Viewport 4', 'info');
+        } else {
+          document.querySelectorAll('.viewport-panel').forEach(p => p.classList.remove('split-left', 'split-right'));
+          switchViewport(AppState.activeViewport || '1');
+          appendReplLog(null, '[STAGE] Returned to single viewport layout', 'info');
+        }
+      }
+
+      const splitBtn = document.getElementById('btn-split-screen');
+      if (splitBtn) splitBtn.addEventListener('click', toggleSplitScreen);
+
+      // 3. Quick Telemetry Drawers
+      function openDrawer(tabName = 'tools') {
+        const panel = document.getElementById('telemetry-drawer-panel');
+        const overlay = document.getElementById('telemetry-drawer-overlay');
+        if (panel) panel.classList.add('open');
+        if (overlay) overlay.classList.remove('hidden');
+        switchDrawerTab(tabName);
+      }
+
+      function closeDrawer() {
+        const panel = document.getElementById('telemetry-drawer-panel');
+        const overlay = document.getElementById('telemetry-drawer-overlay');
+        if (panel) panel.classList.remove('open');
+        if (overlay) overlay.classList.add('hidden');
+      }
+
+      function switchDrawerTab(tabName) {
+        document.querySelectorAll('.drawer-tab').forEach(t => {
+          const isAct = t.getAttribute('data-drawer-tab') === tabName;
+          t.classList.toggle('active', isAct);
+          t.setAttribute('aria-selected', isAct ? 'true' : 'false');
+        });
+        document.querySelectorAll('.drawer-pane').forEach(p => {
+          p.classList.toggle('active', p.id === `drawer-pane-${tabName}`);
+        });
+      }
+
+      document.querySelectorAll('.drawer-tab[data-drawer-tab]').forEach(t => {
+        t.addEventListener('click', () => switchDrawerTab(t.getAttribute('data-drawer-tab')));
+      });
+
+      const btnCloseDrawer = document.getElementById('btn-close-drawer');
+      if (btnCloseDrawer) btnCloseDrawer.addEventListener('click', closeDrawer);
+
+      const drawerOverlay = document.getElementById('telemetry-drawer-overlay');
+      if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+
+      document.querySelectorAll('button[data-drawer]').forEach(b => {
+        b.addEventListener('click', () => {
+          const tab = b.getAttribute('data-drawer');
+          const panel = document.getElementById('telemetry-drawer-panel');
+          if (panel && panel.classList.contains('open')) {
+            const activeTab = panel.querySelector('.drawer-tab.active')?.getAttribute('data-drawer-tab');
+            if (activeTab === tab) {
+              closeDrawer();
+              return;
+            }
+          }
+          openDrawer(tab);
+        });
+      });
+
+      // 4. Multi-Tab Shell Sandbox Terminal (Viewport 4)
+      const shellConfigs = {
+        pwsh: { prompt: 'PS C:\\workspace>', desc: 'pwsh 7.4.2 • I/O Guarded Sandbox' },
+        bash: { prompt: 'aether@agent-vm:~$', desc: 'GNU bash 5.2.21 • Ubuntu Linux Container' },
+        sandbox: { prompt: 'agent-sandbox#', desc: 'Aether Native Isolated Runtime' }
+      };
+
+      document.querySelectorAll('.terminal-tab[data-shell]').forEach(tab => {
+        tab.addEventListener('click', () => {
+          const shell = tab.getAttribute('data-shell');
+          document.querySelectorAll('.terminal-tab').forEach(t => {
+            const isAct = t.getAttribute('data-shell') === shell;
+            t.classList.toggle('active', isAct);
+            t.setAttribute('aria-selected', isAct ? 'true' : 'false');
+          });
+          const conf = shellConfigs[shell] || shellConfigs.pwsh;
+          const promptLabel = document.getElementById('terminal-prompt-label');
+          if (promptLabel) promptLabel.textContent = conf.prompt;
+          const profileDesc = document.getElementById('term-active-profile-desc');
+          if (profileDesc) profileDesc.textContent = conf.desc;
+          appendReplLog(null, `[SHELL] Active session profile switched to ${shell.toUpperCase()}`, 'info');
+        });
+      });
+
+      const termInput = document.getElementById('terminal-active-input');
+      const btnTermRun = document.getElementById('btn-term-run');
+      const runTermCmd = () => {
+        if (!termInput || !termInput.value.trim()) return;
+        const cmd = termInput.value.trim();
+        termInput.value = '';
+        ReplEngine.execute(cmd);
+      };
+      if (btnTermRun) btnTermRun.addEventListener('click', runTermCmd);
+      if (termInput) {
+        termInput.addEventListener('keydown', e => {
+          if (e.key === 'Enter') runTermCmd();
+        });
+      }
+
+      const btnTermClear = document.getElementById('btn-term-clear');
+      if (btnTermClear) {
+        btnTermClear.addEventListener('click', () => {
+          const surface = document.getElementById('terminal-logs-surface');
+          if (surface) surface.innerHTML = '';
+          const replLogs = document.getElementById('repl-logs');
+          if (replLogs) replLogs.innerHTML = '';
+        });
+      }
+
+      const btnTermCopy = document.getElementById('btn-term-copy');
+      if (btnTermCopy) {
+        btnTermCopy.addEventListener('click', () => {
+          const surface = document.getElementById('terminal-logs-surface');
+          if (surface) {
+            navigator.clipboard?.writeText(surface.innerText).catch(() => {});
+            btnTermCopy.textContent = '✓ Copied';
+            setTimeout(() => { btnTermCopy.innerHTML = '&#x1F4CB; Copy'; }, 1500);
+          }
+        });
+      }
+
+      // 5. Reasoning Graph Visualizer & Variables Inspector (Viewport 3)
+      function renderDagVisualizer() {
+        const tasksContainer = document.getElementById('dag-tasks-nodes-list');
+        if (tasksContainer && AppState.tasks) {
+          tasksContainer.innerHTML = AppState.tasks.map(t => {
+            const statusClass = t.completed ? 'status-done' : (t.status === 'blocked' ? 'status-blocked' : 'status-prog');
+            const statusIcon = t.completed ? '✓' : (t.status === 'blocked' ? '⚠' : '▶');
+            return `
+              <div class="dag-card node-task" data-task-id="${t.id}" style="margin-bottom:6px;">
+                <div class="node-badge" style="color:var(--text-secondary);">${t.priority}</div>
+                <div class="node-title">${escapeHtml(t.title)}</div>
+                <div class="node-status-tag ${statusClass}">${statusIcon} ${t.status.toUpperCase()}</div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        const artifactsContainer = document.getElementById('dag-artifacts-nodes-list');
+        if (artifactsContainer && typeof FileExplorer !== 'undefined' && FileExplorer.files) {
+          artifactsContainer.innerHTML = FileExplorer.files.slice(0, 4).map(f => `
+            <div class="dag-card node-artifact" data-file="${escapeHtml(f.name)}" style="margin-bottom:6px;">
+              <div class="node-badge" style="color:var(--cyan-accent);">${f.category.toUpperCase()}</div>
+              <div class="node-title">${escapeHtml(f.name)}</div>
+              <div class="node-status-tag status-done">✓ ${f.size}</div>
+            </div>
+          `).join('');
+        }
+
+        drawDagConnectors();
+      }
+
+      function drawDagConnectors() {
+        const svg = document.getElementById('dag-connector-svg');
+        const container = document.getElementById('dag-stage');
+        if (!svg || !container) return;
+        const rect = container.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
+
+        const goalNode = document.getElementById('dag-node-goal');
+        const gateNode = document.getElementById('dag-node-gate');
+        if (!goalNode || !gateNode) return;
+
+        const gRect = goalNode.getBoundingClientRect();
+        const gateRect = gateNode.getBoundingClientRect();
+
+        const x1 = gRect.right - rect.left;
+        const y1 = gRect.top - rect.top + (gRect.height / 2);
+        const x2 = gateRect.left - rect.left;
+        const y2 = gateRect.top - rect.top + (gateRect.height / 2);
+
+        const midX = (x1 + x2) / 2;
+        const d = `M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`;
+
+        let path = document.getElementById('dag-main-flow-path');
+        if (!path) {
+          path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('id', 'dag-main-flow-path');
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', '#00e5ff');
+          path.setAttribute('stroke-width', '1.5');
+          path.setAttribute('stroke-dasharray', '4 3');
+          path.setAttribute('marker-end', 'url(#dag-arrow-cyan)');
+          svg.appendChild(path);
+        }
+        path.setAttribute('d', d);
+      }
+
+      const btnAddMemFact = document.getElementById('btn-add-memory-fact');
+      const memAddForm = document.getElementById('memory-add-form');
+      const btnCancelMemFact = document.getElementById('btn-cancel-mem-fact');
+      const btnSaveMemFact = document.getElementById('btn-save-mem-fact');
+
+      if (btnAddMemFact && memAddForm) {
+        btnAddMemFact.addEventListener('click', () => memAddForm.classList.toggle('hidden'));
+      }
+      if (btnCancelMemFact && memAddForm) {
+        btnCancelMemFact.addEventListener('click', () => memAddForm.classList.add('hidden'));
+      }
+      if (btnSaveMemFact) {
+        btnSaveMemFact.addEventListener('click', async () => {
+          const keyIn = document.getElementById('mem-key-input');
+          const valIn = document.getElementById('mem-val-input');
+          const catIn = document.getElementById('mem-cat-select');
+          if (!keyIn || !valIn || !keyIn.value.trim()) return;
+          const k = keyIn.value.trim();
+          const v = valIn.value.trim();
+          const c = catIn ? catIn.value : 'facts';
+          try {
+            await fetch('/api/memory', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ key: k, value: v, category: c })
+            });
+            keyIn.value = '';
+            valIn.value = '';
+            if (memAddForm) memAddForm.classList.add('hidden');
+            loadMemoryFacts();
+            appendReplLog(null, `[MEMORY] Stored fact: ${k} = ${v}`, 'success');
+          } catch (e) {}
+        });
+      }
+
+      async function loadMemoryFacts() {
+        const list = document.getElementById('memory-facts-list');
+        const drawerList = document.getElementById('drawer-memory-list');
+        if (!list && !drawerList) return;
+        try {
+          const resp = await fetch('/api/state');
+          if (resp.ok) {
+            const data = await resp.json();
+            const facts = data.memory || [];
+            const html = facts.map(f => `
+              <div class="memory-fact-item" style="background:#070d16;padding:6px 8px;border-radius:4px;border:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                <div>
+                  <span style="color:var(--cyan-accent);font-weight:600;">${escapeHtml(f.key)}</span>:
+                  <span style="color:var(--text-secondary);">${escapeHtml(f.value)}</span>
+                </div>
+                <button class="dag-btn btn-del-mem" data-mem-key="${escapeHtml(f.key)}" style="padding:1px 6px;font-size:10px;color:var(--red-panic);border-color:rgba(239,68,68,0.3);">&times;</button>
+              </div>
+            `).join('');
+            if (list) list.innerHTML = html;
+            if (drawerList) drawerList.innerHTML = html;
+
+            document.querySelectorAll('.btn-del-mem').forEach(btn => {
+              btn.addEventListener('click', async () => {
+                const mk = btn.getAttribute('data-mem-key');
+                if (mk) {
+                  try {
+                    await fetch(`/api/memory/${encodeURIComponent(mk)}`, { method: 'DELETE' });
+                    loadMemoryFacts();
+                    appendReplLog(null, `[MEMORY] Deleted fact: ${mk}`, 'info');
+                  } catch (e) {}
+                }
+              });
+            });
+          }
+        } catch (e) {}
+      }
+      loadMemoryFacts();
+
+      document.querySelectorAll('#context-variables-table .var-row').forEach(row => {
+        row.addEventListener('click', (e) => {
+          if (e.target.classList.contains('var-copy-btn')) return;
+          const varName = row.getAttribute('data-var');
+          const termIn = document.getElementById('terminal-active-input') || document.getElementById('repl-input');
+          if (termIn && varName) {
+            termIn.value = (termIn.value ? termIn.value + ' ' : '') + varName;
+            termIn.focus();
+          }
+        });
+      });
+      document.querySelectorAll('.var-copy-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const row = btn.closest('.var-row');
+          const valEl = row ? row.querySelector('.var-val') : null;
+          if (valEl) {
+            navigator.clipboard?.writeText(valEl.textContent.trim()).catch(() => {});
+            btn.textContent = '✓';
+            setTimeout(() => { btn.innerHTML = '&#x1F4CB;'; }, 1200);
+          }
+        });
+      });
+
+      // 6. Artifact & Document Studio (Viewport 2)
+      let currentGridData = { headers: [], rows: [] };
+
+      function highlightCode(rawCode, lang = 'py') {
+        const codePre = document.getElementById('code-highlighted-pre');
+        const lineNumbers = document.getElementById('code-line-numbers');
+        const langBadge = document.getElementById('code-lang-badge');
+        const statsBadge = document.getElementById('code-stats-badge');
+
+        const str = String(rawCode ?? '');
+        const lines = str.split('\n');
+
+        if (lineNumbers) {
+          lineNumbers.innerHTML = lines.map((_, i) => `<div class="code-line-number">${i + 1}</div>`).join('');
+        }
+
+        if (langBadge) {
+          const langMap = {
+            py: 'PYTHON', js: 'JAVASCRIPT', ts: 'TYPESCRIPT',
+            json: 'JSON', yaml: 'YAML', yml: 'YAML', sh: 'SHELL',
+            html: 'HTML', css: 'CSS', txt: 'TEXT'
+          };
+          langBadge.textContent = langMap[lang.toLowerCase()] || lang.toUpperCase();
+        }
+
+        if (statsBadge) {
+          const bytes = new Blob([str]).size;
+          statsBadge.textContent = `${lines.length} lines • ${(bytes / 1024).toFixed(1)} KB`;
+        }
+
+        const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+        const highlightedLines = lines.map(line => {
+          let comment = '';
+          let codePart = line;
+
+          const isHashComment = ['py', 'yaml', 'yml', 'sh'].includes(lang.toLowerCase());
+          const commentMatch = isHashComment ? line.match(/^(.*?)(\s*#.*)$/) : line.match(/^(.*?)(\s*\/\/.*)$/);
+
+          if (commentMatch) {
+            codePart = commentMatch[1];
+            comment = `<span class="tok-com">${esc(commentMatch[2])}</span>`;
+          }
+
+          const strTokens = [];
+          codePart = codePart.replace(/(["'`])(?:(?=(\\?))\2.)*?\1/g, (match) => {
+            const idx = strTokens.length;
+            strTokens.push(`<span class="tok-str">${esc(match)}</span>`);
+            return `___STR_${idx}___`;
+          });
+
+          codePart = esc(codePart);
+
+          const keywords = [
+            'def', 'class', 'import', 'from', 'return', 'if', 'elif', 'else', 'for', 'while', 'in',
+            'try', 'except', 'finally', 'with', 'as', 'lambda', 'yield', 'pass', 'break', 'continue',
+            'None', 'True', 'False', 'const', 'let', 'var', 'function', 'async', 'await', 'export',
+            'default', 'null', 'true', 'false', 'new', 'this', 'typeof', 'environment', 'sandbox', 'timeout_seconds'
+          ];
+          const kwRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
+          codePart = codePart.replace(kwRegex, '<span class="tok-kw">$1</span>');
+          codePart = codePart.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="tok-num">$1</span>');
+          codePart = codePart.replace(/\b([a-zA-Z_]\w*)\s*(?=\()/g, '<span class="tok-fn">$1</span>');
+
+          codePart = codePart.replace(/___STR_(\d+)___/g, (_, idx) => strTokens[parseInt(idx, 10)]);
+
+          return codePart + comment;
+        });
+
+        if (codePre) {
+          codePre.innerHTML = highlightedLines.join('\n');
+        }
+      }
+
+      function parseCsv(text, delimiter) {
+        if (!text) return { headers: [], rows: [] };
+        const raw = String(text).trim();
+        if (!raw) return { headers: [], rows: [] };
+
+        const delim = delimiter || (raw.includes('\t') ? '\t' : ',');
+        const lines = raw.split(/\r?\n/);
+        const parseLine = line => {
+          const result = [];
+          let cur = '';
+          let inQuotes = false;
+          for (let i = 0; i < line.length; i++) {
+            const c = line[i];
+            if (c === '"') {
+              if (inQuotes && line[i + 1] === '"') {
+                cur += '"';
+                i++;
+              } else {
+                inQuotes = !inQuotes;
+              }
+            } else if (c === delim && !inQuotes) {
+              result.push(cur.trim());
+              cur = '';
+            } else {
+              cur += c;
+            }
+          }
+          result.push(cur.trim());
+          return result;
+        };
+
+        const allRows = lines.filter(l => l.trim().length > 0).map(parseLine);
+        if (allRows.length === 0) return { headers: [], rows: [] };
+        const headers = allRows[0];
+        const rows = allRows.slice(1);
+        return { headers, rows };
+      }
+
+      function renderDataGrid(csvContent) {
+        const thead = document.getElementById('grid-thead');
+        const tbody = document.getElementById('grid-tbody');
+        const dimBadge = document.getElementById('grid-dimensions-badge');
+        const searchInput = document.getElementById('grid-search-input');
+
+        const { headers, rows } = parseCsv(csvContent);
+        currentGridData = { headers, rows };
+
+        if (dimBadge) {
+          dimBadge.textContent = `${rows.length} ROWS × ${headers.length} COLS`;
+        }
+        if (searchInput) {
+          searchInput.value = '';
+        }
+
+        const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+        if (thead) {
+          thead.innerHTML = `<tr><th class="grid-row-num">#</th>${headers.map(h => `<th>${esc(h)}</th>`).join('')}</tr>`;
+        }
+
+        if (tbody) {
+          tbody.innerHTML = rows.map((row, idx) => `
+            <tr>
+              <td class="grid-row-num">${idx + 1}</td>
+              ${row.map(cell => `<td>${esc(cell)}</td>`).join('')}
+            </tr>
+          `).join('');
+        }
+      }
+
+      function renderArtifactStudio(fileName = null, content = null) {
+        const file = fileName || (AppState.project && AppState.project.activeFile) || 'README.md';
+        const ext = file.split('.').pop().toLowerCase();
+
+        const header = document.getElementById('ks-active-file-header');
+        if (header) header.textContent = `ACTIVE FILE // ${file}`;
+
+        const modeBadge = document.getElementById('ks-mode-indicator-badge');
+        let modeName = 'MARKDOWN';
+        if (['csv', 'tsv'].includes(ext)) modeName = 'DATA GRID';
+        else if (['svg', 'png', 'jpg'].includes(ext)) modeName = 'MEDIA';
+        else if (ext !== 'md') modeName = ext.toUpperCase();
+        if (modeBadge) modeBadge.textContent = modeName;
+
+        // Update studio navigation buttons
+        document.querySelectorAll('.studio-view-btn').forEach(b => {
+          const viewType = b.getAttribute('data-studio-view');
+          let shouldActive = false;
+          if (ext === 'md') shouldActive = viewType === 'markdown';
+          else if (['csv', 'tsv'].includes(ext)) shouldActive = viewType === 'grid';
+          else if (['png', 'jpg', 'svg'].includes(ext)) shouldActive = viewType === 'media';
+          else shouldActive = viewType === 'code';
+          b.classList.toggle('active', shouldActive);
+          b.setAttribute('aria-selected', shouldActive ? 'true' : 'false');
+        });
+
+        const mdView = document.getElementById('ks-markdown-studio');
+        const codeView = document.getElementById('ks-code-studio');
+        const gridView = document.getElementById('ks-data-grid-studio');
+        const mediaView = document.getElementById('ks-media-studio');
+
+        if (mdView) mdView.style.display = ext === 'md' ? 'flex' : 'none';
+        if (codeView) codeView.style.display = (!['md', 'csv', 'tsv', 'png', 'jpg', 'svg'].includes(ext)) ? 'flex' : 'none';
+        if (gridView) gridView.style.display = ['csv', 'tsv'].includes(ext) ? 'flex' : 'none';
+        if (mediaView) mediaView.style.display = ['png', 'jpg', 'svg'].includes(ext) ? 'flex' : 'none';
+
+        // Retrieve file content if not supplied
+        let fileText = content;
+        if (fileText === null || fileText === undefined) {
+          if (typeof FileExplorer !== 'undefined' && FileExplorer.files) {
+            const found = FileExplorer.files.find(f => f.name === file);
+            if (found && found.content !== undefined) fileText = found.content;
+          }
+        }
+
+        // CRITICAL BACKWARD COMPATIBILITY: ALWAYS set #ks-editor-textarea.value
+        const editor = document.getElementById('ks-editor-textarea');
+        if (editor && fileText !== null && fileText !== undefined) {
+          editor.value = fileText;
+        }
+
+        if (ext === 'md') {
+          const preview = document.getElementById('ks-markdown-preview');
+          const raw = fileText !== null && fileText !== undefined ? fileText : (editor ? editor.value : '');
+          if (preview) preview.innerHTML = renderSimpleMarkdown(raw || '# Universal Agent Workspace');
+          const linesBadge = document.getElementById('md-raw-lines-badge');
+          if (linesBadge) linesBadge.textContent = `${(raw || '').split('\n').length} lines`;
+        } else if (['csv', 'tsv'].includes(ext)) {
+          const raw = fileText || 'step,action,latency_ms,status\n1,perception_scan,120,success\n2,plan_generation,340,success';
+          renderDataGrid(raw);
+        } else if (['svg', 'png', 'jpg'].includes(ext)) {
+          const mediaContainer = document.getElementById('media-display-container');
+          const mediaTypeBadge = document.getElementById('media-type-badge');
+          const mediaDimBadge = document.getElementById('media-dimensions-badge');
+          if (ext === 'svg') {
+            if (mediaTypeBadge) mediaTypeBadge.textContent = 'SVG VECTOR GRAPHIC';
+            if (mediaContainer) {
+              mediaContainer.innerHTML = fileText || '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="100" height="100" rx="8" fill="#121824" stroke="#06B6D4" stroke-width="2"/><text x="60" y="65" fill="#E2E8F0" font-family="monospace" font-size="10" text-anchor="middle">CANVAS</text></svg>';
+            }
+          } else {
+            if (mediaTypeBadge) mediaTypeBadge.textContent = `${ext.toUpperCase()} BITMAP IMAGE`;
+            if (mediaContainer) {
+              mediaContainer.innerHTML = `<img src="${fileText || ''}" alt="${file}" style="max-width:100%;max-height:100%;object-fit:contain;" />`;
+            }
+          }
+          if (mediaDimBadge && fileText) {
+            mediaDimBadge.textContent = `${(new Blob([fileText]).size / 1024).toFixed(1)} KB`;
+          }
+        } else {
+          const raw = fileText || `// ${file}\nconsole.log("Ready");`;
+          highlightCode(raw, ext);
+        }
+      }
+      window.renderArtifactStudio = renderArtifactStudio;
+      window.highlightCode = highlightCode;
+      window.renderDataGrid = renderDataGrid;
+      window.parseCsv = parseCsv;
+
+      function renderSimpleMarkdown(mdText) {
+        const escape = str => String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+        const lines = (mdText || '').split('\n');
+        return lines.map(line => {
+          if (line.startsWith('# ')) return `<h1 style="color:var(--cyan-accent);font-size:16px;margin:8px 0;">${escape(line.slice(2))}</h1>`;
+          if (line.startsWith('## ')) return `<h2 style="color:var(--cyan-accent);font-size:14px;margin:6px 0;">${escape(line.slice(3))}</h2>`;
+          if (line.startsWith('- ')) return `<li style="margin-left:16px;color:var(--text-secondary);">${escape(line.slice(2))}</li>`;
+          if (line.trim() === '') return '<div style="height:6px;"></div>';
+          return `<p style="margin:4px 0;color:var(--text-primary);line-height:1.5;">${escape(line)}</p>`;
+        }).join('');
+      }
+
+      // Event listeners for Viewport 2 Document Studio
+      const ksEditor = document.getElementById('ks-editor-textarea');
+      if (ksEditor) {
+        ksEditor.addEventListener('input', () => {
+          const preview = document.getElementById('ks-markdown-preview');
+          if (preview) preview.innerHTML = renderSimpleMarkdown(ksEditor.value);
+          const linesBadge = document.getElementById('md-raw-lines-badge');
+          if (linesBadge) linesBadge.textContent = `${ksEditor.value.split('\n').length} lines`;
+        });
+      }
+
+      // Synchronize vertical scroll between code editor wrapper and line numbers
+      const codeContentWrapper = document.getElementById('code-content-wrapper');
+      const codeLineNumbers = document.getElementById('code-line-numbers');
+      if (codeContentWrapper && codeLineNumbers) {
+        codeContentWrapper.addEventListener('scroll', () => {
+          codeLineNumbers.scrollTop = codeContentWrapper.scrollTop;
+        });
+      }
+
+      // Toggle code line wrap
+      const btnCodeToggleWrap = document.getElementById('btn-code-toggle-wrap');
+      if (btnCodeToggleWrap) {
+        btnCodeToggleWrap.addEventListener('click', () => {
+          const pre = document.getElementById('code-highlighted-pre');
+          if (pre) {
+            const isPreWrap = pre.style.whiteSpace === 'pre-wrap';
+            pre.style.whiteSpace = isPreWrap ? 'pre' : 'pre-wrap';
+            btnCodeToggleWrap.textContent = isPreWrap ? 'Wrap: Off' : 'Wrap: On';
+          }
+        });
+      }
+
+      // Copy code to clipboard
+      const btnCodeCopy = document.getElementById('btn-code-copy');
+      if (btnCodeCopy) {
+        btnCodeCopy.addEventListener('click', () => {
+          try {
+            const pre = document.getElementById('code-highlighted-pre');
+            const text = pre ? pre.textContent : '';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).catch(() => {});
+            }
+            const orig = btnCodeCopy.textContent;
+            btnCodeCopy.textContent = '✓ Copied!';
+            setTimeout(() => { btnCodeCopy.textContent = orig; }, 1500);
+          } catch (e) {}
+        });
+      }
+
+      // Filter rows in Data Grid
+      const gridSearchInput = document.getElementById('grid-search-input');
+      if (gridSearchInput) {
+        const handleFilter = () => {
+          const query = gridSearchInput.value.trim().toLowerCase();
+          const tbody = document.getElementById('grid-tbody');
+          const dimBadge = document.getElementById('grid-dimensions-badge');
+          if (!tbody) return;
+
+          const filtered = currentGridData.rows.filter(row => {
+            if (!query) return true;
+            return row.some(cell => String(cell).toLowerCase().includes(query));
+          });
+
+          const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+          tbody.innerHTML = filtered.map((row, idx) => `
+            <tr>
+              <td class="grid-row-num">${idx + 1}</td>
+              ${row.map(cell => `<td>${esc(cell)}</td>`).join('')}
+            </tr>
+          `).join('');
+
+          if (dimBadge) {
+            if (query) {
+              dimBadge.textContent = `${filtered.length} / ${currentGridData.rows.length} ROWS × ${currentGridData.headers.length} COLS`;
+            } else {
+              dimBadge.textContent = `${currentGridData.rows.length} ROWS × ${currentGridData.headers.length} COLS`;
+            }
+          }
+        };
+        gridSearchInput.addEventListener('input', handleFilter);
+        gridSearchInput.addEventListener('keyup', handleFilter);
+      }
+
+      // Copy TSV from Data Grid
+      const btnGridCopyTsv = document.getElementById('btn-grid-copy-tsv');
+      if (btnGridCopyTsv) {
+        btnGridCopyTsv.addEventListener('click', () => {
+          try {
+            const lines = [];
+            if (currentGridData.headers.length > 0) {
+              lines.push(currentGridData.headers.join('\t'));
+            }
+            currentGridData.rows.forEach(r => lines.push(r.join('\t')));
+            const tsv = lines.join('\n');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(tsv).catch(() => {});
+            }
+            const orig = btnGridCopyTsv.textContent;
+            btnGridCopyTsv.textContent = '✓ Copied!';
+            setTimeout(() => { btnGridCopyTsv.textContent = orig; }, 1500);
+          } catch (e) {}
+        });
+      }
+
+      // Studio Sub-Navigation button click handlers
+      document.querySelectorAll('.studio-view-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const view = btn.getAttribute('data-studio-view');
+          document.querySelectorAll('.studio-view-btn').forEach(b => {
+            const isAct = b.getAttribute('data-studio-view') === view;
+            b.classList.toggle('active', isAct);
+            b.setAttribute('aria-selected', isAct ? 'true' : 'false');
+          });
+          const views = {
+            markdown: document.getElementById('ks-markdown-studio'),
+            code: document.getElementById('ks-code-studio'),
+            grid: document.getElementById('ks-data-grid-studio'),
+            media: document.getElementById('ks-media-studio')
+          };
+          Object.keys(views).forEach(k => {
+            if (views[k]) views[k].style.display = k === view ? 'flex' : 'none';
+          });
+          const modeBadge = document.getElementById('ks-mode-indicator-badge');
+          if (modeBadge) {
+            const labels = { markdown: 'MARKDOWN', code: 'CODE', grid: 'DATA GRID', media: 'MEDIA' };
+            modeBadge.textContent = labels[view] || view.toUpperCase();
+          }
+
+          // Populate default demo data if the sub-view was uninitialized
+          if (view === 'code') {
+            const pre = document.getElementById('code-highlighted-pre');
+            if (pre && !pre.textContent.trim()) {
+              const file = (typeof FileExplorer !== 'undefined' && FileExplorer.files)
+                ? FileExplorer.files.find(f => f.ext === 'py' || f.category === 'code')
+                : null;
+              highlightCode(file ? file.content : '"""Agent Runner Script."""\nimport sys\n\ndef main():\n    print("Universal Workstation Ready")\n\nif __name__ == "__main__":\n    main()', 'py');
+            }
+          } else if (view === 'grid') {
+            const tbody = document.getElementById('grid-tbody');
+            if (tbody && tbody.children.length === 0) {
+              const file = (typeof FileExplorer !== 'undefined' && FileExplorer.files)
+                ? FileExplorer.files.find(f => f.ext === 'csv' || f.category === 'data')
+                : null;
+              renderDataGrid(file ? file.content : 'step,action,latency_ms,status\n1,perception_scan,120,success\n2,plan_generation,340,success\n3,gate_verification,85,success');
+            }
+          } else if (view === 'media') {
+            const media = document.getElementById('media-display-container');
+            if (media && !media.innerHTML.trim()) {
+              const file = (typeof FileExplorer !== 'undefined' && FileExplorer.files)
+                ? FileExplorer.files.find(f => f.ext === 'svg' || f.category === 'media')
+                : null;
+              if (file) renderArtifactStudio(file.name, file.content);
+            }
+          }
+        });
+      });
+
+      // 7. Coordinates Readout & Perception Toolbar (Viewport 1)
+      const cadCanvas = document.getElementById('cad-canvas');
+      const coordsText = document.getElementById('coords-text');
+      if (cadCanvas && coordsText) {
+        cadCanvas.addEventListener('mousemove', (e) => {
+          const rect = cadCanvas.getBoundingClientRect();
+          const x = Math.round(e.clientX - rect.left);
+          const y = Math.round(e.clientY - rect.top);
+          coordsText.textContent = `X: ${String(x).padStart(3, '0')} px • Y: ${String(y).padStart(3, '0')} px`;
+        });
+        cadCanvas.addEventListener('mouseleave', () => {
+          coordsText.textContent = 'X: 000 px • Y: 000 px';
+        });
+      }
+
+      const btnCamZoomOut = document.getElementById('btn-cam-zoom-out');
+      if (btnCamZoomOut) {
+        btnCamZoomOut.addEventListener('click', () => {
+          const group = document.getElementById('cad-mesh-group');
+          if (group) {
+            AppState.canvasScale = Math.max(0.4, (AppState.canvasScale || 1.0) * 0.85);
+            group.setAttribute('transform', `scale(${AppState.canvasScale})`);
+            setTimeout(updateSomLeaderLines, 50);
+          }
+          appendReplLog(null, '[CAMERA] Zoom Out (Scale: ' + Math.round((AppState.canvasScale || 1.0) * 100) + '%)', 'info');
+        });
+      }
+
+      const btnInspectorToggle = document.getElementById('btn-inspector-toggle');
+      if (btnInspectorToggle) {
+        btnInspectorToggle.addEventListener('click', () => {
+          const frame = document.getElementById('cad-viewport-frame');
+          if (frame) {
+            frame.classList.toggle('inspection-mode');
+            btnInspectorToggle.classList.toggle('active');
+          }
         });
       }
 

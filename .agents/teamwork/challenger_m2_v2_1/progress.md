@@ -1,16 +1,16 @@
 # Progress — Milestone 2 Adversarial Stress Testing
 
-Last visited: 2026-10-28T22:44:55Z
+Last visited: 2026-10-28T22:54:35Z
 
 ## Status
 - [x] Initialized DISPATCH.md and BRIEFING.md
 - [x] Inspected existing documents: ORIGINAL_REQUEST.md, PROJECT.md, worker handoff, and ui/dashboard/index.html
-- [x] Checked DOM structure and modal event handlers in `ui/dashboard/index.html`
-- [/] Verifying baseline: running `test_browser_dom.py`
-- [ ] Implement adversarial tests in `tests/test_adversarial_m2.py`:
-  1. Modal stress: rapid open, close via escape, backdrop click, cancel button, submit empty form, submit with whitespace, submit with 5,000-char string.
-  2. Multiple workspace creation and rapid hot-switching: verify no memory leaks, no orphaned DOM nodes, immediate UI updates without reload.
-  3. Browser reload test: verify state persistence in `localStorage`.
-- [ ] Execute `uv run --with pytest,playwright pytest tests/test_adversarial_m2.py tests/test_browser_dom.py -v`
-- [ ] Evaluate findings & edge cases
-- [ ] Write handoff.md and report verdict
+- [x] Implemented comprehensive adversarial test harness in `tests/test_adversarial_m2.py`
+- [x] Executed mandated verification suite: `uv run --with pytest,playwright pytest tests/test_adversarial_m2.py tests/test_browser_dom.py -v` (41 passed, 3 failed)
+- [x] Empirically isolated and documented 3 concrete defects:
+  1. Active workspace reversion on browser reload (desynchronized backend hydration)
+  2. Modal form empty validation bypasses custom error UI (HTML5 required constraint without novalidate)
+  3. Modal Escape key trapping omitted from global keydown listener (fails when blurred & triggers approval gate abort)
+- [x] Updated BRIEFING.md
+- [/] Writing 5-component handoff.md with verdict: REQUEST_CHANGES
+- [ ] Deliver handoff report via send_message

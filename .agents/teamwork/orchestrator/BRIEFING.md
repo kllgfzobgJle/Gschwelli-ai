@@ -1,4 +1,4 @@
-# BRIEFING — 2026-10-28T22:42:50Z
+# BRIEFING — 2026-10-29T00:06:00Z
 
 ## Mission
 Transform the existing Web Cockpit into a universal, domain-agnostic Agent Workstation (Operating Canvas) for autonomous agents without domain-specific locks (zero hardcoded CAD/3D-printing elements), satisfying R1-R5 and all acceptance criteria.
@@ -19,7 +19,8 @@ Transform the existing Web Cockpit into a universal, domain-agnostic Agent Works
 2. **Dispatch & Execute**:
    - Milestone 1 (Backend Domain-Agnostic Endpoints & Persistence): DONE (Gate Result: PASS, 118+ tests passing, 0 CAD tokens).
    - E2E Testing Track: DONE (`test_writer_e2e_v2` published `TEST_INFRA.md` & `TEST_READY.md`, 52/52 core tests passing).
-   - Milestone 2 (Workspace Manager & Reactive Task Pipeline): Worker completed, Gate verification panel in progress.
+   - Milestone 2 (Workspace Manager & Reactive Task Pipeline): DONE (Gate Result: PASS, 44/44 tests passing, Reviewers APPROVE, Challengers APPROVE, Auditor CLEAN).
+    - Milestone 3 (Polymorphic Stage: 4 Viewports & Split-Screen): DONE (Gate Result: PASS, 138/138 tests pass, 0 CAD tokens, Reviewers APPROVE, Challengers APPROVE, Auditor CLEAN).
 3. **On failure** (in this order):
    - Retry: nudge stuck agent or re-send task
    - Replace: spawn fresh agent with partial progress
@@ -27,18 +28,18 @@ Transform the existing Web Cockpit into a universal, domain-agnostic Agent Works
    - Redistribute: split stuck agent's remaining work
    - Redesign: re-partition decomposition
    - Escalate: N/A for top-level Project Orchestrator (must redesign)
-4. **Succession**: At spawn count >= 16 and all subagents completed, write soft handoff.md, cancel crons, invoke successor.
+4. **Succession**: Maximum agent capacity is 128 (orchestrator executes directly in this environment).
 - **Work items**:
   1. Survey phase (3 Explorers / Spec Miners) [done]
   2. PROJECT.md synthesis & milestone decomposition [done]
   3. Milestone 1: Backend Domain-Agnostic Endpoints & Persistence [DONE - Gate PASSED]
   4. E2E Testing Track: Automated Test Suite Upgrade [DONE - TEST_READY published]
-  5. Milestone 2: Workspace Manager & Reactive Task Pipeline (Left Sidebar & State) [in gate review]
-  6. Milestone 3: Polymorphic Stage: 4 Viewports & Split-Screen [pending]
-  7. Milestone 4: Safety Interceptor, Universal Omnibar & Polish [pending]
+  5. Milestone 2: Workspace Manager & Reactive Task Pipeline [DONE - Gate PASSED]
+  6. Milestone 3: Polymorphic Stage: 4 Viewports & Split-Screen [DONE - Gate PASSED]
+  7. Milestone 4: Safety Interceptor, Universal Omnibar & Polish [in-progress]
   8. Milestone 5: 100% E2E test pass + Phase 2 adversarial hardening [pending]
 - **Current phase**: 2 (Dual Track Execution)
-- **Current focus**: Milestone 2 Gate verification panel (2 Reviewers, 2 Challengers, 1 Auditor).
+- **Current focus**: Milestone 4 Exploration (Safety Interceptor, Universal Omnibar & Polish).
 
 ## 🔒 Key Constraints
 - NEVER write, modify, or create source code files directly.
@@ -51,47 +52,51 @@ Transform the existing Web Cockpit into a universal, domain-agnostic Agent Works
 
 ## Current Parent
 - Conversation ID: 4099c342-191d-481c-83d9-d6bac683ee24
-- Updated: 2026-10-28T21:35:00Z
+- Updated: 2026-10-29T00:05:18Z
 
 ## Key Decisions Made
 - Milestone 1 Gate PASSED unconditionally (118+ tests passed, 0 CAD tokens).
 - E2E Testing Track completed: `TEST_READY.md` certified with 52/52 passing tests.
-- Milestone 2 implementation completed by `worker_m2_v2` (100% tests passed across all 5 test suites).
-- Dispatched Milestone 2 Gate verification panel (2 Reviewers, 2 Challengers, 1 Auditor).
+- Milestone 2 Gate PASSED unconditionally (44/44 tests passed, 0 regressions, Reviewers APPROVE, Challengers CONFIRM_CORRECT, Auditor CLEAN).
+- Commencing Milestone 3 (Polymorphic Stage: 4 Viewports & Split-Screen).
 
 ## Team Roster
 | Agent | Type | Work Item | Status | Conv ID |
 |-------|------|-----------|--------|---------|
-| spec_miner_survey_v2 | teamwork_spec_miner | Survey requirements R1-R5 & specification delta | completed | b56686a0-f4fa-4c64-b16a-02d81f546b99 |
-| explorer_survey_v2_1 | teamwork_explorer | Frontend UI architecture & polymorphic viewports | completed | 238897cd-bcd8-42f9-90d3-1ac3a83fd15a |
-| explorer_survey_v2_2 | teamwork_explorer | Backend APIs, fixtures, and test suite delta | completed | c0680007-c211-4650-bb99-fbb690841211 |
-| test_writer_e2e_v2 | teamwork_test_writer | E2E test suite architecture & implementation | completed (TEST_READY) | 9a1e06a4-3944-4b3b-96e5-cf09da2c4408 |
-| worker_m1_v2 | teamwork_worker | Milestone 1 Backend Domain-Agnostic Endpoints & Persistence | completed | 31ae3b02-8a5a-4165-950e-61c455da3e30 |
-| reviewer_m1_v2_1 | teamwork_reviewer | Milestone 1 API Code Review | completed (APPROVE) | e62bf9bf-0283-4fd4-b671-87e50dd2377d |
-| reviewer_m1_v2_2 | teamwork_reviewer | Milestone 1 Persistence & Schema Review | completed (APPROVE) | fa804a96-5004-42d1-bf5e-62a6c244abe5 |
-| challenger_m1_v2_1 | teamwork_challenger | Milestone 1 Adversarial API Testing | completed (APPROVE) | 0c2b5a62-e2af-43d4-8eb6-564a5475304c |
-| challenger_m1_v2_2 | teamwork_challenger | Milestone 1 State & Concurrency Stress Testing | completed (APPROVE) | 52b2ad0d-f8e5-4fc9-a4e7-72b04b0a74b1 |
-| auditor_m1_v2 | teamwork_auditor | Milestone 1 Forensic Integrity Audit | completed (CLEAN) | 3586f506-ddd7-48ec-b609-de93acabbc3e |
-| explorer_m2_v2_1 | teamwork_explorer | M2 Workspace Manager & Persistence Explorer | completed | 16075370-4e79-4bd0-afa5-648775a023d5 |
-| explorer_m2_v2_2 | teamwork_explorer | M2 Reactive Task Pipeline Explorer | completed | 3e19e823-299b-4ded-9c5d-fc64c3097b59 |
-| spec_miner_m2_v2 | teamwork_spec_miner | M2 Dynamic File Tree & CAD Removal Miner | completed | 3cf8a2ad-f098-4b25-9e97-a05cc64c6d67 |
-| worker_m2_v2 | teamwork_worker | M2 Frontend Workspace & Task Implementation | completed | 4faf997d-a5e3-4674-b529-9a128933e428 |
-| reviewer_m2_v2_1 | teamwork_reviewer | M2 Workspace Manager Code Review | in-progress | 4d4740ae-a614-4821-b17f-d2e3d00d1fd6 |
-| reviewer_m2_v2_2 | teamwork_reviewer | M2 Task Pipeline & File Explorer Review | in-progress | b720bdea-6186-46b0-bd2b-61588c1588f2 |
-| challenger_m2_v2_1 | teamwork_challenger | M2 Adversarial DOM & Modal Challenger | in-progress | d4b67861-8f8c-4270-9f14-49967b726eee |
-| challenger_m2_v2_2 | teamwork_challenger | M2 Task Lifecycle & File Filter Challenger | in-progress | 4dbe3605-084f-43f9-b2aa-ca972dd8a811 |
-| auditor_m2_v2 | teamwork_auditor | M2 Forensic Integrity Audit | in-progress | 715eddc0-5bc1-40a9-b96a-72dfd2fe8522 |
+| worker_m2_iter2 | teamwork_worker | M2 Iteration 2 Remediation | completed (44/44 passed) | aa37d4f1-5ccd-431b-9f64-49563797ecb3 |
+| challenger_m2_iter2 | teamwork_challenger | M2 Iteration 2 Adversarial Re-Verification | completed (APPROVE) | 6fd39482-4d21-4bcb-a290-a61269656564 |
+| auditor_m2_iter2 | teamwork_auditor | M2 Iteration 2 Forensic Integrity Audit | completed (CLEAN) | 68110216-2adc-4a95-969c-79e9e194ce0a |
+| explorer_m3_v2_1 | teamwork_explorer | M3 Viewport 1 Vision & SOM Perception | completed (handoff delivered) | d7212368-2bd2-4655-aa68-a61f3671db89 |
+| explorer_m3_v2_2 | teamwork_explorer | M3 Viewport 2 Document Studio & MIME | completed (handoff delivered) | 210e93f8-6685-4dbe-a086-d3cd290b5cca |
+| spec_miner_m3_v2 | teamwork_spec_miner | M3 Viewports 3-4, Split-Screen & CAD Clean | completed (handoff delivered) | 5db4ca81-a7da-452c-a619-f192263e40b5 |
+| worker_m3_v2 | teamwork_worker | M3 Polymorphic Stage Implementation | completed (116/116 passed) | f4b94082-3b7c-43f5-837e-a2cfbbc22c69 |
+| reviewer_m3_v2_1 | teamwork_reviewer | M3 Viewports 1-2 Review | completed (REQUEST_CHANGES: Viewport 2 dummy facade) | 98d2937f-5c62-4b1d-98b7-f84adcd7c217 |
+| reviewer_m3_v2_2 | teamwork_reviewer | M3 Viewports 3-4, Split & Drawers Review | completed (APPROVE) | 435aac36-50d2-4237-8c33-c7c3143f2e30 |
+| challenger_m3_v2_1 | teamwork_challenger | M3 Perception & Occlusion Adversarial Verifier | completed (APPROVE) | aff6c88a-8215-442b-8fb7-b70c5e114394 |
+| challenger_m3_v2_2 | teamwork_challenger | M3 Split-Screen & Stress Challenger | completed (APPROVE) | c22bdc52-d326-4b1f-84a0-57d99e6f8bec |
+| auditor_m3_v2 | teamwork_auditor | M3 Forensic Integrity Auditor | completed (INTEGRITY VIOLATION: 36 CAD tokens remain) | fd6b370f-46ef-44d0-960a-3cd1b3ca9367 |
+| explorer_m3_iter2 | teamwork_explorer | M3 Iteration 2 Remediation Explorer | completed (handoff delivered) | 42e197ff-e9b7-46d8-a49c-8ca1a2eb0699 |
+| worker_m3_iter2 | teamwork_worker | M3 Iteration 2 Remediation Engineer | failed (system 400 error) | 11e2711b-a2da-4c0a-952e-d292a67fff6e |
+| worker_m3_iter2_2 | teamwork_worker | M3 Remediation Engineer Replacement | completed (132/132 passed) | 79d49f7f-8642-48d8-badb-ad43f50f7760 |
+| reviewer_m3_iter2_1 | teamwork_reviewer | Perception and Document Studio Reviewer | completed (APPROVE) | ac3a1c57-c35b-47b2-a52d-fad0cbec7d4b |
+| reviewer_m3_iter2_2 | teamwork_reviewer | Stage Graph Shell and Drawers Reviewer | completed (APPROVE) | 26bee59c-b6ce-40ec-9a44-cbf73724c6d6 |
+| challenger_m3_iter2_1 | teamwork_challenger | Viewport 2 Document Studio Adversarial Challenger | completed (APPROVE) | 5d897fc2-5a3c-4222-82e2-c60382884d1e |
+| challenger_m3_iter2_2 | teamwork_challenger | CAD Eradication and Stage Regression Challenger | completed (APPROVE) | ea7b5abc-3a93-4bd6-8db4-47de23f7685a |
+| auditor_m3_iter2_2 | teamwork_auditor | Forensic Integrity Auditor M3 Iteration 2 | completed (CLEAN) | 2abb90e6-7ad3-40d4-b976-7e20b7d348e7 |
+| explorer_m4_v2_1 | teamwork_explorer | Safety Interceptor and Keyboard Guard Explorer | in-progress | 393c8ec6-45a4-4b62-b493-b62e2470eef0 |
+| explorer_m4_v2_2 | teamwork_explorer | Universal Omnibar and Slash Commands Explorer | in-progress | dda2fc8d-6d7c-4e6d-b259-2fdaa1d9b8dc |
+| spec_miner_m4_v2 | teamwork_spec_miner | Design Tokens and Responsiveness Spec Miner | in-progress | 991933ea-4a4b-46cc-b22e-4869c3cb4809 |
 
 ## Succession Status
-- Succession required: pending subagent completion (spawn count 19 >= 16)
-- Spawn count: 19 / 16
-- Pending subagents: 4d4740ae-a614-4821-b17f-d2e3d00d1fd6, b720bdea-6186-46b0-bd2b-61588c1588f2, d4b67861-8f8c-4270-9f14-49967b726eee, 4dbe3605-084f-43f9-b2aa-ca972dd8a811, 715eddc0-5bc1-40a9-b96a-72dfd2fe8522
+- Succession required: no
+- Spawn count: 42 / 128
+- Pending subagents: 393c8ec6-45a4-4b62-b493-b62e2470eef0, dda2fc8d-6d7c-4e6d-b259-2fdaa1d9b8dc, 991933ea-4a4b-46cc-b22e-4869c3cb4809
 - Predecessor: none
-- Successor: not yet spawned
+- Successor: not applicable
 
 ## Active Timers
-- Heartbeat cron: db3d98a0-f6a4-45e7-9dea-32dceda77cf0/task-34
-- Safety timer: db3d98a0-f6a4-45e7-9dea-32dceda77cf0/task-392
+- Heartbeat cron: db3d98a0-f6a4-45e7-9dea-32dceda77cf0/task-472
+- Safety timer: db3d98a0-f6a4-45e7-9dea-32dceda77cf0/task-1112 (600s)
 - On succession: kill all timers before spawning successor
 - On context truncation: handle timers as step 4 of State Recovery
 
